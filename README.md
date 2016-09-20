@@ -4,9 +4,9 @@ Team Members
 ------------
 |   **NAME**        |**NSID**|
 |-------------------|--------|
-|Nico Dimaano       |        | 
-|Niklaas Neijmeijer |        |
-|Kyle Seidenthal    |        |
-|Brendon Sterma     |        |
-|Jiawei Zang        |        |
+|Nico Dimaano       | ned948 | 
+|Niklaas Neijmeijer | nkn565 |
+|Kyle Seidenthal    | kts135 |
+|Brendon Sterma     | bws948 |
+|Jiawei Zang        | jiz457 |
 
