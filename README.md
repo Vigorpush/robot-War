@@ -10,3 +10,5 @@ Team Members
 |Brendon Sterma     | bws948 |
 |Jiawei Zang        | jiz457 |
 
+Project Description
+-------------------
