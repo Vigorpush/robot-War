@@ -9,4 +9,4 @@ Team Members
 |Kyle Seidenthal    |        |
 |Brendon Sterma     |        |
 |Jiawei Zang        |        |
-|-------------------|--------|
+
