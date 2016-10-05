@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> REQUIREMENTS
 Server Action: update data (Game) /TRANSMITS DATA
 
 
