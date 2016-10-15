@@ -1,0 +1,18 @@
+MODEL
+	hexboard
+		information about the borad
+	team
+		information about the team
+	robot
+		information about the robot
+VIEW
+	gameview
+		the view for game
+	hexboardview
+		the view for the map 
+	
+CONTROL
+	CallbackMap
+		changing map when we change the combat about map
+	controller
+		handle the player input
