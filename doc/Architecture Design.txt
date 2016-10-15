@@ -20,6 +20,27 @@ Therefore, MVC should be the most reasonable architecture is this game software
 	MODEL:
 		ALL the entities which we have, lib files, supportting files, save data, elements information are storing in here, and can let the CONTROL part have access to those.
 		
-		
+	
+And pro and con about the MVC
+
+	Pros
+	1. Keeping the user interface changes completely separate from business logic. 
+	 
+	2. helps in easier maintenance of code.
+		Business logic so code is clean and easy to maintenance
+
+	3. Easier to test the business components, user interface 
+	 
+	4. More testable
+ 
+ 
+ 
+ CONs
+	1. More work which is mean that complex design
+		Which needs good understand of control flows
+ 
+ "The pattern isolates “domain logic” (the application logic for the user) from the user interface (input and presentation), permitting independent development, testing and maintenance of each (separation of concerns)."--This is from online material
+ 
+ 
 
 	
