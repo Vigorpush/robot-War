@@ -12,12 +12,3 @@ Team Members
 |Jiawei Zang        | jiz457 |
 
 
-Project Description
--------------------
-<<<<<<< HEAD
-test git
-=======
-
->>>>>>> REQUIREMENTS
-
-
