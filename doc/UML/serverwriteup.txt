@@ -1,0 +1,3 @@
+The server class contains the gamestate file that contains the data relevant to what tiles are visible to the player and what the current position of robots is.
+The update state function replaces the current gamestate with a new, updated version.
+The return state function returns the current game state for use by external functions.
