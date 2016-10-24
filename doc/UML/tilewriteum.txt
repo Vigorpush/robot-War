@@ -1,0 +1,3 @@
+The tile class consists of a list of robots, and functions to manipulate them.
+A robot can be added to the list, a specific robot can be removed from the list, and a specific robot can be returned from the list for use by an external function.
+The entire list can also be returned in the same way. A specific robot can be updated by replacing that robot with an updated version.
