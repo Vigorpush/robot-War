@@ -1,0 +1,16 @@
+﻿Robot
+
+
+setName(String): void
+Purpose        
+Tests that the method changes the chosen robots “name” attribute to the passed in String.
+Preconditions:
+        A Robot object exists, and it has a name.
+Postconditions:
+        The Robot’s name has been changed to the passed in String.
+        Error conditions:
+                The Robot’s name was not changed.
+        Pseudocode:
+                Robot test1 = new Robot(String1)
+                test1.setName(String2)
+                assertTrue(test1.getName.equals(String2))
