@@ -1,119 +1,168 @@
 ﻿Robot
 
+	The Robot class represents a gamepiece in the "Robot Arena" game.  It has methods thatkeep track of its name, team, and other statistics about the piece it represents.  It also has methods to calcuate what tiles it can see, move to, and attack.  Many of the methods are getters and setters, and will be tested by simply using the approprate methods to set values and retrive them, comparing with the value originally entered.  Other methods, such as view and movement methods, will be tested by giving the robot known values compatible with the functions, and comparing the given result to the pre-determined answer.
 
 setName(String): void
-Purpose        
-Tests that the method changes the chosen robot's “name” attribute to the passed in String.
+
+Purpose:
+	Tests that the method changes the chosen robot's “name” attribute to the passed in String.
+
 Preconditions:
-        A Robot object exists, and it has a name.
+        A Robot object exists.
+
 Postconditions:
         The Robot’s name has been changed to the passed in String.
-        Error conditions:
-                The Robot’s name was not changed.
-        Pseudocode:
-                Robot test1 = new Robot(String1)
+
+Error conditions:
+        The Robot’s name could not be changed.
+
+Pseudocode:
+           	Robot test1 = new Robot(String1)
                 test1.setName(String2)
                 assertTrue(test1.getName.equals(String2))
+
+
 setTeamColor(String): void
-Purpose        
-Tests that the method changes the chosen robot's “teamColor” attribute to the passed in String.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “teamColor” attribute to the passed in String.
+
 Preconditions:
         A Robot object exists, and it has a teamColor.
+
 Postconditions:
         The Robot’s teamColor has been changed to the passed in String.
-        Error conditions:
+
+Error conditions:
                 The Robot’s teamColor was not changed.
-        Pseudocode:
+
+Pseudocode:
                 Robot test1 = new Robot(String1)
                 test1.setTeamColor(String2)
                 assertTrue(test1.getTeamName.equals(String2))
 
 
+
 setHealth(int): void
-Purpose        
-Tests that the method changes the chosen robot's “health” attribute to the passed in int.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “health” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has health.
+
 Postconditions:
         The Robot’s health has been changed to the passed in int.
-        Error conditions:
+
+Error conditions:
                 The Robot’s health was not changed.
-        Pseudocode:
+
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setHealth(int2)
                 assertTrue(test1.getHealth.equals(int2))
 
 
+
 setDamage(int): void
-Purpose        
-Tests that the method changes the chosen robot's “damage” attribute to the passed in int.
+
+Purpose:
+        Tests that the method changes the chosen robot's “damage” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has damage.
+
 Postconditions:
         The Robot’s damage has been changed to the passed in int.
-        Error conditions:
+
+Error conditions:
                 The Robot’s damage was not changed.
-        Pseudocode:
+
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setDamage(int2)
                 assertTrue(test1.getDamage.equals(int2))
 
 
+
 setKillCount(int): void
-Purpose        
-Tests that the method changes the chosen robot's “killCount” attribute to the passed in int.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “killCount” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has a killCount.
+
 Postconditions:
         The Robot’s killCount has been changed to the passed in int.
-        Error conditions:
+        
+Error conditions:
                 The Robot’s killCount was not changed.
-        Pseudocode:
+        
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setKillCount(int2)
                 assertTrue(test1.getKillCount.equals(int2))
 
 
+
 setMovement(int): void
-Purpose        
-Tests that the method changes the chosen robot's “movement” attribute to the passed in int.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “movement” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has movement.
+
 Postconditions:
         The Robot’s movement has been changed to the passed in int.
-        Error conditions:
+        
+Error conditions:
                 The Robot’s movement was not changed.
-        Pseudocode:
+        
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setMovement(int2)
                 assertTrue(test1.getMovement.equals(int2))
 
 
+
 setRange(int): void
-Purpose        
-Tests that the method changes the chosen robot's “range” attribute to the passed in int.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “range” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has range.
+
 Postconditions:
         The Robot’s range has been changed to the passed in int.
-        Error conditions:
+        
+Error conditions:
                 The Robot’s range was not changed.
-        Pseudocode:
+        
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setRange(int2)
                 assertTrue(test1.getRange.equals(int2))
 
 
+
 setDistanceTravelled(int): void
-Purpose        
-Tests that the method changes the chosen robot's “distanceTravelled” attribute to the passed in int.
+
+Purpose:        
+	Tests that the method changes the chosen robot's “distanceTravelled” attribute to the passed in int.
+
 Preconditions:
         A Robot object exists, and it has distanceTravelled.
+
 Postconditions:
         The Robot’s distanceTravelled has been changed to the passed in int.
-        Error conditions:
+        
+Error conditions:
                 The Robot’s distanceTravelled was not changed.
-        Pseudocode:
+        
+Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setDistanceTravelled(int2)
                 assertTrue(test1.getDistanceTravelled.equals(int2))
