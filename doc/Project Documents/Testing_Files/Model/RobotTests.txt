@@ -166,3 +166,160 @@ Pseudocode:
                 Robot test1 = new Robot(int1)
                 test1.setDistanceTravelled(int2)
                 assertTrue(test1.getDistanceTravelled.equals(int2))
+
+
+
+getName(): String
+
+Purpose	:
+	Tests that the method outputs the robot’s “name” attribute.
+
+Preconditions:
+	A Robot object exists, and it has a name.
+
+Postconditions:
+	The Robot’s name has been outputted.
+
+Error conditions:
+	The Robot’s name was not outputted.
+Pseudocode:
+		Robot test1 = new Robot(String1)
+		assertTrue(test1.getName().equals(String1))
+
+
+
+getTeamColor(): String
+
+Purpose:	
+	Tests that the method outputs the robot’s “teamColor” attribute.
+
+Preconditions:
+	A Robot object exists, and it has a teamColor.
+
+Postconditions:
+	The Robot’s teamColor had been outputted.
+
+Error conditions:
+	The Robot’s teamColor was not outputted.
+
+Pseudocode:
+		Robot test1 = new Robot(String1)
+		assertTrue(test1.getTeamName().equals(String1))
+
+
+
+getHealth(): int
+
+Purpose:	
+	Tests that the method outputs the robot’s “health” attribute.
+
+Preconditions:
+	A Robot object exists, and it has health.
+
+Postconditions:
+	The Robot’s health had been outputted.
+
+Error conditions:
+	The Robot’s health was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getHealth().equals(int1))
+
+
+
+getDamage(): int
+
+Purpose:	
+	Tests that the method outputs the robot’s “damage” attribute.
+
+Preconditions:
+	A Robot object exists, and it has damage.
+
+Postconditions:
+	The Robot’s damage had been outputted.
+
+Error conditions:
+	The Robot’s damage was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getDamage().equals(int1))
+
+
+
+getKillCount(): int
+Purpose:	
+	Tests that the method outputs the robot’s “killCount” attribute.
+
+Preconditions:
+	A Robot object exists, and it has a killCount.
+
+Postconditions:
+	The Robot’s killCount had been outputted.
+
+Error conditions:
+	The Robot’s killCount was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getKillCount().equals(int1))
+
+
+
+getMovement(): int
+
+Purpose:
+	Tests that the method outputs the robot’s “movement” attribute.
+
+Preconditions:
+	A Robot object exists, and it has movement.
+
+Postconditions:
+	The Robot’s movement had been outputted.
+
+Error conditions:
+	The Robot’s movement was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getMovement().equals(int1))
+
+
+
+getRange(): int
+
+Purpose:	
+	Tests that the method outputs the robot’s “range” attribute.
+
+Preconditions:
+	A Robot object exists, and it has range.
+
+Postconditions:
+	The Robot’s range had been outputted.
+
+Error conditions:
+	The Robot’s range was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getRange().equals(int1))
+
+
+getDistanceTravelled(): int
+
+Purpose:
+	Tests that the method outputs the robot’s “distanceTravelled” attribute.
+
+Preconditions:
+	A Robot object exists, and it has distanceTravelled.
+
+Postconditions:
+	The Robot’s distanceTravelled had been outputted.
+
+Error conditions:
+	The Robot’s distanceTravelled was not outputted.
+
+Pseudocode:
+	Robot test1 = new Robot(int1)
+	assertTrue(test1.getDistanceTravelled().equals(int1))
