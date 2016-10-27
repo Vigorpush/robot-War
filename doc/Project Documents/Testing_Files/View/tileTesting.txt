@@ -1,0 +1,22 @@
+Tile
+Object
+Tile: Constructor
+
+robotList
+Datatype: List(Robot)
+
+addRobot(Robot): Void
+removeRobot(Robot): Void
+getRobot(Robot): Robot
+getList(): List
+updateRobot(Robot): Void
+
+//Tile test
+//create new tile
+Tile t = new Tile
+
+//assert tile was created
+assert{
+	t != null
+	t == new Tile
+}
