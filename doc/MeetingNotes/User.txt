@@ -1,0 +1,59 @@
+User
+Object
+
+User(): Constructor
+Create a String called name which is “PEN” //Please Enter Name//
+Create boolean called isHost which is FALSE
+Create 9x9 boolean called fogOfWar[9][9] which contains ALL NULL
+
+// User Test
+// Create User 
+	User person = new user()
+
+// Testing if User is created
+	assert { 
+		person != NULL
+	}
+
+// Testing SetName() && GetName()
+	person.SetName( “Steven” )
+		if ( person.GetName != Steven ) {
+			print “Setter or Getter of User.Name is not Working”
+		}
+
+// Testing SetIsHost() && IsHost()
+	person.SetIsHost( TRUE )
+		if ( !person.IsHost ) {
+			print “Setter or Getter of User.IsHost is not Working”
+		}
+
+
+// Testing SetFogOfWar(x,y) && GetFogOfWar()
+	person.SetFogOfWar(5,5)
+		boolean test = person.GetFogOfWar[5][5];
+		if ( !test ) {
+			print “Setter or Getter of User.FogOfWar is not Working”
+		}
+
+// Creating Tile && Robot for testing
+	Tile t = new Tile
+	Robot origRobot = new Robot
+	Robot testRobot = new Robot
+// Test: We’ll place the original Robot inside the tile. We’ll invoke Inspect Tile to get the list of robots and the original is first in the list. Once we grab the robot inside the list we well test if the robot is there and is still the same as the original robot that was placed there in the first place.
+	t.addRobot(origRobot)
+	// User.InspectTile(Tile) -> Tile.GetRobotList() -> 
+	// RobotList.GetFirstNode() -> Node().GetElement = Robot
+
+	testRobot = person.InspectTile(t).getFirstNode().getElement()
+	if ( testRobot != getRobot ) {
+		print “Inspect Tile or Tile Setting is not working”
+	}
+
+
+	
+	
+	
+
+	
+
+InspectTile(Tile): List<Robot>
