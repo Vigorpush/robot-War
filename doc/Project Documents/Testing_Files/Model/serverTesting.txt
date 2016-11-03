@@ -1,0 +1,6 @@
+Server
+Object
+
+server()
+Constructor
+Create new gameState and call it g
