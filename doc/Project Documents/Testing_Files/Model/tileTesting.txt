@@ -1,0 +1,7 @@
+Tile
+Object
+
+Tile(): Constructor
+Create an empty List object that contains robots; call it robotList
+Create an Int set to 0; call it xPosition
+Create an Int set to 0; call it yPosition
