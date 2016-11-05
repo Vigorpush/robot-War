@@ -5,8 +5,12 @@ server()
 Constructor
 Create new gameState and call it g
 
-Test Networks
-Test Host name 
-Testing printwriter which out put the stream 
-Testing BufferedReader this will also out put the stream
+//Create a Networks  (Socket)
+    creat Socket and given a computer name and port number into this socket 
+    
+//Test Networks is connected
+    listenSocket to check weather Catch exceptions
+    
+//Test Host name is created correctly
+     using assert method to check the name and port id is correctly
 
