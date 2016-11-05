@@ -3,14 +3,22 @@ Object
 
 server()
 Constructor
-Create new gameState and call it g
+Create new gameState and call it gameState
 
 //Create a Networks  (Socket)
     creat Socket and given a computer name and port number into this socket 
-    
+      if the get error 
+      return error value and error message 
+      end if 
+
 //Test Networks is connected
     listenSocket to check weather Catch exceptions
+     if the get error which wrong port id
+      return error value and error message 
+     end if 
     
 //Test Host name is created correctly
-     using assert method to check the name and port id is correctly
-
+     using assert method to check the nameid is correctly
+      if the get error which wrong port id
+	return error value and error message 
+      end if 
