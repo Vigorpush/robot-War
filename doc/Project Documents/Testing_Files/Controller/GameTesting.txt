@@ -1,0 +1,79 @@
+Description:
+
+	The game class acts as the controller for our system.  It is responsible for communicating with 
+the model and view to ensure the system runs smoothly.  The game contains functions that are called by 
+the view when a user interacts with it, and functions that are called to communicate with the 
+model to get updates on the game state.  The game class will handle communications with the RobotLibrarian
+and the Server, to get the external info it needs to begin the game.  After a game has started, the game
+class will continually run to move the game forward.
+
+Significance:
+
+	The game class is the point in the system that all commands and data pass through, and thus it
+is crucial to thouroughly test this module.  This class will run the main program, and coordinate all
+game data.  It is important that the game can effectively communicate with both the view and the model
+to ensure all modules recieve the information they need to progress the program.  
+
+Testing Plan:
+
+	We will create a J-unit test module for the controller class that will contain methods for testing
+the functions in the game class as described below.
+
+	
+	gameInit:
+		
+
+	joinGame:
+
+	
+	hostGame:
+
+
+	exitGame:
+
+	
+	lobbyBack:
+
+	
+	switch:
+
+
+	kick:
+
+	
+	beginGame:
+
+
+	gameBack:
+
+	
+	tileClicked:
+
+	endTurn:
+
+	changeScreen:
+
+	initView:
+
+	inputDetector:
+
+	checkWinLose:
+
+	getTileInfo:
+
+	updateRobotPrograms:
+
+	archiveRobotPrograms:
+
+	processAi:
+
+	connectToServer:
+
+	checkServerStatus:
+
+	sendGameStateToServer:
+
+
+
+	
+
