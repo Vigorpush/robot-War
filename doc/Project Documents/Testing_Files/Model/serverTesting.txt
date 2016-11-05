@@ -4,3 +4,9 @@ Object
 server()
 Constructor
 Create new gameState and call it g
+
+Test Networks
+Test Host name 
+Testing printwriter which out put the stream 
+Testing BufferedReader this will also out put the stream
+
