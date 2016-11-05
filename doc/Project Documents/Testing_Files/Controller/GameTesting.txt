@@ -20,19 +20,62 @@ Testing Plan:
 the functions in the game class as described below.
 
 	
-	gameInit:
-		
+	gameInit:	The gameInit() function will initialize all players and their robots. This function will be tested by calling it with a number of players
+			and testing to see if the players were propery initialized.  A few different, but non-exhaustive tests will be sufficient.  We will initialize
+			a game with two human players and check to see that we have a list of two players with all of their robots initialized.  Then a game with three
+			AI players will be initialized and checked in the same way.  Finally, a game with 6 players, 3 human and 3 AI will be initialized and checked.
 
-	joinGame:
+			Pseudocode:
+				create 2 fake human players
+				gameInit()
+				assert(2_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+		
+				create 3 fake AI players
+				gameInit()
+				assert(3_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+
+				create 3 fake human players
+				create 3 fake AI players
+				gameInit()
+				assert(6_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+
+
+	joinGame:	The joinGame function is called by the StartView.  It will specify a host to connect to, and will call the connectToHost() function in the
+			server.  This will be tested by creating a fake host to connect to, and calling the join game with that host.  The parameters will be checked
+			for correctness.
+
+			Pseudocode:
+				create a fake host
+				joinGame(fake_host)
+				server.connectToHost(fake_host)
+				assert(user_is_connected_to_host)
 
 	
 	hostGame:
 
 
-	exitGame:
+	exitGame:	The exitGame() function is called by the StartView.  It will terminate the program.  This will not be tested AND THIS FUNCTION SHOULD 
+			PROBABLY BE REMOVED FROM THIS DOCUMENT FOR THIS REASON
 
 	
-	lobbyBack:
+	lobbyBack:	The lobbyBack() funtion is called by the LobbyView.  It will take the user back to the StartView and properly disconnect the user from the 
+			host.  If the user who selected the back option is the host of the game, the match is terminated and all players are kicked.  This will be
+			tested by connecting the user to a fake host, and calling the appropriate server functions to terminate the connection.
+
+			Pseudocode:
+				server.connect(fake_host)
+				lobbyBack()
+				assert(user_is_not_connected)
+
+				server.host(me)
+				lobbyBack()
+				assert(match_does_not_exist)
 
 	
 	switch:
