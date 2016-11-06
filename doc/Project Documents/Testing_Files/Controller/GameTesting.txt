@@ -57,7 +57,12 @@ the functions in the game class as described below.
 				assert(user_is_connected_to_host)
 
 	
-	hostGame:
+	hostGame:	The hostGame function is called by the StartView.  It will open a host to be connected to by other users.  It will call the openHostConnection
+			function in the server.   This function will be tested by creating a host and testing to see if the connection was properly opened.
+
+			Pseudocode:
+				hostGame()
+				assert(connection_is_open)
 
 
 	exitGame:	The exitGame() function is called by the StartView.  It will terminate the program.  This will not be tested AND THIS FUNCTION SHOULD 
@@ -78,10 +83,30 @@ the functions in the game class as described below.
 				assert(match_does_not_exist)
 
 	
-	switch:
+	switch:		The switch() function is called by the LobbyView.  If called by a player, it changes the player to an observer.  If called by an observer, 
+			it changes the observer to a player. This function will be tested by creating a player object and switching them to an observer, then
+			switching the new observer back to a player.
+
+			Pseudocode:
+				create player
+				switch(player)
+				assert(the_user_is_now_an_observer)
+				switch(observer)
+				assert(the_user_is_now_a_player)
+		
 
 
-	kick:
+	kick:		The kick() function is called by the LobbyView.  It is used to kick a player from the game.  When called, the chosen player
+			is disconnected from the host.   To test this we will connect a player to a host, and kick the player.  We will then check to 
+			see if the player is still connected.
+
+			Pseudocode:
+				create host
+				create player
+				connect player to host
+				kick(player)
+				assert(player_is_not_connected_to_host)
+
 
 	
 	beginGame:
