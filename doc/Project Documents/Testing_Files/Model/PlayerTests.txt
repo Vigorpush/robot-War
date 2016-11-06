@@ -4,54 +4,6 @@
         The Player class represents a User in the "Robot Arena" game.  It has methods to get or set the Robots it controls and to order those robots to move or attack. It also has methods to end the turn or to forfeit.  Many of the methods are getters and setters, and will be tested by simply using the approprate methods to set values and retrive them, comparing with the value originally entered.  Other methods, such as the attack and move methods, will be tested by creating an artificial board, and determining if the robot may move or attack the targeted space. The End Turn method would be observed in the controller’s tests. The forfeit method will be tested by observing if the board is properly cleared, and if the player became an observer,
 
 
-setRobots(List<Robot>): void
-
-
-Purpose:
-        Tests that the method changes the Player’s robotList attribute to the passed in list.
-
-
-Preconditions:
-        The passed in list is not null
-
-
-Postconditions:
-        The Player’s robotList has been changed to the passed in list.
-
-
-Error conditions:
-        The Robot’s name could not be changed.
-
-
-Pseudocode:
-        Player red = new Player(George, Red)                
-        red.setRobots(robots2)
-            assertTrue(red.getRobots.equals(robots2))
-
-
-
-
-getRobots(): List<Robot>
-
-
-Purpose:
-        Tests that the method outputs the Player’s robotList attribute 
-
-
-Preconditions:
-        The Player exists, and has a robotList
-
-
-Postconditions:
-        The Player’s robotList has been outputted.
-
-
-Error conditions:
-        The Player’s robotList was not outputted.
-
-
-Pseudocode:
-            assertTrue(red.getRobots.equals(robots1))
 
 
 moveRobot(Robot, Tile): Boolean
@@ -76,16 +28,16 @@ The Robot did not move when it had enough movement
 
 
 Pseudocode:
-        int movesLeft = robot1.getMovesLeft()
-        assertTrue(movesLeft > 0)
-        Tile start = robot1.getTile()
-        assertTrue(Board.movePossible(start, end))
-        red.moveRobot(robot1,end)
-        assertTrue(red.getTile().equals(end))
-        int x = end.getX();
-        int y = end.getY();
-        assertTrue(Board.board[x][y].getRobot(robot1).equals(robot1))
-        assertTrue((movesLeft-1)==robot1.getMovesLeft())
+        Store how many moves the robot has left
+Check that it has more than 0 moves left
+Store which tile the robot starts on
+        Confirm that it is possible to move between the starting and ending tile
+If both are true
+Move the robot
+        Confirm that the robot is now on the ending tile
+                Store the x and y values of the new tile
+                Confirm that the tile in the board thinks that the robot is where it should be
+                Confirm that the robot has one less move left
 
 
 attack(Robot, Tile): Boolean
@@ -110,20 +62,13 @@ The Robot at the target tile took to much damage
 
 
 Pseudocode:        
-        assertTrue(red.hasShot == false)
-        Tile start = robot1.getTile()
-        assertTrue(Board.attackPossible(start, end))
-        RobotList before = end.robotList;
-red.attack(robot1,end)
-int robotAttack = robot1.getDamage()
-        int j = 0
-        for(int i ; i< before.length i++)
-                if(before[i].getHealth() - robotAttack > 0)
-                        assertTrue(end.robotList[j].getHealth() == before[i].getHealth() -    robotAttack)
-                        j++
-        assertTrue(red.hasShot == true)
-
-
+        Confirm that the player has not made an attack this turn
+        Confirm that an attack from the robots space to the destination is possible
+        If both are true
+                Store the list of robots on the target tile
+                Execute the attack
+                Compare the stored Robots health with the Robots left on the tile to confirm that the correct damage has been done
+                Confirm that the player has made an attack this turn
 
 
 Forfeit(): void
@@ -148,8 +93,7 @@ Error conditions:
 
 
 Pseudocode:
-        RobotList oldRobots = red.getRobots()
-        red.forfeit()
-        for(int i = 0; i < oldRobots.length ; i++)
-                assertTrue(oldRobots[i].getTile().getRobot(oldRobots[i]) == Null)
-        assertTrue( red instanceof Observer)
+        Store the player’s list of robots
+        Have the player forfeit
+        Confirm that the player’s robot have been removed from the tiles they occupied
+        Confirm that the player is now an observer
