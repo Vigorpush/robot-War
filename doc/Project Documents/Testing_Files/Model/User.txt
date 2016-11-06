@@ -1,14 +1,16 @@
 User
-Object
+Description:
+    The User class serves as the class for the users of the robot game. There are three fields to the User class which are the name, IP isHost and a fogOfWar. The name and IP are identification tools to recognaize the different users, the isHost boolean determines if to current user has administration rights and the fogOfWar is a 2D Array boolean when given the x and y coordinate on the board we get if the current tile assigned to it is visible to the player. There are two sub classes to user which are Observer and Player. A Player is a user currently in-game and an Observer is a spectator to the game. A Player turns into an observer once he/she forfeits.
 
 User(): Constructor
-Create a String called name which is “PEN” //Please Enter Name//
+Create a String called name which is the first argument in the User Constructor
+Create a String called IP which is the second argument in the User Constructor
 Create boolean called isHost which is FALSE
 Create 9x9 boolean called fogOfWar[9][9] which contains ALL NULL
 
 // User Test
 // Create User 
-	User person = new user()
+	User person = new user("Steven","123")
 
 // Testing if User is created
 	assert { 
@@ -16,22 +18,14 @@ Create 9x9 boolean called fogOfWar[9][9] which contains ALL NULL
 	}
 
 // Testing SetName() && GetName()
-	person.SetName( “Steven” )
-		if ( person.GetName != Steven ) {
-			print “Setter or Getter of User.Name is not Working”
+		if ( person.GetName != "Steven" && person.IP != "123" ) {
+			print “Setter or Getter of User.Name or User.IP is not Working”
 		}
-
-// Testing SetIsHost() && IsHost()
-	person.SetIsHost( TRUE )
-		if ( !person.IsHost ) {
-			print “Setter or Getter of User.IsHost is not Working”
-		}
-
 
 // Testing SetFogOfWar(x,y) && GetFogOfWar()
 	person.SetFogOfWar(5,5)
-		boolean test = person.GetFogOfWar[5][5];
-		if ( !test ) {
+		boolean tester = person.GetFogOfWar[5][5];
+		if ( !tester ) {
 			print “Setter or Getter of User.FogOfWar is not Working”
 		}
 
