@@ -1,0 +1,41 @@
+package testing;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class SampleObjectTest {
+
+	SampleObject test1;
+	SampleObject test2;
+	
+	int id1 = 3;
+	int id2 = 4;
+	
+	String name1 = "Jeff";
+	String name2 = "George";
+	
+	String greeting1 = "Hello, I am Jeff";
+	String greeting2 = "Hello, I am George";
+	
+	int mod1 = 5;
+	int mod2 = 5;
+	@Before
+	public void setUp() throws Exception
+	{
+		
+	}
+	
+	@Test
+	public void testGreeting() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIdEven() {
+		fail("Not yet implemented");
+	}
+
+}
+

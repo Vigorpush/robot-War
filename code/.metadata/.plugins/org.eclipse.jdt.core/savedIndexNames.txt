@@ -1,0 +1,22 @@
+INDEX VERSION 1.129+C:\Users\Niklaas\Documents\cmpt370\370-16D1\code\.metadata\.plugins\org.eclipse.jdt.core
+3716777220.index
+2159135330.index
+1670528678.index
+3764404749.index
+3876561862.index
+4142306923.index
+2261558828.index
+2945162093.index
+3930511455.index
+1484076330.index
+3678980623.index
+900771366.index
+509712851.index
+83085761.index
+430205200.index
+1948745554.index
+2346939144.index
+47423239.index
+1507339265.index
+4236009997.index
+1651349548.index

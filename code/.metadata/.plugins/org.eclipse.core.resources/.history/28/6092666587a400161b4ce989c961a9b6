@@ -1,0 +1,19 @@
+package testing;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class sampleObjectTest {
+
+	@Test
+	public void testGreeting() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIdMod() {
+		fail("Not yet implemented");
+	}
+
+}

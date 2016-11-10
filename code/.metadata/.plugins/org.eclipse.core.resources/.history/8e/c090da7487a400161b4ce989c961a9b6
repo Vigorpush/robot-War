@@ -1,0 +1,28 @@
+package testing;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class sampleObjectTest {
+
+	
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		
+	}
+	
+	@Test
+	public void testGreeting() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIdMod() {
+		fail("Not yet implemented");
+	}
+
+}
