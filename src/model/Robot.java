@@ -1,6 +1,13 @@
 
 public class Robot {
 
+	public Robot(int ID, int TEAM, String JPATH, String FPATH) {
+		id = ID;
+		teamNumber = TEAM;
+		jsonPath = JPATH;
+		fourthPath = FPATH;
+	}
+
 	public int id;
 	public String name;
 	public int teamNumber;
