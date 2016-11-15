@@ -1,7 +1,10 @@
 package controller;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import view.GameView;
 import view.LobbyView;
 import view.StartView;
 
@@ -42,6 +45,7 @@ public class Game extends Application{
 		// TODO Auto-generated method stub
 		LobbyView lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
+		lobbyScene.addUser(name);
 		
 	}
 
@@ -51,5 +55,44 @@ public class Game extends Application{
 		gameStage.close();
 		System.exit(0);
 		
+	}
+
+
+
+	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		int playerCount = computerCount + playerList.size();
+		if(playerCount == 2 || playerCount == 3)
+		{
+			result = true;			
+			GameView gameScene = new GameView();
+			//TODO Add computers to player list;
+			gameStage.setScene(gameScene.init(playerList, observerList));
+			
+		}
+		else if(playerCount == 6)
+		{
+			result = true;
+			GameView gameScene = new GameView();
+			//TODO Add computers to player list;
+			gameStage.setScene(gameScene.init(playerList, observerList));
+		}
+		// TODO Statement for testing GameView. Remove when finished.
+		else
+		{
+			result = true;
+			GameView gameScene = new GameView();
+			//TODO Add computers to player list;
+			gameStage.setScene(gameScene.init(playerList, observerList));
+		}
+		return result;
+	}
+
+
+	//Needs a way to determine which player is being displayed.
+	public int[] getRobotHealths() {
+		int[] healths = {1,2,3};
+		return healths;
 	}
 }
