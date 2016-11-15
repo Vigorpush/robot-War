@@ -13,11 +13,20 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class that creates the initial GUI that the user will see.
+ * @author Niklaas
+ *
+ */
 public class StartView {
 
 	private static final String title = "Robot Wars";
 	private Scene startScene;
 
+	/**
+	 * Method for creating the StartView Scene
+	 * @return the startScene
+	 */
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
@@ -45,7 +54,10 @@ public class StartView {
 		startScene = new Scene(startScreen);
 		return startScene;
 	}
-
+	
+	/**
+	 * joinGame creates a popup window that asks for a username and an IP Address and passes them onto the controller
+	 */
 	private void joinGame() {
 		Stage selectGame = new Stage();
 		VBox selectBox = new VBox(20);
@@ -68,6 +80,7 @@ public class StartView {
 		joinBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
+				//If the controller approves, the popup closes.
 				if (controller.joinGame(nameTxt.getText(), addressTxt.getText())) {
 					selectGame.close();
 				}
@@ -79,10 +92,14 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
+		//Modality prevents the user from clicking on the main Stage while the popup is up
 		selectGame.initModality(Modality.APPLICATION_MODAL);
 		selectGame.show();
 	}
 
+	/**
+	 * hostGame creates a popup window that asks for a username, and passes it onto the controller
+	 */
 	private void hostGame() {
 		Stage selectGame = new Stage();
 		VBox selectBox = new VBox(20);
