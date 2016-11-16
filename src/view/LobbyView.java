@@ -15,20 +15,36 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+/**
+ * Class that creates the LobbyView GUI and all methods to interact with it.
+ * @author Niklaas
+ *
+ */
 public class LobbyView {
 
 	private static final String title = "Robot Wars";
 	private Scene lobbyScene;
+	//Stores the list of players for easy access and modification
 	private ArrayList<String> playerList;
-	private Spinner<Integer> computerCount;
-	private ArrayList<String> observerList;
-	private ListView<String> playerListView;
+	//Store the playerList in a format readable by the ListView
 	private ObservableList<String> playerObsList;
-	private ListView<String> observerListView;
+	//Displays the playerList
+	private ListView<String> playerListView;
+	//Stores the list of observers for easy access and modification
+	private ArrayList<String> observerList;	
+	//Store the observerList in a format readable by the ListView
 	private ObservableList<String> observerObsList;
+	//Displays the observerList
+	private ListView<String> observerListView;
+	//Used to keep track of the number of computer players that will be in the game when it starts.
+	private Spinner<Integer> computerCount;
+	/**
+	 * Creates the lobbyScene 
+	 * @return lobbyScene
+	 */
 	public Scene init() {
 		HBox lobbyScreen = new HBox(200);
+		//Left side of the window
 		VBox leftBox = new VBox(30);
 		Button backBtn =new Button("Back");
 		Label playerListLabel = new Label("Players");
@@ -41,6 +57,7 @@ public class LobbyView {
 		computerCount = new Spinner<Integer>(0,6,0,1);
 		spinnerBox.getChildren().addAll(spinnerLabel, computerCount);
 		leftBox.getChildren().addAll(backBtn, playerListLabel, playerListView, spinnerBox);
+		//Center of window
 		VBox centerBox = new VBox(60);
 		Button switchBtn = new Button("Switch");
 		switchBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -48,6 +65,7 @@ public class LobbyView {
 				switchUser();				
 			}
 		});
+		//TODO Currently does nothing, will change if networking is fixed
 		Button kickBtn = new Button("Kick (Does Nothing)");
 		Button beginBtn = new Button("Begin Game");
 		beginBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -55,18 +73,20 @@ public class LobbyView {
 				Game controller = new Game();
 				if(!controller.beginGame(computerCount.getValue(), playerList, observerList))
 				{
-					//popup error
+					//TODO popup error if incorrect number of players
 				}
 						
 			}
 		});
 		centerBox.getChildren().addAll(switchBtn, kickBtn, beginBtn);
+		//Right side of window
 		VBox rightBox = new VBox(30);
 		Label observerListLabel = new Label("Observers");
 		observerListView = new ListView<String>();
 		observerList = new ArrayList<String>();
 		observerObsList = FXCollections.observableArrayList(observerList);		
 		observerListView.setItems(observerObsList );
+		//TODO code that makes only one object in observerListView and playerListView selectable
 		rightBox.getChildren().addAll(observerListLabel, observerListView);
 		lobbyScreen.getChildren().addAll(leftBox, centerBox, rightBox);
 		lobbyScreen.setAlignment(Pos.CENTER);
@@ -74,6 +94,11 @@ public class LobbyView {
 		return lobbyScene;
 	}
 
+	/**
+	 * Method called by the switchButton, swaps the currently selected observer to become a player and vice versa
+	 * TODO Currently list views do not update when user is switched
+	 * TODO change so that if the user is an observer they become a player and vice versa
+	 */
 	private void switchUser() {
 		if(observerListView.getSelectionModel().getSelectedItem() != null)
 		{
@@ -91,6 +116,10 @@ public class LobbyView {
 		}
 	}
 	
+	/**Method called by the controller to add a new User to the lobby as an observer if someone with that name does not already exist
+	 * @param name The user to be added
+	 * @return if the user was added
+	 */
 	public boolean addUser(String name)
 	{
 		boolean result = false;
