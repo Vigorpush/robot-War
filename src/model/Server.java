@@ -139,6 +139,10 @@ public class Server {
                     }
                 }
             }
+
+            private void acceptConnection(ConnectionToClient connectionToClient) {
+                connections.add(connectionToClient);                
+            }
         }
         
         private class RecieveThread extends Thread{
