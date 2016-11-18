@@ -1,5 +1,7 @@
 package view;
 
+import java.io.File;
+
 import controller.Game;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,16 +14,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.*;
 
 /**
  * Class that creates the initial GUI that the user will see.
- * @author Niklaas
+ * @author Niklaas Zang jiawei
  *
  */
 public class StartView {
 
 	private static final String title = "Robot Wars";
 	private Scene startScene;
+	
 
 	/**
 	 * Method for creating the StartView Scene
@@ -30,6 +34,8 @@ public class StartView {
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
+		startScene.getStylesheets().addAll(ResourceLoader.getStringResource("1.css"),
+                ResourceLoader.getStringResource("2.css"));
 		joinGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				joinGame();
@@ -42,6 +48,7 @@ public class StartView {
 			}
 		});
 		Button exitGame = new Button("Exit Game");
+		exitGame.setStyle("-fx-background-color:red");
 		exitGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
