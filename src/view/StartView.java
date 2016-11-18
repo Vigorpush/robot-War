@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.*;
+import view.ResourceLoader;
 
 /**
  * Class that creates the initial GUI that the user will see.
@@ -34,8 +34,6 @@ public class StartView {
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
-		startScene.getStylesheets().addAll(ResourceLoader.getStringResource("1.css"),
-                ResourceLoader.getStringResource("2.css"));
 		joinGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				joinGame();

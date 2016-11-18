@@ -1,8 +1,12 @@
 @CHARSET "US-ASCII";
 
-#Join_Game_button{
-	-fx-text-fill: rgb(49, 89, 23);
-    -fx-border-color: rgb(49, 89, 23);
-    -fx-border-radius: 5;
-    -fx-padding: 3 6 6 6;
+.root {
+    -fx-background-insets: 5 10 5 10;
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+    -fx-border-radius: 20%;
+    -fx-border-color: rgba(8, 62, 216, 0.8);
+    -fx-border-width: 10px;
+    -fx-border-insets: 6 4 6 4;
+    -fx-background-radius: 30%;
+    -fx-effect: dropshadow(gaussian, rgba(15, 0, 0, 0.6), 0.1, 0.3, 0, 0);
 }
