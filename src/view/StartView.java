@@ -14,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.ResourceLoader;
 
 /**
  * Class that creates the initial GUI that the user will see.
