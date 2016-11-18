@@ -1,4 +1,5 @@
 package view;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Map;
@@ -9,7 +10,7 @@ import javafx.scene.image.Image;
 import java.net.URISyntaxException;
 import java.awt.image.BufferedImage;
 
-/**
+/***
  * Class for reading resources needed by the game. 
  */
 public class ResourceLoader {

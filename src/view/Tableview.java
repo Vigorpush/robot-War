@@ -57,7 +57,8 @@ public class Tableview extends Application {
         Callback<TableColumn<Map, String>, TableCell<Map, String>>
             cellFactoryForMap = new Callback<TableColumn<Map, String>,
                 TableCell<Map, String>>() {
-                    @Override
+                    @SuppressWarnings("unchecked")
+					@Override
                     public TableCell call(TableColumn p) {
                         return new TextFieldTableCell(new StringConverter() {
                             @Override

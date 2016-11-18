@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import view.GameView;
 import view.LobbyView;
 import view.StartView;
-import view.ResourceLoader;
 
 public class Game extends Application{
 
@@ -46,11 +45,9 @@ public class Game extends Application{
 		// TODO Auto-generated method stub
 		LobbyView lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
-		lobbyScene.init().getStylesheets().addAll(ResourceLoader.getStringResource("lobby.css"));
 		lobbyScene.addUser(name);
-		
+		//lobbyScene.setStyle();
 	}
-
 
 
 	public void exitGame() {

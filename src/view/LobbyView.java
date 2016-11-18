@@ -15,13 +15,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import view.ResourceLoader;
 /**
  * Class that creates the LobbyView GUI and all methods to interact with it.
  * @author Niklaas
  *
  */
-public class LobbyView {
 
+public class LobbyView {
 	private static final String title = "Robot Wars";
 	private Scene lobbyScene;
 	//Stores the list of players for easy access and modification
@@ -93,6 +94,13 @@ public class LobbyView {
 		lobbyScene = new Scene(lobbyScreen);
 		return lobbyScene;
 	}
+	
+	
+	public void setStyle(){
+		lobbyScene.getStylesheets().add(ResourceLoader.getStringResource("src/resources/lobby.css"));
+	}
+
+
 
 	/**
 	 * Method called by the switchButton, swaps the currently selected observer to become a player and vice versa
