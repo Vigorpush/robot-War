@@ -47,7 +47,6 @@ public class Tableview extends Application {
         firstDataColumn.setMinWidth(100);
         secondDataColumn.setCellValueFactory(new MapValueFactory(Column2MapKey));
         secondDataColumn.setMinWidth(100);
- 
         thirdDataColumn.setCellValueFactory(new MapValueFactory(Column3MapKey));
         thirdDataColumn.setMinWidth(100);
         TableView table_view = new TableView<>(generateDataInMap());
