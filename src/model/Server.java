@@ -18,26 +18,21 @@ public class Server {
      * List of client connections.
      */
     private List<ConnectionToClient> connections;
-    
     /**
      * Current game state
      */
     private Board gameState;
-    
+ 
     private volatile boolean shutdown;  // Determines whether the server is running
-    
     private ServerSocket serverSocket;  // Socket that listens for connections
-    
-    private Thread serverThread;    // Thread to accept connections
-    
-    private int clientNumber = 0;
+    private Thread serverThread;    	// Thread to accept connections
+    private int clientNumber = 0;		// Client Counter
+    private boolean recieving = false;	// One Sender
     
     public Server(int port){
         connections = new ArrayList<ConnectionToClient>();
         gameState = new Board();
-        
         serverSocket = new ServerSocket(port);
-        
         serverThread = new ServerThread();
         serverThread.start();
     }
@@ -46,25 +41,59 @@ public class Server {
         public void run(){
             try{
                 while(!shutdown){
-                    Socket connection = serverSocket.accept();
+                    Socket connection = serverSocket.accept();	// IMPORTANT
                     if(shutdown){
-                        System.out.println("Client is dead");
+                        System.out.println("Server Thread Error: Client is Shutting Down");
                         break;
                     }
-                    new ConnectionToClient(gameState, connection);
+                    new ConnectionToClient(gameState, connection); // IMPORTANT
                 }
             }catch(Exception e){
-                System.out.println("Client is dead");
+                System.out.println("Server Thread Error: Client is dead");
             }
         }
     }
     
-    private class ConnectionToClient{
+    // Server Methods
+    synchronized public void sendStateToAll(Board gameState) {
+    	if (gameState == null)
+    		throw new IllegalArgumentException("Null cannot be sent");
+    	for(ConnectionToClient clients : connections)
+    		clients.send(gameState);
+    }
+    
+    /**
+     * 
+     */
+    public void shutdownServer() {
+    	if (serverThread == null) {
+    		return;
+    	}
+    	shutdown = true;
+    	try {
+    		serverSocket.close();
+    	} catch (IOException e) {
+    	}
+    	serverThread = null;
+    	serverSocket = null;
+    }
+    
+    /**
+     * TODO:
+     * @param newConnection
+     */
+    synchronized private void acceptConnection(ConnectionToClient newConnection) {
+    	int ID = newConnection.getClient();
+    	connections.add(newConnection);
+    	System.out.println("Client: "+ ID + "Accepted!");
+    }
+    
+     private class ConnectionToClient{
         
         private int clientID;           // The ID number for this client
         private Board outgoingState;    // The state of the game being sent to this client
         private Board incomingState;    // The state of the game being sent to us from the client
-        private Socket socket;      // The socket of the client
+        private Socket socket;     	 	// The socket of the client
         private ObjectInputStream in;   // The input stream for communications with the client
         private ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
@@ -72,7 +101,7 @@ public class Server {
         private Thread sendThread;      // The thread for sending states to the client
         private volatile Thread recieveThread;  // The thread for receiving states from the client
         
-        public ConnectionToClient(Board gameState, Socket socket){
+        public ConnectionToClient(Board gameState, Socket socket){ // Constructor 
             this.socket= socket;
             this.incomingState = gameState;
             this.outgoingState = gameState;
@@ -80,32 +109,87 @@ public class Server {
             sendThread.start();
         }
         
+        // ConnectionToClient Methods
+        /**      
+         * A getter for the current client ID
+         * @return clietID - the ID of the corresponding Client
+         */
         int getClient(){
             return clientID;
-        }
+        }   
         
+        /**
+         * Closes the connection to client
+         */
         void close(){
             closed = true;
             sendThread.interrupt();
-            if(recieveThread != null){
+            if(recieveThread != null) {
                 recieveThread.interrupt();
             }
             socket.close();
         }
         
+        /**
+         * TODO:
+         * @author Nico
+         *
+         */
+        private class SendThread extends Thread{
+        	public void run() {				// try: connect
+        		try{
+        			out = new ObjectOutputStream(socket.getOutputStream());
+                    in = new ObjectInputStream(socket.getInputStream());
+                    synchronized(Server.this) {		// syncs with Server Thread
+                        clientID = clientNumber++;
+                    }
+                    out.flush();
+                    acceptConnection(ConnectionToClient.this);	// Adds CTC to CTC List
+                    recieveThread = new RecieveThread();
+                    recieveThread.start();
+                    
+        		} catch(Exception e) {				// catch: connect
+        			try{							// try: close connect
+        				closed = true;
+        				socket.close();
+        			} catch(Exception e1){			// catch: close connect
+        			} 								// end try&catch: close connect
+        			System.out.println("Send Thread: Cannot Connect");
+        			return;
+        		}									// end try&catch: connect
+       
+        		try { 								// try: love TODO:				
+        			while(!closed){
+        				if(recieving) {
+        					try{									// try: Sending Game State
+                                Board sendState = outgoingState;	// sends board state
+                                out.writeObject(sendState);
+                                out.flush();
+                                recieving = false;						// for only sending once
+                            }catch(Exception e2){					// catch: Sending Game State
+                            }
+        				}
+        			}
+        		} catch(IOException e) {			// catch: love TOOD:					
+        		}
+        	}	// end Run
+        }	// end Send
+        
+        /**
+         OLD
+         */
         private class SendThread extends Thread{
             public void run(){
                 try{
                     out = new ObjectOutputStream(socket.getOutputStream());
                     in = new ObjectInputStream(socket.getInputStream());
                     
-                    synchronized(Server.this){
+                    synchronized(Server.this) {	
                         clientID = clientNumber++;
                     }
-                    
-                    out.writeObject(clientID);
+            
                     out.flush();
-                    acceptConnection(ConnectionToClient.this);
+                    acceptConnection(ConnectionToClient.this);	// Adds CTC to CTC List
                     recieveThread = new RecieveThread();
                     recieveThread.start();
                 }catch(Exception e){
@@ -121,7 +205,7 @@ public class Server {
                 try{
                     while(!closed){
                         try{
-                            Board sendState = outgoingState;
+                            Board sendState = outgoingState;	// sends board state
                             out.writeObject(sendState);
                             out.flush();
                             
@@ -139,20 +223,19 @@ public class Server {
                     }
                 }
             }
-
-            private void acceptConnection(ConnectionToClient connectionToClient) {
-                connections.add(connectionToClient);                
-            }
         }
         
+        /**
+         * TODO:
+         *
+         */
         private class RecieveThread extends Thread{
             public void run(){
                 try{
                     while(!closed){
                         try{
                             incomingState = in.readObject();
-                        }catch(Exception e){
-                            
+                        }catch(Exception e){ // TODO: Set Recieving to true when incoming state is changed
                         }
                     }
                 }catch(IOException e){
