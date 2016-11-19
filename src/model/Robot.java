@@ -1,17 +1,17 @@
 package model;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 
 
-public class Robot {
+public abstract class Robot {
 
 	public int id;
 	public int teamNumber;
 	public String jsonPath;
 	public String fourthPath;
 	public String name;
-	//public Tile location;
+	public Tile location;
 	public int matchesWon;
 	public int deathCount;
 	public int killCount;
@@ -27,7 +27,7 @@ public class Robot {
 		jsonPath = JPATH;
 		fourthPath = FPATH;
 		
-		Object gson = new Gson().fromJson(jsonPath, );
+		//Object gson = new Gson().fromJson(jsonPath, );
 		
 		
 		//name from json

@@ -51,4 +51,19 @@ public class Board {
 		}
 		return result;
 	}
+	
+	public boolean attackPossible(Robot attackingRobot, Tile target)
+	{
+		boolean result = false;
+		int xDistance = Math.abs(attackingRobot.location.xPosition - target.xPosition);
+		int yDistance = Math.abs(attackingRobot.location.yPosition - target.yPosition);
+		boolean xPossible = ((attackingRobot.range) >= xDistance);
+		boolean yPossible = ((attackingRobot.range) >= yDistance);
+		
+		if(xPossible && yPossible){
+			result = true;
+		}
+		
+		return result;
+	}
 }
