@@ -34,6 +34,7 @@ public class StartView {
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
+		joinGame.getStyleClass().add("rich-blue");
 		joinGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				joinGame();

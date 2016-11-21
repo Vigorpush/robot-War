@@ -74,6 +74,7 @@ public class GameView {
 		//Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
+		//backBtn.setStyle(arg0);
 		tankHealthTable = new TableView<String>();
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
 		Button moveBtn = new Button("Move");

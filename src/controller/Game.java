@@ -1,6 +1,9 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.print.DocFlavor.URL;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -24,6 +27,11 @@ public class Game extends Application{
 		StartView initialScene = new StartView();
 		gameStage.setScene(initialScene.init());
 		gameStage.setMaximized(true);
+		File file = new File("src/controller/StartView.css");
+		gameStage.getScene().getStylesheets().clear();
+		gameStage.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		
+		
 		gameStage.show();
 	}
 
@@ -76,6 +84,7 @@ public class Game extends Application{
 			GameView gameScene = new GameView();
 			//TODO Add computers to player list;
 			gameStage.setScene(gameScene.init(playerList, observerList));
+			
 		}
 		// TODO Statement for testing GameView. Remove when finished.
 		else
