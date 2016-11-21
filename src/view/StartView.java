@@ -20,6 +20,7 @@ import javafx.stage.Stage;
  * @author Niklaas Zang jiawei
  *
  */
+@SuppressWarnings("unused")
 public class StartView {
 
 	private static final String title = "Robot Wars";

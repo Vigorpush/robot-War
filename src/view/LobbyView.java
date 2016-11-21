@@ -23,6 +23,7 @@ import view.ResourceLoader;
  */
 
 public class LobbyView {
+	@SuppressWarnings("unused")
 	private static final String title = "Robot Wars";
 	private Scene lobbyScene;
 	//Stores the list of players for easy access and modification

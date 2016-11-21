@@ -34,6 +34,7 @@ import javafx.scene.shape.Polyline;
  * @author Niklaas
  *
  */
+@SuppressWarnings("unused")
 public class GameView {
 	private static final String title = "Robot Wars";
 	private Scene gameScene;

@@ -30,7 +30,8 @@ public class Tableview extends Application {
         launch(args);
     }
  
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     public void start(Stage stage) {
         Scene scene = new Scene(new Group());
         stage.setTitle("Table View Sample");
@@ -57,8 +58,7 @@ public class Tableview extends Application {
         Callback<TableColumn<Map, String>, TableCell<Map, String>>
             cellFactoryForMap = new Callback<TableColumn<Map, String>,
                 TableCell<Map, String>>() {
-                    @SuppressWarnings("unchecked")
-					@Override
+                    @Override
                     public TableCell call(TableColumn p) {
                         return new TextFieldTableCell(new StringConverter() {
                             @Override
@@ -88,7 +88,8 @@ public class Tableview extends Application {
         stage.show();
     }
  
-    private ObservableList<Map> generateDataInMap() {
+    @SuppressWarnings("rawtypes")
+	private ObservableList<Map> generateDataInMap() {
         int max = 10;
         ObservableList<Map> allData = FXCollections.observableArrayList();
         for (int i = 1; i < max; i++) {
