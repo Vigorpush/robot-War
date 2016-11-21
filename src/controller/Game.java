@@ -20,18 +20,20 @@ public class Game extends Application{
 	}
 
 	
-	
 	@Override
 	public void start(Stage stage) throws Exception {
+	    
+
 		gameStage = stage;
 		StartView initialScene = new StartView();
 		gameStage.setScene(initialScene.init());
 		gameStage.setMaximized(true);
+		
 		File file = new File("src/controller/StartView.css");
+		gameStage.centerOnScreen();
 		gameStage.getScene().getStylesheets().clear();
 		gameStage.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
-		
-		
+		gameStage.setTitle("Robot War");
 		gameStage.show();
 	}
 
@@ -46,6 +48,7 @@ public class Game extends Application{
 		}
 		return result;
 	}
+
 
 
 
