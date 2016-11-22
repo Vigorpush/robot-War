@@ -102,7 +102,7 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
-		File file = new File("src/controller/Miniwindow.css");
+		File file = new File("Resources/css/Miniwindow.css");
 		selectGame.getScene().getStylesheets().clear();
 		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
 		closeBtn.getStyleClass().add("join_button");
@@ -149,7 +149,7 @@ public class StartView {
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
 		
-		File file = new File("src/controller/Miniwindow.css");
+		File file = new File("Resources/css/Miniwindow.css");
 		selectGame.getScene().getStylesheets().clear();
 		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
 		closeBtn.getStyleClass().add("join_button");

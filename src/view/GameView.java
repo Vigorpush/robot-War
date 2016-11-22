@@ -113,7 +113,7 @@ public class GameView {
 		
 		
 
-		File file = new File("src/controller/GameView.css");
+		File file = new File("Resources/css/GameView.css");
 		gameScene.getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
 		
 		currentTurnLabel.getStyleClass().add("text_label");

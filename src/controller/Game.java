@@ -30,7 +30,7 @@ public class Game extends Application{
 		gameStage.setScene(initialScene.init());
 		gameStage.setMaximized(true);
 		
-		File file = new File("src/controller/StartView.css");
+		File file = new File("Resources/css/StartView.css");
 		gameStage.centerOnScreen();
 		gameStage.getScene().getStylesheets().clear();
 		gameStage.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
