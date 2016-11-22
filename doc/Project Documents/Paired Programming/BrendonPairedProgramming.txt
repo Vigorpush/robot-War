@@ -1,0 +1,12 @@
+Brendon And Vigor
+We met together to confront and solve an issue we were having with reading json files.
+While we were working, we were able to explain ideas to each other much easier than we would be able to over text.
+We were able to find out what problems we were facing and how to come up with a solution for our next work period.
+We plan on having another session with each other once we have found a solution in the library documentation.
+
+Brendon and Niklaas
+We met to put together the code for our board class, and various other classes that were involved in it.
+We were able to comminicate our ideas more clearly than we could before, and our undertanding of the program increased as a result.
+We were able to effectively troubleshoot many problems we encountered with Eclipse and were able to devise a solution in only a few hours.
+We plan to have more such sessions to continue building the system.
+We accomplished more together than we may have working sperately because we would not have the second opinions of the other person to drive us along.
