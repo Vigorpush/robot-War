@@ -11,6 +11,7 @@ import view.GameView;
 import view.LobbyView;
 import view.StartView;
 
+@SuppressWarnings("unused")
 public class Game extends Application{
 
 	public static Stage gameStage;
