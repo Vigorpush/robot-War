@@ -2,15 +2,11 @@ package model;
 
 import java.util.List;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polyline;
-
 public class Board {
 
 	public Tile[][] gameBoard;
-	public List<User> users;
+	public List<Observer> observers;
+	public List<Player> players;
 
 	public Board(int sideLength) {
 		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];

@@ -15,7 +15,8 @@ import java.awt.image.BufferedImage;
  */
 public class ResourceLoader {
 
-    private static final Map<String, Object> cache = new TreeMap<>();
+    @SuppressWarnings("unused")
+	private static final Map<String, Object> cache = new TreeMap<>();
     private static final ClassLoader loader = ResourceLoader.class.getClassLoader();
 
     // Singleton pattern

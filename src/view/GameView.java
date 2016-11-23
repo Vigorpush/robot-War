@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import controller.Game;
@@ -34,6 +35,7 @@ import javafx.scene.shape.Polyline;
  * @author Niklaas
  *
  */
+@SuppressWarnings("unused")
 public class GameView {
 	private static final String title = "Robot Wars";
 	private Scene gameScene;
@@ -69,10 +71,11 @@ public class GameView {
 		if (playerCount == 6) {
 			sideLength = 7;
 		}
-		HBox lobbyScreen = new HBox(200);
+		HBox lobbyScreen = new HBox(355);
 		//Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
+		//backBtn.setStyle(arg0);
 		tankHealthTable = new TableView<String>();
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
 		Button moveBtn = new Button("Move");
@@ -107,6 +110,24 @@ public class GameView {
 		VBox.setMargin(centerBox, new Insets(5, 5, 5, 5));
 		lobbyScreen.setAlignment(Pos.CENTER);
 		gameScene = new Scene(lobbyScreen);
+		
+		
+
+		File file = new File("Resources/css/GameView.css");
+		gameScene.getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		
+		currentTurnLabel.getStyleClass().add("text_label");
+		currentTankMoveLabel.getStyleClass().add("text_label");
+		playerListLabel.getStyleClass().add("text_label");
+		observerListLabel.getStyleClass().add("text_label");
+		
+		backBtn.getStyleClass().add("button");
+		moveBtn.getStyleClass().add("button");
+		attackBtn.getStyleClass().add("button");
+		inspectBtn.getStyleClass().add("button");
+		endTurnBtn.getStyleClass().add("button");
+		forfeit.getStyleClass().add("button");
+		currentTurnLabel.getStyleClass().add("centred_label");
 		return gameScene;
 	}
 
@@ -174,6 +195,7 @@ public class GameView {
 					int y = currentYCoor;
 					//Fill the hexagon so that it can be clicked on
 					hexagon.setFill(Color.WHITE);
+					hexagon.getStyleClass().add("hex_button");
 					//The event that controls what happens when the hexagon is clicked
 					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
 

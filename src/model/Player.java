@@ -10,6 +10,7 @@ public class Player extends User {
 	public List<Robot> robotList;
 	public boolean hasShot;
 	public int teamNumber;
+	public boolean isTurn;
 
 	public Player(String name, String IP, int teamNumber) {
 		super(name, IP);
