@@ -13,7 +13,7 @@ public class Board {
 	public List<User> users;
 
 	public Board(int sideLength) {
-		gameBoard = new Tile[sideLength*2-1][sideLength*2-1];
+		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {
 			if (currentYCoor < sideLength) {
 				for (int currentXCoor = 0; currentXCoor < currentYCoor + sideLength; currentXCoor++) {
@@ -38,32 +38,35 @@ public class Board {
 
 	public int movePossible(Robot robotToMove, Tile destination) {
 		int result = -1;
-		int xDistance = Math.abs(robotToMove.location.xPosition - destination.xPosition);
-		int yDistance = Math.abs(robotToMove.location.yPosition - destination.yPosition);
-		boolean xPossible = ((robotToMove.movement - robotToMove.distanceTraveled) >= xDistance);
-		boolean yPossible = ((robotToMove.movement - robotToMove.distanceTraveled) >= yDistance);
+		int xDistance = robotToMove.location.xPosition - destination.xPosition;
+		int yDistance = robotToMove.location.yPosition - destination.yPosition;
+		boolean xPossible = ((robotToMove.movementLeft) >= Math.abs(xDistance));
+		boolean yPossible = ((robotToMove.movementLeft) >= Math.abs(yDistance));
 		if (xPossible && yPossible) {
-			if (xDistance > yDistance) {
-				result = xDistance;
-			} else {
-				result = yDistance;
+			if (xDistance * yDistance >= 0 || Math.abs(xDistance) + Math.abs(yDistance) < robotToMove.movementLeft) {
+				xDistance = Math.abs(xDistance);
+				yDistance = Math.abs(yDistance);
+				if (xDistance > yDistance) {
+					result = xDistance;
+				} else {
+					result = yDistance;
+				}
 			}
 		}
 		return result;
 	}
-	
-	public boolean attackPossible(Robot attackingRobot, Tile target)
-	{
+
+	public boolean attackPossible(Robot attackingRobot, Tile target) {
 		boolean result = false;
 		int xDistance = Math.abs(attackingRobot.location.xPosition - target.xPosition);
 		int yDistance = Math.abs(attackingRobot.location.yPosition - target.yPosition);
 		boolean xPossible = ((attackingRobot.range) >= xDistance);
 		boolean yPossible = ((attackingRobot.range) >= yDistance);
-		
-		if(xPossible && yPossible){
+
+		if (xPossible && yPossible) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 }

@@ -19,7 +19,7 @@ public abstract class Robot {
 	public int attack;
 	public int movement;
 	public int range;
-	public int distanceTraveled;
+	public int movementLeft;
 	
 	public Robot(int ID, int TEAM, String JPATH, String FPATH) {
 		id = ID;
@@ -39,7 +39,7 @@ public abstract class Robot {
 		attack = 0;
 		movement = 0;
 		range = 0;
-		distanceTraveled = 0;
+		movementLeft = 0;
 	}
 	
 	//to be checked on and implemented outright

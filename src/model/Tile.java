@@ -22,8 +22,8 @@ public class Tile {
 		robotList.add(newRobot);
 		newRobot.location= this;
 	}
-	public void removeRobot(int index){
-		robotList.remove(index);
+	public void removeRobot(Robot robotToRemove){
+		robotList.remove(robotToRemove);
 	}
 	
 	public void updateRobot(Robot newRobot){
@@ -42,7 +42,21 @@ public class Tile {
 		}
 	}
 	
-	public Robot getRobot(int x){
-		return robotList.get(x);
+	public Robot getRobot(int id){
+		boolean done = false;
+		Robot result = null;
+		int i = 0;
+		Iterator<Robot> test = robotList.iterator();
+		while(test.hasNext() && !done){			
+			if(robotList.get(i).id == id){
+				done = true;
+				result = robotList.get(i);
+			}			
+			i++;			
+			test.next();
+
+			
+		}
+		return result;
 	}
 }

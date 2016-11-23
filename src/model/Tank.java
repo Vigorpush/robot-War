@@ -8,6 +8,7 @@ public class Tank extends Robot {
 		attack = 3;
 		movement = 1;
 		range = 1;
+		movementLeft = movement;
 	}
 
 	public static void main(String[] args) {
