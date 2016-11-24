@@ -3,6 +3,8 @@ package model;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     // CONNECTION TO SERVERclear
@@ -15,15 +17,15 @@ public class Client {
     // TODO: client socket
     private final ConnectionToServer connection;
     
-    // TODO: check if in lobby
-    // TODO: create sendName function for lobby, gets called by controller
+    private boolean inLobby = true;
+    
     // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, calls method in controller to update the lobby
     // TODO: create begin game function, sets in lobby false, calls begin game method in controller, caled when recieve name recieves the begin code
     // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game as a string so it can be called in the recieve name function by the server
     // TODO: communicate board state with controller
     
-    public Client(String hostname, int port){
-        connection = new ConnectionToServer(hostname, port);
+    public Client(String hostname, int port, String userName){
+        connection = new ConnectionToServer(hostname, port, userName);
     }
     
     public class ConnectionToServer{
@@ -35,15 +37,20 @@ public class Client {
         private final ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
         
+        private List<String> newNames;
+        private String beginCode;
+        
         private final Thread sendThread;      // The thread for sending states to the client
         private final Thread recieveThread;   // The thread for receiving states from the client
 
-        public ConnectionToServer(String host, int port){
+        
+        public ConnectionToServer(String host, int port, String userName){
             socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             
             out.flush();
+            out.writeChars(userName);       // Send the username to the server to add to the lobby
             
             sendThread = new SendThread();
             recieveThread = new RecieveThread();
@@ -53,6 +60,8 @@ public class Client {
         
         private class SendThread extends Thread{
             public void run(){
+                newNames = new ArrayList<String>();
+                
                 System.out.println("Client send thread started");
                 try{
                     while(!closed){
@@ -70,12 +79,29 @@ public class Client {
                 System.out.println("Recieve thread started");
                 try{
                     while(!closed){
+                        while(inLobby){
+                            String newName = in.readUTF();
+                            if(newName != beginCode){
+                                newNames.add(newName);
+                            }else{
+                                inLobby = false;
+                                beginGame();
+                            }
+                        }
                         incomingState = in.readObject();
                     }
                 }catch(Exception e){
                    System.out.println("Internal error in recieve thread"); 
                 }
             }
+        }
+        
+        public List<String> recieveNames(){
+            // call controller recieve names
+        }
+        
+        public void beginGame(){
+            // call controller beginGame
         }
     }
 }
