@@ -43,7 +43,7 @@ public class Client {
         private boolean closed;
         
         private List<String> newNames;
-        private String beginCode;
+        private String beginCode = "13524636780986748937";
         
         private final Thread sendThread;      // The thread for sending states to the client
         private final Thread recieveThread;   // The thread for receiving states from the client
@@ -65,7 +65,6 @@ public class Client {
         
         private class SendThread extends Thread{
             public void run(){
-                newNames = new ArrayList<String>();
                 
                 System.out.println("Client send thread started");
                 try{
@@ -89,13 +88,14 @@ public class Client {
                         while(inLobby){
                             String newName = in.readUTF();
                             if(newName != beginCode){
-                                newNames.add(newName);
+                                recieveName(newName);
                             }else{
                                 inLobby = false;
                                 beginGame();
                             }
                         }
                         incomingState = in.readObject();
+                        recieveGame();
                     }
                 }catch(Exception e){
                    System.out.println("Internal error in recieve thread"); 
@@ -103,14 +103,18 @@ public class Client {
             }
         }
         
-        public List<String> recieveNames(){
+        public void recieveName(String name){
             // call controller recieve names
-            //game.update lobby name
+            game.updateLobbyNames(name);
         }
         
         public void beginGame(){
             // call controller beginGame
-            //game.beginGame();
+            game.beginGame();
+        }
+        
+        public void recieveGame(){
+            game.recieveGame(incomingState);
         }
     }
 }
