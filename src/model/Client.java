@@ -15,8 +15,15 @@ public class Client {
     // TODO: client socket
     private final ConnectionToServer connection;
     
+    // TODO: check if in lobby
+    // TODO: create sendName function for lobby, gets called by controller
+    // TODO: create recieveName function for lobby, called in server thread while lobby = true, calls method in controller to update the lobby
+    // TODO: create begin game function, sets in lobby false, calls begin game method in controller
+    // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game
+    // TODO: communicate board state with controller
+    
     public Client(String hostname, int port){
-        connection = new ConnectionToServer(hsotname, port);
+        connection = new ConnectionToServer(hostname, port);
     }
     
     public class ConnectionToServer{
