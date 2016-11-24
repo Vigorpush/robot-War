@@ -17,9 +17,9 @@ public class Client {
     
     // TODO: check if in lobby
     // TODO: create sendName function for lobby, gets called by controller
-    // TODO: create recieveName function for lobby, called in server thread while lobby = true, calls method in controller to update the lobby
-    // TODO: create begin game function, sets in lobby false, calls begin game method in controller
-    // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game
+    // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, calls method in controller to update the lobby
+    // TODO: create begin game function, sets in lobby false, calls begin game method in controller, caled when recieve name recieves the begin code
+    // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game as a string so it can be called in the recieve name function by the server
     // TODO: communicate board state with controller
     
     public Client(String hostname, int port){
