@@ -40,6 +40,8 @@ public class Game extends Application{
 		File file = new File("Resources/css/StartView.css");
 		gameStage.centerOnScreen();
 		gameStage.getScene().getStylesheets().clear();
+		String test = "file:///"+file.getAbsolutePath().replace("\\", "\"/\"").replaceFirst("\"", "")+"\"";
+		System.out.println(test);
 		gameStage.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
 		gameStage.setTitle("Robot War");
 		gameStage.show();
@@ -80,6 +82,12 @@ public class Game extends Application{
 	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList) throws UnknownHostException {
 		// TODO Auto-generated method stub
 		boolean result = false;
+		int sideLength = 5;
+		if(playerList.size()+computerCount == 6)
+		{
+			sideLength = 7;
+		}
+		gameBoard = new Board(sideLength);
 		int playerCount = computerCount + playerList.size();		
 		gameBoard.players = new ArrayList<Player>();
 		int i = 0;
@@ -99,8 +107,7 @@ public class Game extends Application{
 			result = true;			
 			GameView gameScene = new GameView();
 			//TODO Add computers to player list;			
-			gameStage.setScene(gameScene.init(playerList, observerList));
-			gameBoard = new Board(5);
+			gameStage.setScene(gameScene.init(playerList, observerList));			
 			//Set starting position for two players
 			if(playerCount == 2)
 			{
@@ -117,7 +124,7 @@ public class Game extends Application{
 			}
 			
 			gameBoard.players.get(0).isTurn = true;
-			runGame();
+			
 			
 		}
 		else if(playerCount == 6)

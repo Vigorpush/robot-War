@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import controller.Game;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import model.Board;
 
 /**
  * Class that creates the GUI for the actual game and all book keeping needed
@@ -61,6 +59,7 @@ public class GameView {
 	//The number of heaxagons per side of the grid
 	private int sideLength = 5;
 
+	private BorderPane hexBox;
 	/**
 	 * Method for creating the GameView Scene
 	 * @return the gameScene
@@ -137,7 +136,7 @@ public class GameView {
 	 */
 	private BorderPane generateBoard() {
 		// TODO Auto-generated method stub
-		BorderPane hexBox = new BorderPane();
+		hexBox = new BorderPane();
 		//The distance between the tops of two adjacent rows
 		double height = 45.00;
 		//The current distance between the first tile of a row and the far left of the board
@@ -195,7 +194,7 @@ public class GameView {
 					int y = currentYCoor;
 					//Fill the hexagon so that it can be clicked on
 					hexagon.setFill(Color.WHITE);
-					hexagon.getStyleClass().add("hex_button");
+					hexagon.getStyleClass().add("hex_button");					
 					//The event that controls what happens when the hexagon is clicked
 					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -228,5 +227,80 @@ public class GameView {
 		int[] robotHealths = controller.getRobotHealths();
 
 		return tankHealthTable;
+	}
+	
+	public void updateGame(Board board)
+	{
+		double height = 45.00;
+		//The current distance between the first tile of a row and the far left of the board
+		double xOffset = sideLength * WIDTH / 2;
+		//loop for each row of the board
+		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {
+			//If in the upper half, including the middle
+			if (currentYCoor < sideLength) {
+				//Reduce the offset by half the width of a hexagon
+				xOffset = xOffset - WIDTH / 2;
+				//loop for each hexagon in the row
+				for (int currentXCoor = 0; currentXCoor < currentYCoor + sideLength; currentXCoor++) {
+					//Draw the hexagon based on its points
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor,
+							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 15.0,
+							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 45.0,
+							xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor + 60.0,
+							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 45.0,
+							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 15.0,
+							xOffset + currentXCoor * WIDTH + 40.0, +height * currentYCoor + 0.0);
+					//Variables to store the location of the current hexagon
+					int x = currentXCoor;
+					int y = currentYCoor;
+					//Fill the hexagon so that it can be clicked on
+					hexagon.setFill(Color.WHITE);
+					//The event that controls what happens when the hexagon is clicked
+					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+						@Override
+						public void handle(MouseEvent t) {
+
+							System.out.println("x: " + x + " y: " + y);
+						}
+					});
+					hexBox.getChildren().add(hexagon);
+
+				}
+
+			} else {
+				//Increase the offset by half the width of a hexagon
+				xOffset = xOffset + WIDTH / 2;
+				//loop for each hexagon in the row
+				for (int currentXCoor = 0; currentXCoor < (sideLength * 2 - 1) - currentYCoor - 1
+						+ sideLength; currentXCoor++) {
+					//Draw the hexagon based on its points
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor,
+							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 15.0,
+							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 45.0,
+							xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor + 60.0,
+							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 45.0,
+							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 15.0,
+							xOffset + currentXCoor * WIDTH + 40.0, +height * currentYCoor + 0.0);
+					//Variables to store the location of the current hexagon
+					int x = currentXCoor + currentYCoor - 4;
+					int y = currentYCoor;
+					//Fill the hexagon so that it can be clicked on
+					hexagon.setFill(Color.WHITE);
+					hexagon.getStyleClass().add("hex_button");					
+					//The event that controls what happens when the hexagon is clicked
+					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+						@Override
+						public void handle(MouseEvent t) {
+
+							System.out.println("x: " + x + " y: " + y);
+						}
+					});
+					hexBox.getChildren().add(hexagon);
+				}
+
+			}
+		}
 	}
 }
