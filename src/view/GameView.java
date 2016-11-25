@@ -59,7 +59,8 @@ public class GameView {
 	private Label currentTurnLabel;
 	// Currently determines distances between center of each hexagon
 	// TODO WIDTH and HEIGHT variables to control size of hexagons
-	private static final double WIDTH = 51.96;
+	private static final double WIDTH = 78;//51.96
+	private static final double OFFSET = 15;
 	// The number of heaxagons per side of the grid
 	private int sideLength = 5;
 
@@ -78,7 +79,7 @@ public class GameView {
 		if (playerCount == 6) {
 			sideLength = 7;
 		}
-		HBox lobbyScreen = new HBox(355);
+		HBox lobbyScreen = new HBox(255);//355
 		// Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
@@ -96,9 +97,10 @@ public class GameView {
 		// TODO make reflect current turn
 		currentTurnLabel = new Label(playerList.get(0) + " turn");
 		centerBox.getChildren().addAll(currentTurnLabel, generateBoard());
-		centerBox.setMinWidth(WIDTH * (sideLength * 2 - 1));
+		centerBox.setMinWidth(WIDTH * (sideLength * 2 - 1)*0.75);
 		// Right side of window
 		VBox rightBox = new VBox(30);
+		rightBox.setPadding(new Insets(0, 90, 0, 140));
 		Label playerListLabel = new Label("Players");
 		playerListView = new ListView<String>();
 		playerList = new ArrayList<String>();
@@ -109,6 +111,7 @@ public class GameView {
 		observerList = new ArrayList<String>();
 		observerObsList = FXCollections.observableArrayList(observerList);
 		observerListView.setItems(observerObsList);
+		
 		// TODO quit button for observers
 		Button forfeit = new Button("Forfeit");
 		rightBox.getChildren().addAll(playerListLabel, playerListView, observerListLabel, observerListView, forfeit);
@@ -125,27 +128,25 @@ public class GameView {
 		currentTankMoveLabel.getStyleClass().add("text_label");
 		playerListLabel.getStyleClass().add("text_label");
 		observerListLabel.getStyleClass().add("text_label");
-
-		backBtn.getStyleClass().add("button");
+		backBtn.getStyleClass().add("cancelbutton");
+		currentTurnLabel.getStyleClass().add("centred_label");
 		moveBtn.getStyleClass().add("button");
 		attackBtn.getStyleClass().add("button");
 		inspectBtn.getStyleClass().add("button");
 		endTurnBtn.getStyleClass().add("button");
-		forfeit.getStyleClass().add("button");
-		currentTurnLabel.getStyleClass().add("centred_label");
+		forfeit.getStyleClass().add("cancelbutton");
 		return gameScene;
 	}
 
 	/**
 	 * Method to generate the hexagon board
-	 * 
 	 * @return the BorderPane containing the board
 	 */
 	private BorderPane generateBoard() {
 		// TODO Auto-generated method stub
 		hexBox = new BorderPane();
 		// The distance between the tops of two adjacent rows
-		double height = 45.00;
+		double height = WIDTH/Math.sqrt(3) + Math.sqrt((Math.pow(WIDTH/Math.sqrt(3),2))- Math.pow((WIDTH/2),2));//45
 		// The current distance between the first tile of a row and the far left
 		// of the board
 		double xOffset = sideLength * WIDTH / 2;
@@ -158,13 +159,13 @@ public class GameView {
 				// loop for each hexagon in the row
 				for (int currentXCoor = 0; currentXCoor < currentYCoor + sideLength; currentXCoor++) {
 					// Draw the hexagon based on its points
-					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor,
-							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 15.0,
-							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 45.0,
-							xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor + 60.0,
-							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 45.0,
-							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 15.0,
-							xOffset + currentXCoor * WIDTH + 40.0, +height * currentYCoor + 0.0);
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), height * currentYCoor,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) + WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) + WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2+WIDTH/Math.sqrt(3),
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), height * currentYCoor + WIDTH/Math.sqrt(3)*2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) - WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2+WIDTH/Math.sqrt(3),
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) - WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), +height * currentYCoor + 0.0);
 					// Variables to store the location of the current hexagon
 					int x = currentXCoor;
 					int y = currentYCoor;
@@ -191,13 +192,13 @@ public class GameView {
 				for (int currentXCoor = 0; currentXCoor < (sideLength * 2 - 1) - currentYCoor - 1
 						+ sideLength; currentXCoor++) {
 					// Draw the hexagon based on its points
-					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor,
-							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 15.0,
-							xOffset + currentXCoor * WIDTH + 65.98, height * currentYCoor + 45.0,
-							xOffset + currentXCoor * WIDTH + 40.0, height * currentYCoor + 60.0,
-							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 45.0,
-							xOffset + currentXCoor * WIDTH + 14.02, height * currentYCoor + 15.0,
-							xOffset + currentXCoor * WIDTH + 40.0, +height * currentYCoor + 0.0);
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), height * currentYCoor,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) + WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) + WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2+WIDTH/Math.sqrt(3),
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), height * currentYCoor + WIDTH/Math.sqrt(3)*2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) - WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2+WIDTH/Math.sqrt(3),
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3) - WIDTH/2, height * currentYCoor + WIDTH/Math.sqrt(3)/2,
+							xOffset + currentXCoor * WIDTH + OFFSET + WIDTH/Math.sqrt(3), +height * currentYCoor + 0.0);
 					// Variables to store the location of the current hexagon
 					int x = currentXCoor + currentYCoor - 4;
 					int y = currentYCoor;
