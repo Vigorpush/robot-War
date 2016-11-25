@@ -8,21 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Game;
-
+/**
+ * The client used to connect to the server in the robot game
+ * @author kts135 - Kyle Seidenthal
+ * @author ned948 - Nico Dimaano
+ */
 public class Client {
-    // CONNECTION TO SERVER
-    // TODO: class connection to client
-    // TODO: Receiving thread
-    // TODO: sending thread
 
     private boolean inLobby = true;		// true - inLobby, false - inGame 
     
     private Game game;					// Controller
-    
-    // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, calls method in controller to update the lobby
-    // TODO: create begin game function, sets in lobby false, calls begin game method in controller, caled when recieve name recieves the begin code
-    // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game as a string so it can be called in the recieve name function by the server
-    // TODO: communicate board state with controller
     
     /**
      * Constructor for the client object
