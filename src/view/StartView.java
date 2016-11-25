@@ -105,8 +105,8 @@ public class StartView {
 		File file = new File("Resources/css/Miniwindow.css");
 		selectGame.getScene().getStylesheets().clear();
 		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
-		closeBtn.getStyleClass().add("join_button");
-		joinBtn.getStyleClass().add("close_button");
+		closeBtn.getStyleClass().add("close_button");
+		joinBtn.getStyleClass().add("join_button");
 		nameLabel.getStyleClass().add("text_label");
 		addressLabel.getStyleClass().add("text_label");
 		//Modality prevents the user from clicking on the main Stage while the popup is up
@@ -152,8 +152,8 @@ public class StartView {
 		File file = new File("Resources/css/Miniwindow.css");
 		selectGame.getScene().getStylesheets().clear();
 		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
-		closeBtn.getStyleClass().add("join_button");
-		joinBtn.getStyleClass().add("close_button");
+		closeBtn.getStyleClass().add("close_button");
+		joinBtn.getStyleClass().add("join_button");
 		nameLabel.getStyleClass().add("text_label");
 		selectGame.initModality(Modality.APPLICATION_MODAL);
 		selectGame.show();

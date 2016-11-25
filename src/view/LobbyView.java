@@ -111,11 +111,11 @@ public class LobbyView {
 		spinnerLabel.getStyleClass().add("text_label");
 		observerListLabel.getStyleClass().add("text_label");
 
-		backBtn.getStyleClass().add("lobybutton");
+		backBtn.getStyleClass().add("cancelbutton");
 		switchBtn.getStyleClass().add("lobybutton");
-		kickBtn.getStyleClass().add("lobybutton");
+		kickBtn.getStyleClass().add("cancelbutton");
 		beginBtn.getStyleClass().add("lobybutton");
-		
+
 		return lobbyScene;
 	}
 	
@@ -153,6 +153,7 @@ public class LobbyView {
 		{
 			observerObsList.add(name);
 			observerListView.refresh();
+			observerListView.getSelectionModel().selectFirst();
 			result = true;
 		}
 		return result;
