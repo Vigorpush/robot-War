@@ -23,6 +23,7 @@ public class Server {
      * List of client connections.
      */
     private List<ConnectionToClient> connections;
+    
     /**
      * Current game state
      */
@@ -32,9 +33,8 @@ public class Server {
     private ServerSocket serverSocket;  // Socket that listens for connections
     private Thread serverThread;    	// Thread to accept connections
     private int clientNumber = 0;		// Client Counter
-    private boolean recieving = false;	// One Sender
     
-    public Server(int port){
+    public Server(int port) throws IOException{
         connections = new ArrayList<ConnectionToClient>();
         gameState = new Board();
         serverSocket = new ServerSocket(port);
@@ -59,13 +59,14 @@ public class Server {
         }
     }
     
-    // Server Methods
-    synchronized public void sendStateToAll(Board gameState) {
-    	if (gameState == null)
-    		throw new IllegalArgumentException("Null cannot be sent");
-    	for(ConnectionToClient clients : connections)
-    		clients.send(gameState);
-    }
+    /** Server Methods */
+    // MAYBE TODO:
+    //synchronized public void sendStateToAll(Board gameState) {
+    //	if (gameState == null)
+    //		throw new IllegalArgumentException("Null cannot be sent");
+    //	for(ConnectionToClient clients : connections)
+    //		clients.send(gameState);
+    //}
     
     /**
      * 
@@ -97,7 +98,7 @@ public class Server {
         
         private int clientID;           // The ID number for this client
         private Board outgoingState;    // The state of the game being sent to this client
-        private Board incomingState;    // The state of the game being sent to us from the client
+        private Object incomingState;    // The state of the game being sent to us from the client
         private Socket socket;     	 	// The socket of the client
         private ObjectInputStream in;   // The input stream for communications with the client
         private ObjectOutputStream out; // The output stream for communications with the client;
@@ -125,8 +126,9 @@ public class Server {
         
         /**
          * Closes the connection to client
+         * @throws IOException 
          */
-        void close(){
+		void close() throws IOException{
             closed = true;
             sendThread.interrupt();
             if(recieveThread != null) {
@@ -162,73 +164,16 @@ public class Server {
         			System.out.println("Send Thread: Cannot Connect");
         			return;
         		}									// end try&catch: connect
-       
-        		try { 								// try: Sending Thread OPEN			
-        			while(!closed){
-        				if(recieving) {
-        					try{									// try: Sending Game State
-                                Board sendState = outgoingState;	// sends board state
-                                out.writeObject(sendState);
-                                out.flush();
-                                recieving = false;						// for only sending once
-                            }catch(Exception e2){					// catch: Sending Game State
-                            }
-        				}
-        			}
-        		} catch(IOException e) {			// catch: Sending Thread OPEN				
-        		}
+        		while(!closed){
+						try{									// try: Sending Game State
+				            Board sendState = outgoingState;	// sends board state
+				            out.writeObject(sendState);
+				            out.flush();
+				        }catch(Exception e2){					// catch: Sending Game State
+				        }
+					}
         	}	// end Run
         }	// end Send
-        
-        /**
-         OLD
-      
-        private class SendThread extends Thread{
-            public void run(){
-                try{
-                    out = new ObjectOutputStream(socket.getOutputStream());
-                    in = new ObjectInputStream(socket.getInputStream());
-                    
-                    synchronized(Server.this) {	
-                        clientID = clientNumber++;
-                    }
-            
-                    out.flush();
-                    acceptConnection(ConnectionToClient.this);	// Adds CTC to CTC List
-                    recieveThread = new RecieveThread();
-                    recieveThread.start();
-                }catch(Exception e){
-                    try{
-                        closed = true;
-                        socket.close();
-                    }catch(Exception e1){
-                    }
-                    System.out.println("Cannot connect");
-                    return;
-                }
-                
-                try{
-                    while(!closed){
-                        try{
-                            Board sendState = outgoingState;	// sends board state
-                            out.writeObject(sendState);
-                            out.flush();
-                            
-                        }catch(Exception e2){
-                            
-                        }
-                    }
-                }catch(IOException e){
-                    if(!closed){
-                        System.out.println("IO exception killed the server");
-                    }
-                }catch(Exception e){
-                    if(!closed){
-                        System.out.println("An unexpected error has occured");
-                    }
-                }
-            }
-        } */
         
         /**
          * TODO:
@@ -244,10 +189,6 @@ public class Server {
                          // CREATE A FUNCTION THAT USES THE STATE
                         }catch(Exception e){ 
                         }
-                    }
-                }catch(IOException e){
-                    if(!closed){
-                        System.out.println("IO exception killed the server");
                     }
                 }catch(Exception e){
                     if(!closed){

@@ -6,59 +6,62 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import controller.Game;
-
-public class Client {
-    // CONNECTION TO SERVER
-    // TODO: class connection to client
-    // TODO: Receiving thread
-    // TODO: sending thread
+/**
+ * Client1 is same as client but
+ * - a test class
+ * - uses Object instead of sending boards around
+ * - uses Client methods to get CTS to send objects
+ * @author Nico
+ */
+public class Client1 {
 
     private boolean inLobby = true;		// true - inLobby, false - inGame 
-    
     private Game game;					// Controller
-    
-    // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, calls method in controller to update the lobby
-    // TODO: create begin game function, sets in lobby false, calls begin game method in controller, caled when recieve name recieves the begin code
-    // TODO: create call begin game method, for host, called when begin game is pressed, sent to other clients to call begin game as a string so it can be called in the recieve name function by the server
-    // TODO: communicate board state with controller
+    private final ConnectionToServer connection;
     
     // Constructor
     public Client(String hostname, int port, String userName, Game game){
-        try {
 			connection = new ConnectionToServer(hostname, port, userName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        this.game = game;
+			this.game = game;
     }
     
-    private final ConnectionToServer connection;
+    // Client methods
+    public void send(Object message){
+    	if(message == null)
+    		 throw new IllegalArgumentException("Null cannot be sent as a message.");
+    	if(connection.closed)
+    		throw new IllegalStateException("Message cannot be sent because the connection is closed.");
+    	connection.send(message);
+    }
+    
+    public String getName() {
+    	return connection.userName;
+    }
     
     public class ConnectionToServer{
-        private Board outgoingState;    // The state of the game being sent to this client
-        private Board incomingState;    // The state of the game being sent to us from the client
-        private final Socket socket;          // The socket of the client
+   
+    	public final String userName;	// The User name of the Client
+    	private final Socket socket;          // The socket of the client
         private final ObjectInputStream in;   // The input stream for communications with the client
         private final ObjectOutputStream out; // The output stream for communications with the client;
-        private boolean closed;
+        private boolean closed;			// Closing 
         private String beginCode = "13524636780986748937";
-        
         private final Thread sendThread;      // The thread for sending states to the client
         private final Thread recieveThread;   // The thread for receiving states from the client
 
+        private final LinkedBlockingQueue<Object> outgoingMessages;  // Queue of messages waiting to be transmitted.
         
         public ConnectionToServer(String host, int port, String userName) throws IOException{
-            socket = new Socket(host, port);
+        	outgoingMessages = new LinkedBlockingQueue<Object>();
+        	socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            userName = "ERROR";
-            
+            out.writeObject(userName);
             out.flush();
-            out.writeChars(userName);       // Send the username to the server to add to the lobby
-
+            
             // Starting the Threads
             sendThread = new SendThread();
             recieveThread = new RecieveThread();
@@ -66,22 +69,37 @@ public class Client {
             recieveThread.start();
         }
         
+        // Connection To Server methods
+        void close() {
+        	closed = true;
+        	sendThread.interrupt();
+        	recieveThread.interrupt();
+        	try {
+        		socket.close();
+        	} catch (IOException e) {
+        	}
+        }
+        
+        void send(Object message) {
+        	outgoingMessages.add(message);
+        }
+        
         private class SendThread extends Thread{
-            public void run(){
-                
+            public void run(){     
                 System.out.println("Client send thread started");
-                try{
                     while(!closed){
                         while(!inLobby){
-                            out.writeObject(outgoingState);
-                            out.flush();
-                        }
-                    }
-                }catch(Exception e){
-                    System.out.println("Unexpected internal error");
+                            try {
+                            	Object message = outgoingMessages.take();
+								out.writeObject(message);
+								out.flush();
+								} catch (IOException e) {
+								}    
+                        	}
+                    	}  
+					}
                 }
             }
-        }
         
         private class RecieveThread extends Thread{
             public void run(){
