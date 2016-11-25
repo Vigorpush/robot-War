@@ -140,7 +140,7 @@ public class Server {
         		try{
         			out = new ObjectOutputStream(socket.getOutputStream());
                     in = new ObjectInputStream(socket.getInputStream());
-                    synchronized(Server.this) {		// syncs with Server Thread
+                    synchronized(Server.this) {					// syncs with Server Thread
                         clientID = clientNumber++;
                     }
                     out.flush();
@@ -158,7 +158,7 @@ public class Server {
         			return;
         		}									// end try&catch: connect
        
-        		try { 								// try: love TODO:				
+        		try { 								// try: Sending Thread OPEN			
         			while(!closed){
         				if(recieving) {
         					try{									// try: Sending Game State
@@ -170,14 +170,14 @@ public class Server {
                             }
         				}
         			}
-        		} catch(IOException e) {			// catch: love TOOD:					
+        		} catch(IOException e) {			// catch: Sending Thread OPEN				
         		}
         	}	// end Run
         }	// end Send
         
         /**
          OLD
-         */
+      
         private class SendThread extends Thread{
             public void run(){
                 try{
@@ -223,7 +223,7 @@ public class Server {
                     }
                 }
             }
-        }
+        } */
         
         /**
          * TODO:
@@ -235,7 +235,9 @@ public class Server {
                     while(!closed){
                         try{
                             incomingState = in.readObject();
-                        }catch(Exception e){ // TODO: Set Recieving to true when incoming state is changed
+                         // TODO: Set Recieving to true when incoming state is changed
+                         // CREATE A FUNCTION THAT USES THE STATE
+                        }catch(Exception e){ 
                         }
                     }
                 }catch(IOException e){

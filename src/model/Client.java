@@ -35,9 +35,8 @@ public class Client {
             socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            
+            // Starting the Threads
             out.flush();
-            
             sendThread = new SendThread();
             recieveThread = new RecieveThread();
             sendThread.start();
@@ -64,6 +63,8 @@ public class Client {
                 try{
                     while(!closed){
                         incomingState = in.readObject();
+                        // TODO: Client Needs to use STATE and 
+                        // Create a function that uses the state
                     }
                 }catch(Exception e){
                    System.out.println("Internal error in recieve thread"); 
