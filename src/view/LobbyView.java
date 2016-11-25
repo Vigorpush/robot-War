@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
@@ -79,9 +80,14 @@ public class LobbyView {
 		beginBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
-				if(!controller.beginGame(computerCount.getValue(), playerList, observerList))
-				{
-					//TODO popup error if incorrect number of players
+				try {
+					if(!controller.beginGame(computerCount.getValue(), playerList, observerList))
+					{
+						//TODO popup error if incorrect number of players
+					}
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 						
 			}

@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Board;
 import model.Player;
+import model.Robot;
 import model.Scout;
 import model.Sniper;
 import model.Tank;
@@ -24,6 +25,7 @@ public class Game extends Application{
 	
 	public static void main(String[] args)
 	{
+
 		launch();
 	}
 
@@ -40,6 +42,7 @@ public class Game extends Application{
 		File file = new File("Resources/css/StartView.css");
 		gameStage.centerOnScreen();
 		gameStage.getScene().getStylesheets().clear();
+		//TODO remove these two lines when done
 		String test = "file:///"+file.getAbsolutePath().replace("\\", "\"/\"").replaceFirst("\"", "")+"\"";
 		System.out.println(test);
 		gameStage.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
