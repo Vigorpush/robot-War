@@ -14,6 +14,11 @@ public class Server {
     // TODO: output stream
     // TODO: client socket
     
+    // TODO: check if in lobby
+    // TODO: create sendName function sends new name to all clients
+    // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, 
+    // TODO: create begin game function, sets in lobby false, sends begincode to all clients, called when recieve name recieves begincode
+  
     /**
      * List of client connections.
      */
