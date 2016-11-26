@@ -23,6 +23,7 @@ public class Player extends User {
 		destination.addRobot(robotToMove);
 	}
 
+	//TODO Scout FOW top left
 	public void setFogOfWar(int sideLength) {
 		fogOfWar = new boolean[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (Robot r : robotList) {

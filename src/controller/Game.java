@@ -203,7 +203,7 @@ public class Game extends Application {
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile target = gameBoard.gameBoard[x][y];
 			boolean possible = gameBoard.attackPossible(attackingRobot, target);
-			if (possible) {
+			if (possible&& !gameBoard.players.get(gameBoard.playerTurn).hasShot) {
 				if(attackingRobot.location.equals(target))
 				{
 					attackingRobot.health = 0;
@@ -239,6 +239,7 @@ public class Game extends Application {
 					}
 				}
 				gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
+				gameBoard.players.get(gameBoard.playerTurn).hasShot = true;
 				gameScene.updateGame(gameBoard);
 				if(attackingRobot.health<= 0)
 				{
