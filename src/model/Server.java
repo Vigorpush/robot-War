@@ -5,6 +5,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import netgame.common.Hub.Message;
 
 public class Server {
     // CONNECTION TO CLIENT
@@ -25,13 +28,14 @@ public class Server {
     private List<ConnectionToClient> connections;
     
     /**
-     * Current game state
+     * A Queue of objects to be sent
      */
+    private LinkedBlockingQueue<Board gameState> messages;
     private Board gameState;
  
-    private volatile boolean shutdown;  // Determines whether the server is running
     private ServerSocket serverSocket;  // Socket that listens for connections
     private Thread serverThread;    	// Thread to accept connections
+    private volatile boolean shutdown;  // Determines whether the server is running
     private int clientNumber = 0;		// Client Counter
     
     public Server(int port) throws IOException{
@@ -51,7 +55,8 @@ public class Server {
                         System.out.println("Server Thread Error: Client is Shutting Down");
                         break;
                     }
-                    new ConnectionToClient(gameState, connection); // IMPORTANT
+                    new ConnectionToClient(gameState, connection);
+                    connections.add(e)
                 }
             }catch(Exception e){
                 System.out.println("Server Thread Error: Client is dead");
