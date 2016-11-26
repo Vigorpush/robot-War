@@ -10,14 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import model.Board;
 
 public class Server {
-    // CONNECTION TO CLIENT
-    // TODO: Receiving thread
-    // TODO: sending thread
-    // TODO: input stream
-    // TODO: output stream
-    // TODO: client socket
-    
-    // TODO: check if in lobby
+     // TODO: check if in lobby
     // TODO: create sendName function sends new name to all clients
     // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, 
     // TODO: create begin game function, sets in lobby false, sends begincode to all clients, called when recieve name recieves begincode
@@ -26,8 +19,7 @@ public class Server {
      * List of client connections.
      */
     private List<ConnectionToClient> connections;
-    
-    private final static int PORT = 37829;
+   
     
     /**
      * A Queue of objects to be sent
@@ -43,13 +35,14 @@ public class Server {
     public Server(int port) throws IOException{
         connections = new ArrayList<ConnectionToClient>();
         gameState = new Board(5); // TODO:
-        serverSocket = new ServerSocket(port);
+        serverSocket = new ServerSocket(port); // ERROR OVER HERE
         serverThread = new ServerThread();
         serverThread.start();
     }
     
     private class ServerThread extends Thread{
         public void run(){
+        	 System.out.println("Server Thread Started");
             try{
                 while(!shutdown){
                     Socket connection = serverSocket.accept();	// IMPORTANT
@@ -136,7 +129,7 @@ public class Server {
          * @throws IOException 
          */
      // TODO:
-		void close() throws IOException{ 
+		void close() throws IOException {
             closed = true;
             sendThread.interrupt();
             if(recieveThread != null) {
@@ -206,16 +199,5 @@ public class Server {
             }
         }
     }   //End class connection to client
-     /** TODO
-     public static void main(String[] args) {
-    	 System.out.println("SERVER MAIN STARTED");
-         try {
-             new Server(PORT);
-         }
-         catch (IOException e) {
-             System.out.println("Can't create listening socket.  Shutting down.");
-         }
-     }
-     */
 }
 

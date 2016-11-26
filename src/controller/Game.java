@@ -67,7 +67,7 @@ public class Game extends Application {
 		
 		try {									// @Nico was here I'm trying to create a server
 			System.out.println("Server Creation Started");
-			Server hostServer = new Server(37829); // TODO: hardcoded port
+			Server hostServer = new Server(32222); // TODO: hardcoded port
 		} catch (IOException e) { 				// author Nico was here too
 			System.err.println("Server Creation Failed");
 		}	
