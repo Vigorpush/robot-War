@@ -1,6 +1,8 @@
 package view;
 
 import java.io.File;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import controller.Game;
 import javafx.event.ActionEvent;
@@ -59,7 +61,25 @@ public class StartView {
 						
 			}
 		});
-		startScreen.getChildren().addAll(joinGame, hostGame, exitGame);
+		Button testGame = new Button("Test Game");
+		testGame.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {
+				Game controller = new Game();
+				ArrayList<String> playerList = new ArrayList<String>();
+				playerList.add("Player1");
+				playerList.add("Player2");
+				ArrayList<String> observerList = new ArrayList<String>();
+				try {
+					controller.beginGame(0, playerList, observerList);
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+						
+			}
+		});
+		
+		startScreen.getChildren().addAll(joinGame, hostGame, exitGame, testGame);
 		startScreen.setAlignment(Pos.CENTER);
 		startScene = new Scene(startScreen);
 		return startScene;

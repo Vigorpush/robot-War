@@ -21,7 +21,6 @@ public class Player extends User {
 	public void moveRobot(Robot robotToMove, Tile destination, int distance) {
 		robotToMove.location.removeRobot(robotToMove);
 		robotToMove.movementLeft -= distance;
-		robotToMove.location = destination;
 		destination.addRobot(robotToMove);
 	}
 

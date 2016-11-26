@@ -7,6 +7,8 @@ public class Board {
 	public Tile[][] gameBoard;
 	public List<Observer> observers;
 	public List<Player> players;
+	public int playerTurn;
+	public int currentRobot;
 
 	public Board(int sideLength) {
 		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];
@@ -39,7 +41,7 @@ public class Board {
 		boolean xPossible = ((robotToMove.movementLeft) >= Math.abs(xDistance));
 		boolean yPossible = ((robotToMove.movementLeft) >= Math.abs(yDistance));
 		if (xPossible && yPossible) {
-			if (xDistance * yDistance >= 0 || Math.abs(xDistance) + Math.abs(yDistance) < robotToMove.movementLeft) {
+			if (xDistance * yDistance >= 0 ) {
 				xDistance = Math.abs(xDistance);
 				yDistance = Math.abs(yDistance);
 				if (xDistance > yDistance) {
@@ -47,6 +49,10 @@ public class Board {
 				} else {
 					result = yDistance;
 				}
+			}
+			else if(Math.abs(xDistance) + Math.abs(yDistance) < robotToMove.movementLeft)
+			{
+				result = xDistance = Math.abs(xDistance) + Math.abs(yDistance);
 			}
 		}
 		return result;
