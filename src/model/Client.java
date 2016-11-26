@@ -28,13 +28,21 @@ public class Client {
      */
     public Client(String hostname, int port, String userName, Game game){
         try {// Try to create a connection to the server
-			connection = new ConnectionToServer(hostname, port, userName);
+			setConnection(new ConnectionToServer(hostname, port, userName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         this.game = game;
     }
     
+    public ConnectionToServer getConnection() {
+        return connection;
+    }
+
+    public void setConnection(ConnectionToServer connection) {
+        this.connection = connection;
+    }
+
     private ConnectionToServer connection;  // The clients connection to the server
     
     public class ConnectionToServer{
