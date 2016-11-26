@@ -129,23 +129,24 @@ public class Client {
          * @param name -> The new name to add to the lobby screen
          */
         public void receiveName(String name){
-            // call controller recieve names
-            game.updateLobbyNames(name);
+            // TODO: call controller recieve names
+            // game.updateLobbyNames(name);
         }
         
         /**
          * Tells the controller to begin the game
          */
         public void beginGame(){
-            // call controller beginGame
-            game.beginGame();
+            // TODO: call controller beginGame
+            // game.beginGame();
         }
         
         /**
          * Tell the controller that a new game state has been recieved
          */
         public void recieveGame(){
-            game.recieveGame(incomingState);
+        	// TODO: call controller beginGame
+            // game.recieveGame(incomingState);
         }
         
         /**
@@ -161,10 +162,13 @@ public class Client {
          * Disconnect from the server
          */
         public void disconnect(){
-            closed = true;
-            socket.close();
-            in.close();
-            out.close();
+        	try {
+        		closed = true;
+        		socket.close();
+        		in.close();
+        		out.close();
+        	} catch (IOException e) {
+        	}
         }
     }
 }

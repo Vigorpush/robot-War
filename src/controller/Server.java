@@ -7,8 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import netgame.common.Hub.Message;
+import model.Board;
 
 public class Server {
     // CONNECTION TO CLIENT
@@ -28,10 +27,12 @@ public class Server {
      */
     private List<ConnectionToClient> connections;
     
+    private final static int PORT = 37829;
+    
     /**
      * A Queue of objects to be sent
      */
-    private LinkedBlockingQueue<Board gameState> messages;
+    private LinkedBlockingQueue<Board> messages;
     private Board gameState;
  
     private ServerSocket serverSocket;  // Socket that listens for connections
@@ -41,7 +42,7 @@ public class Server {
     
     public Server(int port) throws IOException{
         connections = new ArrayList<ConnectionToClient>();
-        gameState = new Board();
+        gameState = new Board(5); // TODO:
         serverSocket = new ServerSocket(port);
         serverThread = new ServerThread();
         serverThread.start();
@@ -52,12 +53,12 @@ public class Server {
             try{
                 while(!shutdown){
                     Socket connection = serverSocket.accept();	// IMPORTANT
+                    System.out.println("Client Connected"); // TODO
                     if(shutdown){
                         System.out.println("Server Thread Error: Client is Shutting Down");
                         break;
                     }
                     new ConnectionToClient(gameState, connection);
-                    connections.add(e)
                 }
             }catch(Exception e){
                 System.out.println("Server Thread Error: Client is dead");
@@ -134,7 +135,8 @@ public class Server {
          * Closes the connection to client
          * @throws IOException 
          */
-		void close() throws IOException{
+     // TODO:
+		void close() throws IOException{ 
             closed = true;
             sendThread.interrupt();
             if(recieveThread != null) {
@@ -204,4 +206,16 @@ public class Server {
             }
         }
     }   //End class connection to client
+     /** TODO
+     public static void main(String[] args) {
+    	 System.out.println("SERVER MAIN STARTED");
+         try {
+             new Server(PORT);
+         }
+         catch (IOException e) {
+             System.out.println("Can't create listening socket.  Shutting down.");
+         }
+     }
+     */
 }
+

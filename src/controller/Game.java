@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -57,12 +58,20 @@ public class Game extends Application {
 			result = true;
 		}
 		return result;
-	}
-
+	}	
+	
 	public void hostGame(String name) {
 		// TODO Auto-generated method stub
 		LobbyView lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
+		
+		try {									// @Nico was here I'm trying to create a server
+			System.out.println("Server Creation Started");
+			Server hostServer = new Server(37829); // TODO: hardcoded port
+		} catch (IOException e) { 				// author Nico was here too
+			System.err.println("Server Creation Failed");
+		}	
+		
 		lobbyScene.addUser(name);
 		// lobbyScene.setStyle();
 	}
