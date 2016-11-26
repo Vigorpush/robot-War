@@ -223,7 +223,7 @@ public class Game extends Application {
 						r.deathCount++;
 						rIterator.remove();
 						//TODO Green scout died, red sniper killed by green sniper, red tank did not go next
-						if (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot
+						if (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) > gameBoard.currentRobot
 								|| (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot
 										&& r.teamNumber > gameBoard.playerTurn))
 						{
