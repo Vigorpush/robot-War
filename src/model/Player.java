@@ -27,37 +27,31 @@ public class Player extends User {
 	public void setFogOfWar(int sideLength) {
 		fogOfWar = new boolean[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (Robot r : robotList) {
-			
-			// A series of if statements to make sure it does not try to set
-			// nonexistent variables
-			int lowerXBound = r.location.xPosition - r.range;
-			if (lowerXBound < 0) {
-				lowerXBound = 0;
-			}
-			int lowerYBound = r.location.yPosition - r.range;
-			if (lowerYBound < 0) {
-				lowerYBound = 0;
-			}
-			int upperXBound = r.location.xPosition + r.range;
-			if (upperXBound > sideLength * 2 - 2) {
-				upperXBound = sideLength * 2 - 2;
-			}
-			int upperYBound = r.location.yPosition + r.range;
-			if (upperYBound > sideLength * 2 - 2) {
-				upperYBound = sideLength * 2 - 2;
-			}
-			for (int i = lowerXBound; i <= upperXBound; i++) {
-				for (int j = lowerYBound; j <= upperYBound; j++) {
-					int xDistance = r.location.xPosition - i;
-					int yDistance = r.location.yPosition - j;
-					boolean xPossible = ((r.range) >= Math.abs(xDistance));
-					boolean yPossible = ((r.range) >= Math.abs(yDistance));
-					if (xPossible && yPossible) {
-						if (xDistance * yDistance > 0 || Math.abs(xDistance) + Math.abs(yDistance) < r.movementLeft) {
-							fogOfWar[i][j] = true;
+			if (r.health > 0) {
+				
+				int lowerXBound = r.location.xPosition - r.range;
+				if (lowerXBound < 0) {
+					lowerXBound = 0;
+				}
+				int lowerYBound = r.location.yPosition - r.range;
+				if (lowerYBound < 0) {
+					lowerYBound = 0;
+				}
+				int offsetRight = 0;
+				int offsetLeft = 0;
+				for (int currentYCoor = lowerYBound; currentYCoor <= r.location.yPosition+r.range && currentYCoor < sideLength * 2 - 1; currentYCoor++) {
+					if (currentYCoor < r.location.yPosition) {
+						for (int currentXCoor = lowerXBound; currentXCoor <= r.location.xPosition +offsetRight && currentXCoor < sideLength*2-1; currentXCoor++) {
+							fogOfWar[currentXCoor][currentYCoor] = true;
 						}
-					}
+						offsetRight++;
+					} else {
 
+						for (int currentXCoor = lowerXBound+offsetLeft; currentXCoor <= r.location.xPosition +offsetRight && currentXCoor < (sideLength * 2 - 1); currentXCoor++) {
+							fogOfWar[currentXCoor][currentYCoor] = true;
+						}
+						offsetLeft++;
+					}
 				}
 			}
 		}

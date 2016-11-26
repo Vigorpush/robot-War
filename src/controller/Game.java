@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.ListIterator;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -26,6 +27,7 @@ public class Game extends Application {
 	public static Board gameBoard;
 	public static GameView gameScene;
 	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
+	public static int sideLength;
 	public static void main(String[] args) {
 
 		launch();
@@ -77,7 +79,7 @@ public class Game extends Application {
 			throws UnknownHostException {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		int sideLength = 5;
+		sideLength = 5;
 		if (playerList.size() + computerCount == 6) {
 			sideLength = 7;
 		}
@@ -114,9 +116,11 @@ public class Game extends Application {
 				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(0));
 				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(1));
 				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(2));
+				gameBoard.players.get(0).setFogOfWar(sideLength);
 				gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(0));
 				gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(1));
 				gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(2));
+				gameBoard.players.get(1).setFogOfWar(sideLength);
 			} else {
 				// TODO playercount == 3
 			}
@@ -163,6 +167,7 @@ public class Game extends Application {
 			if (distance > 0) {
 
 				gameBoard.players.get(gameBoard.playerTurn).moveRobot(robotToMove, destination, distance);
+				gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 				gameScene.updateGame(gameBoard);
 				result = robotToMove.movementLeft;
 			}
@@ -195,6 +200,7 @@ public class Game extends Application {
 				.get(gameBoard.currentRobot).movementLeft = gameBoard.players.get(gameBoard.playerTurn).robotList
 						.get(gameBoard.currentRobot).movement;
 		gameBoard.players.get(gameBoard.playerTurn).hasShot = false;
+		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
 	}
 
@@ -210,17 +216,20 @@ public class Game extends Application {
 				if(attackingRobot.location.equals(target))
 				{
 					attackingRobot.health = 0;
-					attackingRobot.deathCount++;
+					attackingRobot.deathCount++;					
 					target.robotList.remove(attackingRobot);
 				}
-				for(Robot r : gameBoard.gameBoard[x][y].robotList)
+				
+				//for(Robot r : gameBoard.gameBoard[x][y].robotList)
+				for(ListIterator<Robot> rIterator = gameBoard.gameBoard[x][y].robotList.listIterator(); rIterator.hasNext();)
 				{
+					Robot r = rIterator.next();
 					r.health -= attackingRobot.attack;
 					if(r.health <= 0)
 					{
 						r.health = 0;
 						r.deathCount++;
-						gameBoard.gameBoard[x][y].removeRobot(r);
+						rIterator.remove();
 						if(gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot || (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) == gameBoard.currentRobot && r.teamNumber > gameBoard.playerTurn))
 						{
 							gameBoard.players.get(r.teamNumber).robotList.remove(r);
@@ -234,6 +243,7 @@ public class Game extends Application {
 						attackingRobot.killCount++;						
 					}
 				}
+				gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 				gameScene.updateGame(gameBoard);
 				if(attackingRobot.health<= 0)
 				{

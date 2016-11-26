@@ -69,7 +69,7 @@ public class GameView {
 	private ImageView[] robotImages = new ImageView[18];
 
 	private BorderPane hexBox;
-
+	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
 
 	/**
@@ -83,6 +83,7 @@ public class GameView {
 		if (playerCount == 6) {
 			sideLength = 7;
 		}
+		hexagonArray = new Polyline[sideLength * 2 - 1][sideLength * 2 - 1];
 		HBox lobbyScreen = new HBox(255);// 355
 		// Left side of window
 		VBox leftBox = new VBox(30);
@@ -200,6 +201,7 @@ public class GameView {
 					hexagon.setFill(Color.WHITE);
 					// The event that controls what happens when the hexagon is
 					// clicked
+					hexagonArray[y][x] = hexagon;
 					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 						@Override
@@ -248,6 +250,7 @@ public class GameView {
 					// Fill the hexagon so that it can be clicked on
 					hexagon.setFill(Color.WHITE);
 					hexagon.getStyleClass().add("hex_button");
+					hexagonArray[y][x] = hexagon;
 					// The event that controls what happens when the hexagon is
 					// clicked
 					hexagon.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -308,6 +311,7 @@ public class GameView {
 				hexBox.getChildren().remove(robotImages[i]);
 			}
 		}
+		boolean[][] fogOfWar = board.players.get(board.playerTurn).fogOfWar;
 		int imageCount = 0;
 		double height = WIDTH / Math.sqrt(3)
 				+ Math.sqrt((Math.pow(WIDTH / Math.sqrt(3), 2)) - Math.pow((WIDTH / 2), 2));
@@ -324,77 +328,88 @@ public class GameView {
 				boolean sameOwner = true;
 				Robot previousRobot = null;
 				if (board.gameBoard[currentXCoor][currentYCoor] != null) {
-					for (Robot r : board.gameBoard[currentXCoor][currentYCoor].robotList) {
-						Player robotOwner = null;
-						int i = 0;
-						while (robotOwner == null) {
-							if (r.teamNumber == board.players.get(i).teamNumber) {
-								robotOwner = board.players.get(i);
-							}
-							i++;
-						}
-						try {
-							if (robotOwner.IP.equals(InetAddress.getLocalHost().toString())) {
-
-								String robotType = r.getClass().getSimpleName();
-								File file;
-								switch (robotType) {
-								case "Scout":
-									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + i + "Scout.png");
-									Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
-									robotImages[imageCount].setImage(scout);
-									robotImages[imageCount].setScaleX(0.60);
-									robotImages[imageCount].setScaleY(0.60);
-									robotImages[imageCount].setLayoutX(
-											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-											+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);
-									hexBox.getChildren().add(robotImages[imageCount++]);
-									imageCount++;
-									break;
-								case "Sniper":
-									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + i + "Sniper.png");
-									Image sniper = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
-									robotImages[imageCount].setImage(sniper);
-									robotImages[imageCount].setScaleX(0.60);
-									robotImages[imageCount].setScaleY(0.60);
-									robotImages[imageCount].setLayoutX(
-											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-											- sniper.getHeight() * 0.20);
-									hexBox.getChildren().add(robotImages[imageCount++]);
-									imageCount++;
-									break;
-								case "Tank":
-									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + i + "Tank.png");
-									Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
-									robotImages[imageCount].setImage(tank);
-									robotImages[imageCount].setScaleX(0.60);
-									robotImages[imageCount].setScaleY(0.60);
-									robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH
-											+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
-									robotImages[imageCount].setLayoutY(
-											height * currentYCoor + WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);
-									hexBox.getChildren().add(robotImages[imageCount++]);
-									imageCount++;
+					if (fogOfWar[currentXCoor][currentYCoor]) {
+						hexagonArray[currentYCoor][currentXCoor].setFill(Color.WHITE);
+						for (Robot r : board.gameBoard[currentXCoor][currentYCoor].robotList) {
+							Player robotOwner = null;
+							int i = 0;
+							while (robotOwner == null) {
+								if (r.teamNumber == board.players.get(i).teamNumber) {
+									robotOwner = board.players.get(i);
 								}
-							} else {
-								robotCount++;
-								if (previousRobot != null && previousRobot.teamNumber != r.teamNumber) {
-									sameOwner = false;
-								}
+								i++;
 							}
-						} catch (UnknownHostException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+							try {
+								if (robotOwner.IP.equals(InetAddress.getLocalHost().toString())) {
 
+									String robotType = r.getClass().getSimpleName();
+									File file;
+									switch (robotType) {
+									case "Scout":
+										robotImages[imageCount] = new ImageView();
+										file = new File("Resources/images/" + i + "Scout.png");
+										Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+										robotImages[imageCount].setImage(scout);
+										robotImages[imageCount].setScaleX(0.60);
+										robotImages[imageCount].setScaleY(0.60);
+										robotImages[imageCount].setLayoutX(
+												xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
+										robotImages[imageCount]
+												.setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+														+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);
+										hexBox.getChildren().add(robotImages[imageCount++]);
+										imageCount++;
+										break;
+									case "Sniper":
+										robotImages[imageCount] = new ImageView();
+										file = new File("Resources/images/" + i + "Sniper.png");
+										Image sniper = new Image(
+												"file:///" + file.getAbsolutePath().replace("\\", "/"));
+										robotImages[imageCount].setImage(sniper);
+										robotImages[imageCount].setScaleX(0.60);
+										robotImages[imageCount].setScaleY(0.60);
+										robotImages[imageCount].setLayoutX(
+												xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
+										robotImages[imageCount].setLayoutY(height * currentYCoor
+												+ WIDTH / Math.sqrt(3) / 2 - sniper.getHeight() * 0.20);
+										hexBox.getChildren().add(robotImages[imageCount++]);
+										imageCount++;
+										break;
+									case "Tank":
+										robotImages[imageCount] = new ImageView();
+										file = new File("Resources/images/" + i + "Tank.png");
+										Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+										robotImages[imageCount].setImage(tank);
+										robotImages[imageCount].setScaleX(0.60);
+										robotImages[imageCount].setScaleY(0.60);
+										robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH
+												+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
+										robotImages[imageCount].setLayoutY(height * currentYCoor
+												+ WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);
+										hexBox.getChildren().add(robotImages[imageCount++]);
+										imageCount++;
+									}
+								} else {
+									robotCount++;
+									if (previousRobot != null && previousRobot.teamNumber != r.teamNumber) {
+										sameOwner = false;
+									}
+								}
+							} catch (UnknownHostException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+						// TODO draw other number
 					}
-					// TODO draw other number
-
+					else
+					{
+						if(hexagonArray[currentYCoor][currentXCoor]!=null)
+						{
+						hexagonArray[currentYCoor][currentXCoor].setFill(Color.DARKGREY);
+						}
+					}
 				}
 
 			}

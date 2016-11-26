@@ -24,6 +24,7 @@ public class Tile {
 	}
 	public void removeRobot(Robot robotToRemove){
 		robotList.remove(robotToRemove);
+		robotToRemove.location = null;
 	}
 	
 	public void updateRobot(Robot newRobot){
