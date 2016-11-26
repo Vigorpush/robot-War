@@ -27,6 +27,8 @@ public class Server {
      */
     private List<ConnectionToClient> connections;
     
+    private final static int PORT = 37829;
+    
     /**
      * A Queue of objects to be sent
      */
@@ -51,6 +53,7 @@ public class Server {
             try{
                 while(!shutdown){
                     Socket connection = serverSocket.accept();	// IMPORTANT
+                    System.out.println("Client Connected"); // TODO
                     if(shutdown){
                         System.out.println("Server Thread Error: Client is Shutting Down");
                         break;
@@ -132,7 +135,8 @@ public class Server {
          * Closes the connection to client
          * @throws IOException 
          */
-		void close() throws IOException{
+     // TODO:
+		void close() throws IOException{ 
             closed = true;
             sendThread.interrupt();
             if(recieveThread != null) {
@@ -202,4 +206,16 @@ public class Server {
             }
         }
     }   //End class connection to client
+     /** TODO
+     public static void main(String[] args) {
+    	 System.out.println("SERVER MAIN STARTED");
+         try {
+             new Server(PORT);
+         }
+         catch (IOException e) {
+             System.out.println("Can't create listening socket.  Shutting down.");
+         }
+     }
+     */
 }
+
