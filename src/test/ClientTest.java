@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import controller.Client;
 import controller.Game;
-import model.Client;
 
 public class ClientTest {
     ServerSocket serverSocket; 
