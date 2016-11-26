@@ -30,7 +30,7 @@ public class Server {
     /**
      * A Queue of objects to be sent
      */
-    private LinkedBlockingQueue<Board gameState> messages;
+    private LinkedBlockingQueue<Board state> messages;
     private Board gameState;
  
     private ServerSocket serverSocket;  // Socket that listens for connections
