@@ -28,6 +28,7 @@ public class Game extends Application {
 	public static GameView gameScene;
 	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	public static int sideLength;
+	
 	public static void main(String[] args) {
 
 		launch();
@@ -230,7 +231,7 @@ public class Game extends Application {
 						r.health = 0;
 						r.deathCount++;
 						rIterator.remove();
-						if(gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot || (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) == gameBoard.currentRobot && r.teamNumber > gameBoard.playerTurn))
+						if(gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot || (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot && r.teamNumber > gameBoard.playerTurn))
 						{
 							gameBoard.players.get(r.teamNumber).robotList.remove(r);
 							gameBoard.players.get(r.teamNumber).robotList.add(r);
