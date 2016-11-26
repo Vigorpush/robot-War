@@ -104,6 +104,11 @@ public class GameView {
 			}
 		});
 		Button inspectBtn = new Button("Inspect");
+		inspectBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {
+				onClick = "INSPECT";
+			}
+		});
 		Button endTurnBtn = new Button("End Turn");
 		endTurnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
@@ -344,6 +349,8 @@ public class GameView {
 
 									String robotType = r.getClass().getSimpleName();
 									File file;
+									int x = currentXCoor;// + currentYCoor - 4;
+									int y = currentYCoor;
 									switch (robotType) {
 									case "Scout":
 										robotImages[imageCount] = new ImageView();
@@ -357,6 +364,25 @@ public class GameView {
 										robotImages[imageCount]
 												.setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
 														+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);
+										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+											@Override
+											public void handle(MouseEvent t) {
+												Game controller = new Game();
+												switch (onClick) {
+												case "INSPECT":
+													break;
+
+												case "MOVE":
+													controller.moveRobot(x, y);
+													break;
+												case "ATTACK":
+													controller.attackTile(x, y);
+													break;
+
+												}
+											}
+										});
 										hexBox.getChildren().add(robotImages[imageCount++]);
 										imageCount++;
 										break;
@@ -372,6 +398,25 @@ public class GameView {
 												xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
 										robotImages[imageCount].setLayoutY(height * currentYCoor
 												+ WIDTH / Math.sqrt(3) / 2 - sniper.getHeight() * 0.20);
+										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+											@Override
+											public void handle(MouseEvent t) {
+												Game controller = new Game();
+												switch (onClick) {
+												case "INSPECT":
+													break;
+
+												case "MOVE":
+													controller.moveRobot(x, y);
+													break;
+												case "ATTACK":
+													controller.attackTile(x, y);
+													break;
+
+												}
+											}
+										});
 										hexBox.getChildren().add(robotImages[imageCount++]);
 										imageCount++;
 										break;
@@ -386,6 +431,25 @@ public class GameView {
 												+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
 										robotImages[imageCount].setLayoutY(height * currentYCoor
 												+ WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);
+										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+											@Override
+											public void handle(MouseEvent t) {
+												Game controller = new Game();
+												switch (onClick) {
+												case "INSPECT":
+													break;
+
+												case "MOVE":
+													controller.moveRobot(x, y);
+													break;
+												case "ATTACK":
+													controller.attackTile(x, y);
+													break;
+
+												}
+											}
+										});
 										hexBox.getChildren().add(robotImages[imageCount++]);
 										imageCount++;
 									}

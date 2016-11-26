@@ -44,15 +44,12 @@ public class Game extends Application {
 
 		File file = new File("Resources/css/StartView.css");
 		gameStage.centerOnScreen();
-		gameStage.getScene().getStylesheets().clear();
-		// TODO remove these two lines when done
-		String test = "file:///" + file.getAbsolutePath().replace("\\", "\"/\"").replaceFirst("\"", "") + "\"";
-		System.out.println(test);
+		gameStage.getScene().getStylesheets().clear();		
 		gameStage.getScene().getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
 		gameStage.setTitle("Robot War");
 		gameStage.show();
 	}
-
+//TODO store static variable about who you are 
 	public boolean joinGame(String name, String address) {
 		// TODO Auto-generated method stub
 		boolean result = false;
@@ -73,7 +70,6 @@ public class Game extends Application {
 	public void exitGame() {
 		gameStage.close();
 		System.exit(0);
-
 	}
 
 	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList)
@@ -86,6 +82,7 @@ public class Game extends Application {
 		}
 		gameBoard = new Board(sideLength);
 		int playerCount = computerCount + playerList.size();
+		//TODO add computers to playerlist
 		gameBoard.players = new ArrayList<Player>();
 		int i = 0;
 		int j = 0;
@@ -136,20 +133,10 @@ public class Game extends Application {
 			// TODO Add computers to player list;
 			gameStage.setScene(gameScene.init(playerList, observerList));
 
-		}
-		// TODO Statement for testing GameView. Remove when finished.
-		else {
-			result = true;
-			gameScene = new GameView();
-			// TODO Add computers to player list;
-			gameStage.setScene(gameScene.init(playerList, observerList));
-		}
+		}		
 		return result;
 	}
 
-	private void runGame() {
-
-	}
 
 	// Needs a way to determine which player is being displayed.
 	public int[] getRobotHealths() {
@@ -197,17 +184,20 @@ public class Game extends Application {
 			}
 		} while (gameBoard.players.get(gameBoard.playerTurn) != null
 				&& gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health < 1);
+		
 		gameBoard.players.get(gameBoard.playerTurn).robotList
 				.get(gameBoard.currentRobot).movementLeft = gameBoard.players.get(gameBoard.playerTurn).robotList
 						.get(gameBoard.currentRobot).movement;
+		
 		gameBoard.players.get(gameBoard.playerTurn).hasShot = false;
+		//TODO Set fog of war for everyone?
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
 	}
 
 	public void attackTile(int x, int y) {
 		// TODO Get player
-		int result = 0;
+		//int result = 0;
 		if (gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health > 0) {
 
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
@@ -217,7 +207,8 @@ public class Game extends Application {
 				if(attackingRobot.location.equals(target))
 				{
 					attackingRobot.health = 0;
-					attackingRobot.deathCount++;					
+					attackingRobot.deathCount++;		
+					//TODO Do suicides give kills?
 					target.robotList.remove(attackingRobot);
 				}
 				
@@ -231,7 +222,10 @@ public class Game extends Application {
 						r.health = 0;
 						r.deathCount++;
 						rIterator.remove();
-						if(gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot || (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot && r.teamNumber > gameBoard.playerTurn))
+						//TODO Green scout died, red sniper killed by green sniper, red tank did not go next
+						if (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot
+								|| (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot
+										&& r.teamNumber > gameBoard.playerTurn))
 						{
 							gameBoard.players.get(r.teamNumber).robotList.remove(r);
 							gameBoard.players.get(r.teamNumber).robotList.add(r);
