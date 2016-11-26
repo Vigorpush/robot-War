@@ -106,7 +106,11 @@ public class Client {
                 try{
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
-                            String newName = in.readUTF();  // Read in the next username sent to us
+                            // TODO: TEST THIS ERROR
+                            System.out.println("IN LOBBY WAITING FOR GAME START");
+                            String newName = (String) in.readObject();  // Read in the next username sent to us
+                            System.out.println("recieved a new name");
+                            System.out.println(newName);
                             if(newName != beginCode){       // Check that we did not recieve the begin code
                                 receiveName(newName);       // Receive the name 
                             }else{
