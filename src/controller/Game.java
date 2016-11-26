@@ -23,12 +23,14 @@ import view.StartView;
 
 @SuppressWarnings("unused")
 public class Game extends Application {
-
+    
+    public static final int PORT = 32222;
 	public static Stage gameStage;
 	public static Board gameBoard;
 	public static GameView gameScene;
 	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	public static int sideLength;
+	public static Client myClient;
 	
 	public static void main(String[] args) {
 
@@ -57,6 +59,13 @@ public class Game extends Application {
 		if (name.length() != 0) {
 			result = true;
 		}
+		
+		try{
+		    myClient = new Client(address, PORT, name, this);
+		    System.out.println("Clinet successfully started");
+		}catch (Exception e){
+		    System.out.println("Starting client failed");
+		}
 		return result;
 	}	
 	
@@ -67,10 +76,17 @@ public class Game extends Application {
 		
 		try {									// @Nico was here I'm trying to create a server
 			System.out.println("Server Creation Started");
-			Server hostServer = new Server(37829); // TODO: hardcoded port
+			Server hostServer = new Server(PORT); // TODO: hardcoded port
 		} catch (IOException e) { 				// author Nico was here too
 			System.err.println("Server Creation Failed");
 		}	
+		
+		try {
+		    myClient = new Client("localhost", PORT, name, this);
+		    System.out.println("Client started");
+		}catch (Exception e){
+		    System.err.println("Failed to start client");
+		}
 		
 		lobbyScene.addUser(name);
 		// lobbyScene.setStyle();
