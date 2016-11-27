@@ -24,7 +24,7 @@ public class Server {
     /**
      * A Queue of objects to be sent
      */
-    private LinkedBlockingQueue<Board> messages;
+    private LinkedBlockingQueue<Board> boards;
     private Board gameState;
  
     private ServerSocket serverSocket;  // Socket that listens for connections
@@ -35,9 +35,23 @@ public class Server {
     public Server(int port) throws IOException{
         connections = new ArrayList<ConnectionToClient>();
         gameState = new Board(5); // TODO:
-        serverSocket = new ServerSocket(port); // ERROR OVER HERE
+        serverSocket = new ServerSocket(port); 
         serverThread = new ServerThread();
         serverThread.start();
+        Thread shotgunThread = new Thread();
+        	public void run() {
+        		while(true) {
+        			try {
+        				Board sendingState = gameState;
+        				
+        			} catch (Exception e) {
+        				System.out.println("Server Shotgun has no ammo");
+        				e.printStackTrace();
+        			}
+        		}
+        	};
+        	shotgunThread.setDaemon(true);
+        	shotgunThread.start();
     }
     
     private class ServerThread extends Thread{
@@ -60,17 +74,10 @@ public class Server {
     }
     
     /** Server Methods */
-    // MAYBE TODO:
-    //synchronized public void sendStateToAll(Board gameState) {
-    //	if (gameState == null)
-    //		throw new IllegalArgumentException("Null cannot be sent");
-    //	for(ConnectionToClient clients : connections)
-    //		clients.send(gameState);
-    //}
+    public void serverRecieveBoard (Board board) {
+    	this.gameState = board;
+    }
     
-    /**
-     * 
-     */
     public void shutdownServer() {
     	if (serverThread == null) {
     		return;
@@ -84,14 +91,10 @@ public class Server {
     	serverSocket = null;
     }
     
-    /**
-     * TODO:
-     * @param newConnection
-     */
     synchronized private void acceptConnection(ConnectionToClient newConnection) {
     	int ID = newConnection.getClient();
     	connections.add(newConnection);
-    	System.out.println("Client: "+ ID + "Accepted!");
+    	System.out.println("Client: "+ ID + " Accepted!");
     }
     
      private class ConnectionToClient{
@@ -176,18 +179,13 @@ public class Server {
         	}	// end Run
         }	// end Send
         
-        /**
-         * TODO:
-         *
-         */
         private class RecieveThread extends Thread{
             public void run(){
                 try{
                     while(!closed){
                         try{
                             incomingState = in.readObject();
-                         // TODO: Set Recieving to true when incoming state is changed
-                         // CREATE A FUNCTION THAT USES THE STATE
+                            this.serverRecieveBoard(incomingState);
                         }catch(Exception e){ 
                         }
                     }
