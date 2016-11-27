@@ -52,7 +52,7 @@ public class Tableview extends Application {
         thirdDataColumn.setMinWidth(100);
         TableView table_view = new TableView<>(generateDataInMap());
  
-        table_view.setEditable(true);
+        table_view.setEditable(false);
         table_view.getSelectionModel().setCellSelectionEnabled(true);
         table_view.getColumns().setAll(firstDataColumn, secondDataColumn,thirdDataColumn);
         Callback<TableColumn<Map, String>, TableCell<Map, String>>

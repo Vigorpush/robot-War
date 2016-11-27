@@ -1,6 +1,6 @@
 package model;
-
-//import com.google.gson.Gson;
+import json.GsonReader;
+import json.GsonWriter;
 
 
 
@@ -17,35 +17,38 @@ public abstract class Robot {
 	public int killCount;
 	public int health;
 	public int attack;
+	public int lose;
 	public int movement;
 	public int range;
 	public int movementLeft;
+	public int match;
 	
 	public Robot(int ID, int TEAM, String JPATH, String FPATH) {
+//		GsonReader gsonReader = new GsonReader(JPATH);
 		id = ID;
 		teamNumber = TEAM;
 		jsonPath = JPATH;
 		fourthPath = FPATH;
-		
-		//Object gson = new Gson().fromJson(jsonPath, );
-		
-		
-		//name from json
-		//location = new Tile();
-		//matches won from json
-		//deathCount from json
-		//killcount from json
+//		name= gsonReader.GsonReaderRobot().getName();
+//		matchesWon = gsonReader.GsonReaderRobot().getWin();
+//		match = gsonReader.GsonReaderRobot().getMatch();
+//		deathCount = gsonReader.GsonReaderRobot().getDeathCount();
+//		killCount = gsonReader.GsonReaderRobot().getKillCount();
+//		lose = gsonReader.GsonReaderRobot().getLoses();
 		health = 0;
 		attack = 0;
 		movement = 0;
 		range = 0;
 		movementLeft = 0;
 	}
-	
+	//this function will update stats into json file
+	public void updatetoJson() {
+		GsonWriter jsonWriter = new GsonWriter();
+		jsonWriter.GsonWriteGameResult(this.jsonPath, matchesWon, lose, match, deathCount, killCount);
+	}
 	//to be checked on and implemented outright
 	//String[] interpreter(String[] s){
 	//	return s;
-		
 	//}
 	
 	public static void main(String[] args) {
