@@ -70,10 +70,9 @@ public class Client {
             socket = new Socket(host, port);    // Bind to the socket
             out = new ObjectOutputStream(socket.getOutputStream()); // Create an output stream to write to the socket
             in = new ObjectInputStream(socket.getInputStream());    // Create an input stream to read from the socket
-            userName = "ERROR"; // TODO: NICO WHAT IS THIS?
             
             out.flush();                
-            out.writeChars(userName);       // Send the username to the server to add to the lobby
+            out.writeObject(userName);       // Send the username to the server to add to the lobby
 
             // Starting the Threads
             sendThread = new SendThread();
@@ -95,7 +94,7 @@ public class Client {
                         }
                     }
                 }catch(Exception e){
-                    System.out.println("Unexpected internal error");
+                    System.out.println("Unexpected internal error in send thread");
                 }
             }
         }
@@ -107,7 +106,7 @@ public class Client {
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
                             // TODO: TEST THIS ERROR
-                            System.out.println("IN LOBBY WAITING FOR GAME START");
+                           // System.out.println("IN LOBBY WAITING FOR GAME START");
                             String newName = (String) in.readObject();  // Read in the next username sent to us
                             System.out.println("recieved a new name");
                             System.out.println(newName);
@@ -124,6 +123,7 @@ public class Client {
                     }
                 }catch(Exception e){
                    System.out.println("Internal error in recieve thread"); 
+                   System.out.println(e);
                 }
             }
         }

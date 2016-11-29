@@ -105,7 +105,7 @@ public class GameView {
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
 		//adding staff
-		final Label label = new Label("DashBorad");
+		final Label label = new Label("DashBoard");
         label.setFont(new Font("Arial", 20));
  
         TableColumn<Map, String> firstDataColumn = new TableColumn<>("Scout");

@@ -31,6 +31,7 @@ public class Server {
     private Thread serverThread;    	// Thread to accept connections
     private volatile boolean shutdown;  // Determines whether the server is running
     private int clientNumber = 0;		// Client Counter
+    private boolean inLobby = true;
     
     public Server(int port) throws IOException{
         connections = new ArrayList<ConnectionToClient>();
@@ -38,18 +39,18 @@ public class Server {
         serverSocket = new ServerSocket(port); 
         serverThread = new ServerThread();
         serverThread.start();
-        Thread shotgunThread = new Thread();
+        Thread shotgunThread = new Thread(){
         	public void run() {
         		while(true) {
         			try {
         				Board sendingState = gameState;
-        				
         			} catch (Exception e) {
         				System.out.println("Server Shotgun has no ammo");
         				e.printStackTrace();
         			}
         		}
-        	};
+        	}
+        };
         	shotgunThread.setDaemon(true);
         	shotgunThread.start();
     }
@@ -74,8 +75,8 @@ public class Server {
     }
     
     /** Server Methods */
-    public void serverRecieveBoard (Board board) {
-    	this.gameState = board;
+    public void serverRecieveBoard (Object incomingState) {
+    	this.gameState = (Board) incomingState;
     }
     
     public void shutdownServer() {
@@ -169,13 +170,23 @@ public class Server {
         			return;
         		}									// end try&catch: connect
         		while(!closed){
-						try{									// try: Sending Game State
-				            Board sendState = outgoingState;	// sends board state
-				            out.writeObject(sendState);
-				            out.flush();
-				        }catch(Exception e2){					// catch: Sending Game State
-				        }
-					}
+        		    while(inLobby){
+        		        try{
+        		            String test = "TESTING!";
+        		            out.writeObject(test);
+        		            out.flush();
+        		        }catch(Exception e3){
+        		            System.out.println("Could not send name from server");
+        		        }
+        		    }
+					try{									// try: Sending Game State
+					    Board sendState = outgoingState;	// sends board state
+				        out.writeObject(sendState);
+				        out.flush();
+				    }catch(Exception e2){					// catch: Sending Game State
+				        System.out.println("Could not send board state from server");
+				    }
+				}
         	}	// end Run
         }	// end Send
         
@@ -183,10 +194,20 @@ public class Server {
             public void run(){
                 try{
                     while(!closed){
+                        while(inLobby){
+                            try{
+                                String newName = (String)in.readObject();
+                                System.out.println("Server recieved name: " + newName);
+                                //recieve new names
+                            }catch(Exception e){
+                                System.out.println("Could not recieve names in server");
+                            }
+                        }
                         try{
                             incomingState = in.readObject();
-                            this.serverRecieveBoard(incomingState);
+                            serverRecieveBoard(incomingState);
                         }catch(Exception e){ 
+                            System.out.println("Could not recieve new board state in server");
                         }
                     }
                 }catch(Exception e){
