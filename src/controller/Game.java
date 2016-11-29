@@ -31,6 +31,7 @@ public class Game extends Application {
 	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	public static int sideLength;
 	public static Client myClient;
+	public static LobbyView lobbyScene;
 	
 	public static void main(String[] args) {
 
@@ -63,15 +64,22 @@ public class Game extends Application {
 		try{
 		    myClient = new Client(address, PORT, name, this);
 		    System.out.println("Clinet successfully started");
+		    lobbyScene = new LobbyView();
+			gameStage.setScene(lobbyScene.init());
 		}catch (Exception e){
 		    System.out.println("Starting client failed");
 		}
 		return result;
 	}	
 	
+	public boolean connectUser(String username)
+	{
+		return lobbyScene.addUser(username);
+	}
+	
 	public void hostGame(String name) {
 		// TODO Auto-generated method stub
-		LobbyView lobbyScene = new LobbyView();
+		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
 		
 		try {									// @Nico was here I'm trying to create a server

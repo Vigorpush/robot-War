@@ -170,11 +170,12 @@ public class Server {
         			return;
         		}									// end try&catch: connect
         		while(!closed){
+        			
         		    while(inLobby){
         		        try{
-        		            String test = "TESTING!";
+        		            /*String test = "TESTING!";
         		            out.writeObject(test);
-        		            out.flush();
+        		            out.flush();*/
         		        }catch(Exception e3){
         		            System.out.println("Could not send name from server");
         		        }

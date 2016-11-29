@@ -135,6 +135,7 @@ public class Client {
         public void receiveName(String name){
             // TODO: call controller recieve names
             // game.updateLobbyNames(name);
+        	game.connectUser(name);
         }
         
         /**

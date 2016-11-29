@@ -100,7 +100,7 @@ public class GameView {
 			sideLength = 7;
 		}
 		hexagonArray = new Polyline[sideLength * 2 - 1][sideLength * 2 - 1];
-		HBox lobbyScreen = new HBox(255);// 355
+		HBox gameScreen = new HBox(255);// 355
 		// Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
@@ -200,11 +200,11 @@ public class GameView {
 		// TODO quit button for observers
 		Button forfeit = new Button("Forfeit");
 		rightBox.getChildren().addAll(playerListLabel, playerListView, observerListLabel, observerListView, forfeit);
-		lobbyScreen.getChildren().addAll(leftBox, centerBox, rightBox);
+		gameScreen.getChildren().addAll(leftBox, centerBox, rightBox);
 		// Sets margin to give the board room to be seen
 		VBox.setMargin(centerBox, new Insets(5, 5, 5, 5));
-		lobbyScreen.setAlignment(Pos.CENTER);
-		gameScene = new Scene(lobbyScreen);
+		gameScreen.setAlignment(Pos.CENTER);
+		gameScene = new Scene(gameScreen);
 
 		File file = new File("Resources/css/GameView.css");
 		gameScene.getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
