@@ -52,10 +52,12 @@ public class Server {
         		while(true) {
         			while(inLobby){
         			    try {
-                            userList = (LobbyMessage) bullets.take();
-                            for(ConnectionToClient con : connections){
-                                con.sendUserList = true;
-                            }
+        			        if(!bullets.isEmpty()){
+        			            userList = (LobbyMessage) bullets.take();
+        			            for(ConnectionToClient con : connections){
+        			                con.sendUserList = true;
+        			            }
+        			        }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
