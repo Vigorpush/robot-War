@@ -32,13 +32,13 @@ public class LobbyView {
 	private static final String title = "Robot Wars";
 	private Scene lobbyScene;
 	//Stores the list of players for easy access and modification
-	private ArrayList<String> playerList;
+	private static ArrayList<String> playerList;
 	//Store the playerList in a format readable by the ListView
 	private ObservableList<String> playerObsList;
 	//Displays the playerList
 	private ListView<String> playerListView;
 	//Stores the list of observers for easy access and modification
-	private ArrayList<String> observerList;	
+	private static ArrayList<String> observerList;	
 	//Store the observerList in a format readable by the ListView
 	private ObservableList<String> observerObsList;
 	//Displays the observerList
@@ -163,5 +163,24 @@ public class LobbyView {
 			result = true;
 		}
 		return result;
+	}
+	
+	public ArrayList<String> getPlayerList(){
+	    return playerList;
+	}
+	
+	public ArrayList<String> getObserverList(){
+	    return observerList;
+	}
+	
+	public void updateUserLists(ArrayList<String> newObserverList, ArrayList<String> newPlayerList){
+	    this.observerList = newObserverList;
+	    this.observerObsList = (ObservableList<String>) newObserverList;
+	    this.observerListView.refresh();
+	    this.observerListView.getSelectionModel().selectFirst();
+	    
+	    this.playerList = newPlayerList;
+	    this.playerObsList = (ObservableList<String>) newPlayerList;
+	    this.playerListView.refresh();
 	}
 }

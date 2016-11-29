@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javafx.util.Pair;
 import model.Board;
 
 public class Server {
@@ -24,7 +26,10 @@ public class Server {
     /**
      * A Queue of objects to be sent
      */
-    private LinkedBlockingQueue<Board> boards;
+    private LinkedBlockingQueue<Object> bullets;
+    
+    private LobbyMessage userList;
+    
     private Board gameState;
  
     private ServerSocket serverSocket;  // Socket that listens for connections
@@ -34,19 +39,26 @@ public class Server {
     private boolean inLobby = true;
     
     public Server(int port) throws IOException{
+        userList = new LobbyMessage();
         connections = new ArrayList<ConnectionToClient>();
         gameState = new Board(5); // TODO:
         serverSocket = new ServerSocket(port); 
         serverThread = new ServerThread();
         serverThread.start();
+        bullets = new LinkedBlockingQueue<Object>();
+        
         Thread shotgunThread = new Thread(){
         	public void run() {
         		while(true) {
-        			try {
-        				Board sendingState = gameState;
-        			} catch (Exception e) {
-        				System.out.println("Server Shotgun has no ammo");
-        				e.printStackTrace();
+        			while(inLobby){
+        			    try {
+                            userList = (LobbyMessage) bullets.take();
+                            for(ConnectionToClient con : connections){
+                                con.sendUserList = true;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
         			}
         		}
         	}
@@ -79,6 +91,15 @@ public class Server {
     	this.gameState = (Board) incomingState;
     }
     
+    public void loadShotgun(Object ammo){
+        this.bullets.add(ammo);
+    }
+    
+    public void serverDisconnectUser(ConnectionToClient user){
+        connections.remove(user);
+        
+    }
+    
     public void shutdownServer() {
     	if (serverThread == null) {
     		return;
@@ -107,6 +128,8 @@ public class Server {
         private ObjectInputStream in;   // The input stream for communications with the client
         private ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
+        private boolean newConnection = true;   // Lobby: already recieved a string when false recieve pairs
+        private boolean sendUserList = false;
         
         private Thread sendThread;      // The thread for sending states to the client
         private volatile Thread recieveThread;  // The thread for receiving states from the client
@@ -127,6 +150,10 @@ public class Server {
         int getClient(){
             return clientID;
         }   
+        
+        public void disconnect(){
+            serverDisconnectUser(this);
+        }
         
         /**
          * Closes the connection to client
@@ -172,12 +199,14 @@ public class Server {
         		while(!closed){
         			
         		    while(inLobby){
-        		        try{
-        		            /*String test = "TESTING!";
-        		            out.writeObject(test);
-        		            out.flush();*/
-        		        }catch(Exception e3){
-        		            System.out.println("Could not send name from server");
+        		        if(sendUserList){
+        		            try{
+        		                out.writeObject(userList);
+        		                out.flush();
+        		                sendUserList = false;
+        		            }catch(Exception e3){
+        		                System.out.println("Could not send name from server");
+        		            }
         		        }
         		    }
 					try{									// try: Sending Game State
@@ -196,14 +225,28 @@ public class Server {
                 try{
                     while(!closed){
                         while(inLobby){
-                            try{
-                                String newName = (String)in.readObject();
-                                System.out.println("Server recieved name: " + newName);
-                                //recieve new names
-                            }catch(Exception e){
-                                System.out.println("Could not recieve names in server");
+                            if(newConnection){
+                                try{
+                                    String newName = (String)in.readObject();   //Receive new username
+                                    System.out.println("Server recieved name: " + newName);
+                                    // Check for duplicates, refuse connection if there is one
+                                    if(userList.observerList.contains(newName) || userList.playerList.contains(newName)){
+                                        throw new Exception("Duplicate player");  
+                                    }
+                                    userList.observerList.add(newName); // add the user to the observer list
+                                    newConnection = false;              // Done connecting
+                                    loadShotgun(userList);
+                                }catch(Exception e){
+                                    System.out.println("Could not recieve names in server");
+                                    closed = true;
+                                    disconnect();
+                                }
+                            }else{
+                                    userList = (LobbyMessage)in.readObject();   // Waiting for an updated list of users
+                                    loadShotgun(userList);
                             }
                         }
+                        
                         try{
                             incomingState = in.readObject();
                             serverRecieveBoard(incomingState);
@@ -219,5 +262,17 @@ public class Server {
             }
         }
     }   //End class connection to client
+     
+     private class LobbyMessage{
+         public ArrayList<String> playerList;
+         public ArrayList<String> observerList;
+         public boolean begin;
+         
+         public LobbyMessage(){
+             this.playerList = new ArrayList<String>();
+             this.observerList = new ArrayList<String>();
+             begin = false;
+         }
+     }
 }
 

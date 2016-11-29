@@ -52,8 +52,8 @@ public class Client {
         private final ObjectInputStream in;   // The input stream for communications with the client
         private final ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
-        private String beginCode = "13524636780986748937";  // The code to signal the start of the game
         private boolean sending = false;        //Determines wether to send the current state to the server.
+        private LobbyMessage userList;
         
         private final Thread sendThread;      // The thread for sending states to the client
         private final Thread recieveThread;   // The thread for receiving states from the client
@@ -70,6 +70,7 @@ public class Client {
             socket = new Socket(host, port);    // Bind to the socket
             out = new ObjectOutputStream(socket.getOutputStream()); // Create an output stream to write to the socket
             in = new ObjectInputStream(socket.getInputStream());    // Create an input stream to read from the socket
+            userList = new LobbyMessage();
             
             out.flush();                
             out.writeObject(userName);       // Send the username to the server to add to the lobby
@@ -105,13 +106,11 @@ public class Client {
                 try{
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
-                            // TODO: TEST THIS ERROR
                            // System.out.println("IN LOBBY WAITING FOR GAME START");
-                            String newName = (String) in.readObject();  // Read in the next username sent to us
-                            System.out.println("recieved a new name");
-                            System.out.println(newName);
-                            if(newName != beginCode){       // Check that we did not recieve the begin code
-                                receiveName(newName);       // Receive the name 
+                            userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
+                            System.out.println("recieved a new names");
+                            if(!userList.begin){       // Check that we did not recieve the begin code
+                                receiveNames(userList);       // Receive the name 
                             }else{
                                 inLobby = false;            // It is time to begin the game, so leave the lobby
                                 beginGame();                
@@ -132,10 +131,10 @@ public class Client {
          * Tell the controller that a new username has been recieved to add to the lobby 
          * @param name -> The new name to add to the lobby screen
          */
-        public void receiveName(String name){
+        public void receiveNames(LobbyMessage msg){
             // TODO: call controller recieve names
             // game.updateLobbyNames(name);
-        	game.connectUser(name);
+        	game.connectUser(msg.observerList, msg.playerList);
         }
         
         /**
@@ -144,6 +143,22 @@ public class Client {
         public void beginGame(){
             // TODO: call controller beginGame
             // game.beginGame();
+        }
+        
+        /**
+         * Called from the controller when the host selects begin game
+         */
+        public void hostBeginGame(){
+            try {
+                LobbyMessage begin = userList;
+                begin.begin = true;
+                out.writeObject(begin);
+                out.flush();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
         }
         
         /**
@@ -174,6 +189,18 @@ public class Client {
         		out.close();
         	} catch (IOException e) {
         	}
+        }
+    }
+    
+    private class LobbyMessage{
+        public ArrayList<String> playerList;
+        public ArrayList<String> observerList;
+        public boolean begin;
+        
+        public LobbyMessage(){
+            this.playerList = new ArrayList<String>();
+            this.observerList = new ArrayList<String>();
+            begin = false;
         }
     }
 }

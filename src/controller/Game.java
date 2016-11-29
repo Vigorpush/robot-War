@@ -72,9 +72,9 @@ public class Game extends Application {
 		return result;
 	}	
 	
-	public boolean connectUser(String username)
+	public void connectUser(ArrayList<String> observerList, ArrayList<String> playerList)
 	{
-		return lobbyScene.addUser(username);
+		lobbyScene.updateUserLists(observerList, playerList);
 	}
 	
 	public void hostGame(String name) {
