@@ -21,24 +21,27 @@ public class GsonWriter {
 	int deathCount;
 	int killCount;
 	
-
 	public GsonWriter() {
 		super();
 	}
 
-	
 	public void GsonWriteGameResult(String addressJson, int win, int loses, int matches, int deathCount, int killCount) {
+		
 		GameResult gamereult=new GameResult(); 
+		System.out.println(gamereult.getClass().getName());
 		gamereult.setLoses(loses);
 		gamereult.setWin(win);
 		gamereult.setMatch(matches);
 		gamereult.setDeathCount(deathCount);
 		gamereult.setKillCount(killCount);
 		
+		script s = new script();
+		s.setGr(gamereult);
 		Gson gson = new Gson(); 
+
 		// convert java object to JSON format, 
 		// and returned as JSON formatted string 
-		String json = gson.toJson(gamereult); 
+		String json = gson.toJson(s); 
 		try { 
 			FileWriter writer = new FileWriter(addressJson); 
 			writer.write(json); 

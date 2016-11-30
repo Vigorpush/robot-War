@@ -6,23 +6,13 @@ package json;
  * */
 public class GameResult{
 	
-//	Class script(int wins){
-//		String script = "script";
-//		GameResult g = new GameResult();
-//		return null;
-//	}
-	
-	
-	
-
 	int wins;
 	int loses;
 	int matches;
 	String name;
 	int deathCount;
 	int killCount;
-
-
+	
 	public String getName() {
 		return name;
 	}
@@ -61,3 +51,5 @@ public class GameResult{
 	}
 
 }
+
+
