@@ -17,7 +17,7 @@ public class robotParser {
 
 			String sCurrentLine;
 
-			bufferedReader = new BufferedReader(new FileReader("/tmp_mnt/student/jiz457/git/370-16D1/jsonexample/Centralizer.jsn"));
+			bufferedReader = new BufferedReader(new FileReader("src/json/Centralizer.jsn"));
 
 			while ((sCurrentLine = bufferedReader.readLine()) != null) {
 				myJSONString = myJSONString + sCurrentLine;
