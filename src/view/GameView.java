@@ -4,28 +4,20 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import controller.Game;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,13 +25,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
-import javafx.scene.text.Font;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import model.Board;
 import model.Player;
 import model.Robot;
+
 /**
  * Class that creates the GUI for the actual game and all book keeping needed
  * for that class TODO Make list populate TODO update as game changes TODO
@@ -80,19 +71,14 @@ public class GameView {
 	private BorderPane hexBox;
 	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
+	private Button moveButton = new Button("Move");
+	private Button attackButton = new Button ("Attack");
 	
-	
-    public static final String Column1MapKey = "Scout";
-    public static final String Column2MapKey = "Sniper";
-    public static final String Column3MapKey = "Tank";
-	
-
 	/**
 	 * Method for creating the GameView Scene
 	 * 
 	 * @return the gameScene
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Scene init(ArrayList<String> playerList, ArrayList<String> observerList) {
 		int playerCount = playerList.size();
 		// Sets side length to 7 if there are six players
@@ -100,64 +86,20 @@ public class GameView {
 			sideLength = 7;
 		}
 		hexagonArray = new Polyline[sideLength * 2 - 1][sideLength * 2 - 1];
-		HBox gameScreen = new HBox(255);// 355
+		HBox lobbyScreen = new HBox(255);// 355
 		// Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
-		//adding staff
-		final Label label = new Label("DashBoard");
-        label.setFont(new Font("Arial", 20));
- 
-        TableColumn<Map, String> firstDataColumn = new TableColumn<>("Scout");
-        TableColumn<Map, String> secondDataColumn = new TableColumn<>("Sniper");
-        TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Tank");
-        firstDataColumn.setCellValueFactory(new MapValueFactory(Column1MapKey));
-        firstDataColumn.setMinWidth(100);
-        secondDataColumn.setCellValueFactory(new MapValueFactory(Column2MapKey));
-        secondDataColumn.setMinWidth(100);
-        thirdDataColumn.setCellValueFactory(new MapValueFactory(Column3MapKey));
-        thirdDataColumn.setMinWidth(100);
-        TableView table_view = new TableView<>(generateDataInMap());
- 
-        table_view.setEditable(false);
-        table_view.getSelectionModel().setCellSelectionEnabled(true);
-        table_view.getColumns().setAll(firstDataColumn, secondDataColumn,thirdDataColumn);
-        Callback<TableColumn<Map, String>, TableCell<Map, String>>
-            cellFactoryForMap = new Callback<TableColumn<Map, String>,
-                TableCell<Map, String>>() {
-                    @Override
-                    public TableCell call(TableColumn p) {
-                        return new TextFieldTableCell(new StringConverter() {
-                            @Override
-                            public String toString(Object t) {
-                                return t.toString();
-                            }
-                            @Override
-                            public Object fromString(String string) {
-                                return string;
-                            }                                    
-                        });
-                    }
-        };
-        firstDataColumn.setCellFactory(cellFactoryForMap);
-        secondDataColumn.setCellFactory(cellFactoryForMap);
- 
-        final VBox vbox = new VBox();
- 
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table_view);
-		
-		//end of adding staff
+		// backBtn.setStyle(arg0);
+		tankHealthTable = new TableView<String>();
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
-		Button moveBtn = new Button("Move");
-		moveBtn.setOnAction(new EventHandler<ActionEvent>() {
+		
+		moveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "MOVE";
 			}
 		});
-		Button attackBtn = new Button("Attack");
-		attackBtn.setOnAction(new EventHandler<ActionEvent>() {
+		attackButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "ATTACK";
 			}
@@ -175,7 +117,7 @@ public class GameView {
 				controller.endTurn();
 			}
 		});
-		leftBox.getChildren().addAll(backBtn, vbox, currentTankMoveLabel, moveBtn, attackBtn, inspectBtn,
+		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveButton, attackButton, inspectBtn,
 				endTurnBtn);
 		// Center of window
 		VBox centerBox = new VBox(60);
@@ -200,11 +142,11 @@ public class GameView {
 		// TODO quit button for observers
 		Button forfeit = new Button("Forfeit");
 		rightBox.getChildren().addAll(playerListLabel, playerListView, observerListLabel, observerListView, forfeit);
-		gameScreen.getChildren().addAll(leftBox, centerBox, rightBox);
+		lobbyScreen.getChildren().addAll(leftBox, centerBox, rightBox);
 		// Sets margin to give the board room to be seen
 		VBox.setMargin(centerBox, new Insets(5, 5, 5, 5));
-		gameScreen.setAlignment(Pos.CENTER);
-		gameScene = new Scene(gameScreen);
+		lobbyScreen.setAlignment(Pos.CENTER);
+		gameScene = new Scene(lobbyScreen);
 
 		File file = new File("Resources/css/GameView.css");
 		gameScene.getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
@@ -215,8 +157,8 @@ public class GameView {
 		observerListLabel.getStyleClass().add("text_label");
 		backBtn.getStyleClass().add("cancelbutton");
 		currentTurnLabel.getStyleClass().add("centred_label");
-		moveBtn.getStyleClass().add("button");
-		attackBtn.getStyleClass().add("button");
+		moveButton.getStyleClass().add("button");
+		attackButton.getStyleClass().add("button");
 		inspectBtn.getStyleClass().add("button");
 		endTurnBtn.getStyleClass().add("button");
 		forfeit.getStyleClass().add("cancelbutton");
@@ -280,6 +222,7 @@ public class GameView {
 								break;
 							case "ATTACK":
 								controller.attackTile(x, y);
+								
 								break;
 
 							}
@@ -362,30 +305,21 @@ public class GameView {
 
 		return tankHealthTable;
 	}
-	//TODO listening HP for all robot
-	 @SuppressWarnings("rawtypes")
-		private ObservableList<Map> generateDataInMap() {
-	        int max = 10;
-	        ObservableList<Map> allData = FXCollections.observableArrayList();
-	        for (int i = 1; i < max; i++) {
-	            Map<String, String> dataRow = new HashMap<>();
-	 
-	            String value1 = "A" + i;
-	            String value2 = "B" + i;
-	            String value3 = "C" + i;
-	 
-	            dataRow.put(Column1MapKey, value1);
-	            dataRow.put(Column2MapKey, value2);
-	            dataRow.put(Column3MapKey, value3);
-	            allData.add(dataRow);
-	        }
-	        return allData;
-	    }
-	
-	
-	
+
 	public void updateGame(Board board) {
 
+		if(board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0){
+			moveButton.setDisable(true);
+		}else{
+			moveButton.setDisable(false);
+		}
+		
+		if(board.players.get(board.playerTurn).hasShot){
+			attackButton.setDisable(true);
+		}else{
+			attackButton.setDisable(false);
+		}
+		
 		currentTankMoveLabel.setText(
 				board.players.get(board.playerTurn).robotList.get(board.currentRobot).getClass().getSimpleName()
 						+ " Move:" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft
@@ -434,7 +368,7 @@ public class GameView {
 									switch (robotType) {
 									case "Scout":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Scout.PNG");
+										file = new File("Resources/images/" + i + "Scout.png");
 										Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
 										robotImages[imageCount].setImage(scout);
 										robotImages[imageCount].setScaleX(0.60);
@@ -468,7 +402,7 @@ public class GameView {
 										break;
 									case "Sniper":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Sniper.PNG");
+										file = new File("Resources/images/" + i + "Sniper.png");
 										Image sniper = new Image(
 												"file:///" + file.getAbsolutePath().replace("\\", "/"));
 										robotImages[imageCount].setImage(sniper);
@@ -502,7 +436,7 @@ public class GameView {
 										break;
 									case "Tank":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Tank.PNG");
+										file = new File("Resources/images/" + i + "Tank.png");
 										Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
 										robotImages[imageCount].setImage(tank);
 										robotImages[imageCount].setScaleX(0.60);
