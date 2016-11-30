@@ -6,9 +6,9 @@ package json;
  * */
 public class GameResult{
 	
-	int win;
+	int wins;
 	int loses;
-	int match;
+	int matches;
 	String name;
 	int deathCount;
 	int killCount;
@@ -33,10 +33,10 @@ public class GameResult{
 		this.killCount = killCount;
 	}
 	public int getWin() {
-		return win;
+		return wins;
 	}
-	public void setWin(int win) {
-		this.win = win;
+	public void setWin(int wins) {
+		this.wins = wins;
 	}
 	public int getLoses() {
 		return loses;
@@ -45,10 +45,10 @@ public class GameResult{
 		this.loses = loses;
 	}
 	public int getMatch() {
-		return match;
+		return matches;
 	}
-	public void setMatch(int match) {
-		this.match = match;
+	public void setMatch(int matches) {
+		this.matches = matches;
 	}
 
 }

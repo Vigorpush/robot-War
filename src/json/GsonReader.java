@@ -5,6 +5,7 @@ package json;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
 import com.google.gson.Gson; 
 
 /**
@@ -42,6 +43,9 @@ public class GsonReader {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		
+
+		GsonReader reader = new GsonReader("/tmp_mnt/student/jiz457/git/370-16D1/jsonexample/Centralizer.jsn");
+		//System.out.println(reader.GsonReaderRobot().getKillCount());
+		System.out.println(reader.GsonReaderRobot().getWin());
 	}
 }

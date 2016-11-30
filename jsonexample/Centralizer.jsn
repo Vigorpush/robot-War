@@ -1,0 +1,72 @@
+{ "script" :
+	{ "team"	: "XX"
+	, "class"	: "Scout"
+	, "name"	: "Centralizer"
+	, "matches"	: 0
+	, "wins"	: 2
+	, "losses"	: 0
+	, "executions"	: 0
+	, "lived"	: 0
+	, "died"	: 0
+	, "absorbed"	: 0
+	, "killed"	: 2
+	, "moved"	: 0
+	, "code"	: [ "variable moved ; ( have I moved? )         "
+                          , ": moved? moved ? ;                         "
+			  , "moved false !                              "
+			  , "                                           "
+			  , ": firstMove ( move to center first )       "
+			  , "       moved? if                           "
+			  , "                ( already moved )          "
+			  , "              else                         "
+			  , "                move move move             "
+			  , "                moved true !               "
+			  , "              then ;                       "
+			  , "                                           "
+			  , "variable shot  ; ( have I shot this play? )"
+                          , ": canShoot? ( -- b ) ( shot available? )   "
+			  , "            shot? ;                       "
+			  , "                                           "
+			  , ": shoot!! ( id ir -- ) ( shoot if allowed )"
+			  , "          canShoot? if                     "
+			  , "             pop pop      ( remove ir id ) "
+			  , "          else                             "
+			  , "              shoot!      ( really shoot ) "
+			  , "              shot true ! ( remember it )  "
+			  , "            then                           "
+			  , "          then ;                           "
+			  , "                                           "
+			  , ": doNotShoot ( id ir -- ) ( pretend shot ) "
+			  , "             pop pop ;                     "
+			  , "                                           "
+			  , ": enemy? ( s -- b ) ( decide if enemy )    "
+			  , "         team <> ;                         "
+			  , "                                           "
+			  , ": nonZeroRange? ( i -- b i )               "
+			  , "             dup 0 <> ;                    "
+			  , "                                           "
+			  , ": tryShooting! ( ih id ir st -- )          "
+			  , "               enemy?                      "
+			  , "               swap nonZeroRange? rot      "
+			  , "             and if                        "
+                          , "                   shoot!!                 "
+                          , "                 else                      "
+                          , "                   doNotShoot              "
+                          , "                 then pop ( remove ih ) ;  "
+                          , "                                           "
+			  , ": shootEveryone ( try shot at all targets )"
+			  , "       scan! 1 - dup 0 <                   "
+                          , "       if                                  "
+			  , "         ( no one to shoot at )            "
+                          , "       else 0 do                           "
+			  , "                I identify! tryShooting!   "
+			  , "              loop                         "
+			  , "       then ;                              "
+                          , "                                           "
+			  , ": play ( -- )                              "
+			  , "       firstMove                           "
+			  , "       shot false ! ( prepare to shoot )   "
+			  , "       shootEveryone ;                     "
+			  ]
+	}
+}
