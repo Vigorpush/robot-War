@@ -54,7 +54,7 @@ public class GsonWriter {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		GsonWriter test = new GsonWriter();
-		//test.GsonWriteGameResult("");
+		GsonWriter test = new GsonWriter();
+		test.GsonWriteGameResult("src/json/test.json", 1, 1, 1, 1, 1);
 	}
 }
