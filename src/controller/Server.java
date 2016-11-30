@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import javafx.util.Pair;
 import model.Board;
 
 public class Server {
@@ -28,6 +27,9 @@ public class Server {
      */
     private LinkedBlockingQueue<Object> bullets;
     
+    /**
+     * A class containing Player and Observer List to be passed to the view from controller to be displayed
+     */
     private LobbyMessage userList;
     
     private Board gameState;
@@ -62,6 +64,23 @@ public class Server {
                             e.printStackTrace();
                         }
         			}
+        			while(!shutdown) {
+        				if(!bullets.isEmpty()) {
+        					try {
+        						gameState = (Board) bullets.take();
+        						for(ConnectionToClient con : connections){
+        							try {
+        								con.out.writeObject(gameState);
+        								con.out.flush();
+        							} catch (IOException e) {
+										e.printStackTrace();
+									}
+    			            	}
+        					} catch (InterruptedException e) {
+        						e.printStackTrace();
+        					}
+        				}
+        			}
         		}
         	}
         };
@@ -75,7 +94,7 @@ public class Server {
             try{
                 while(!shutdown){
                     Socket connection = serverSocket.accept();	// IMPORTANT
-                    System.out.println("Client Connected"); // TODO
+                    System.out.println("Server Thread: Client Connected"); // TODO
                     if(shutdown){
                         System.out.println("Server Thread Error: Client is Shutting Down");
                         break;
@@ -185,7 +204,7 @@ public class Server {
                         clientID = clientNumber++;
                     }
                     out.flush();
-                    acceptConnection(ConnectionToClient.this);	// Adds CTC to CTC List
+                    acceptConnection(ConnectionToClient.this);	// Adds this.CTC to server.CTC List
                     recieveThread = new RecieveThread();
                     recieveThread.start();
                     
@@ -211,13 +230,13 @@ public class Server {
         		            }
         		        }
         		    }
-					try{									// try: Sending Game State
-					    Board sendState = outgoingState;	// sends board state
+					   loadShotgun(outgoingState);
+						/**
+					     * OLD
+						Board sendState = outgoingState;	// sends board state
 				        out.writeObject(sendState);
 				        out.flush();
-				    }catch(Exception e2){					// catch: Sending Game State
-				        System.out.println("Could not send board state from server");
-				    }
+				        */
 				}
         	}	// end Run
         }	// end Send
