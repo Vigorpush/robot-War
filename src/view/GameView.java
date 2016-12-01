@@ -71,7 +71,9 @@ public class GameView {
 	private BorderPane hexBox;
 	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
-
+	private Button moveButton = new Button("Move");
+	private Button attackButton = new Button ("Attack");
+	
 	/**
 	 * Method for creating the GameView Scene
 	 * 
@@ -91,14 +93,13 @@ public class GameView {
 		// backBtn.setStyle(arg0);
 		tankHealthTable = new TableView<String>();
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
-		Button moveBtn = new Button("Move");
-		moveBtn.setOnAction(new EventHandler<ActionEvent>() {
+		
+		moveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "MOVE";
 			}
 		});
-		Button attackBtn = new Button("Attack");
-		attackBtn.setOnAction(new EventHandler<ActionEvent>() {
+		attackButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "ATTACK";
 			}
@@ -116,7 +117,7 @@ public class GameView {
 				controller.endTurn();
 			}
 		});
-		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveBtn, attackBtn, inspectBtn,
+		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveButton, attackButton, inspectBtn,
 				endTurnBtn);
 		// Center of window
 		VBox centerBox = new VBox(60);
@@ -156,8 +157,8 @@ public class GameView {
 		observerListLabel.getStyleClass().add("text_label");
 		backBtn.getStyleClass().add("cancelbutton");
 		currentTurnLabel.getStyleClass().add("centred_label");
-		moveBtn.getStyleClass().add("button");
-		attackBtn.getStyleClass().add("button");
+		moveButton.getStyleClass().add("button");
+		attackButton.getStyleClass().add("button");
 		inspectBtn.getStyleClass().add("button");
 		endTurnBtn.getStyleClass().add("button");
 		forfeit.getStyleClass().add("cancelbutton");
@@ -221,6 +222,7 @@ public class GameView {
 								break;
 							case "ATTACK":
 								controller.attackTile(x, y);
+								
 								break;
 
 							}
@@ -306,6 +308,18 @@ public class GameView {
 
 	public void updateGame(Board board) {
 
+		if(board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0){
+			moveButton.setDisable(true);
+		}else{
+			moveButton.setDisable(false);
+		}
+		
+		if(board.players.get(board.playerTurn).hasShot){
+			attackButton.setDisable(true);
+		}else{
+			attackButton.setDisable(false);
+		}
+		
 		currentTankMoveLabel.setText(
 				board.players.get(board.playerTurn).robotList.get(board.currentRobot).getClass().getSimpleName()
 						+ " Move:" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft

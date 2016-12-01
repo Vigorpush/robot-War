@@ -1,0 +1,89 @@
+CODE REVIEW & 10th Meeting
+ATTENDANCE COMPLETE
+Agenda:
+Inspect Tile -> Vigor
+Forfeit -> Niklaas
+Lose -> Niklaas
+End game -> Niklaas
+Table of robot health -> Vigor
+Commenting 
+Testing
+Documentation
+Server -> Tuesday
+Lobby View -> Tuesday
+
+AI
+Connecting to Librarian
+
+CodeReview: 
+Legend:
+	“ - “ means info
+	“ # “ means group comments or discussions
+
+We are Code reviewing the class Game.
+
+
+class Game
+
+ We have 5 static variables. The main function is also in game.
+	- gamsStage 
+	- gameBoard (model)
+	- GameView (view)
+	- defeatedRobots // this array is for fixing the turns of players
+
+start()
+	Initialized the stages, view.
+
+joinGame()
+	# realized we needed static variables to know who you are
+	TODO:
+
+hostGame()
+	
+exitGame()
+	Is exit Game
+
+beginGame()
+	Called by lobby view
+	It has the spinner
+	returns the result which is a boolean for 
+	check side length and creates the board with it
+	then it creates all its player and gives them their tanks in a sorted order
+
+rungame()
+ don’t need that any more
+
+getHealths
+	
+moveRobot
+	takes in x and y position 
+	if current player turn && robot is alive
+	takes in destination
+	check if you can move there
+	updates fogOfWar
+	moves FogOfWar
+
+endturn()
+	updates player turns
+	# Group sees a bug but discussion and reviewing was required to analyze what enter does
+	# The group saw the bug was in a an if statement
+
+attackTile()
+	if current players turn
+	get attacking robot
+	get target (if check verified)
+ 	check if you need to remove now or when turn ends
+	# Determined that an if statement was faulty and will be fixed later
+	# Do suicide gets you kills?? 
+
+UpdateGame()
+	HardCoded Robot
+	hexBox is the list of robots for View
+	#while robotOwner == null is discovered to be changes displayed what will be done
+	
+————————————————————————————————————————————————
+class Player
+	
+setFogOFWar()
+	fixes the fog of war of current players
+	from lower bound loops until start 

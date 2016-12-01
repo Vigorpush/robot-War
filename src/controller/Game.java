@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ import view.StartView;
  *
  */
 public class Game extends Application {
-
+    
+    public static final int PORT = 32222;
 	// The window that the game is displayed in
 	public static Stage gameStage;
 	// The board that stores all the tiles, players, and turns of the game
@@ -40,6 +42,8 @@ public class Game extends Application {
 	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	// The number of tiles on each side of the board.
 	public static int sideLength;
+	public static Client myClient;
+	public static LobbyView lobbyScene;
 	
 	public static void main(String[] args) {
 
@@ -75,16 +79,45 @@ public class Game extends Application {
 		if (name.length() != 0) {
 			result = true;
 		}
+		
+		try{
+		    myClient = new Client(address, PORT, name, this);
+		    System.out.println("Clinet successfully started");
+		    lobbyScene = new LobbyView();
+			gameStage.setScene(lobbyScene.init());
+		}catch (Exception e){
+		    System.out.println("Starting client failed");
+		}
 		return result;
+	}	
+	
+	public void connectUser(ArrayList<String> observerList, ArrayList<String> playerList)
+	{
+		lobbyScene.updateUserLists(observerList, playerList);
 	}
-
+	
 	/**
 	 * The method that is called when someone wishes to host a game.
 	 * @param name The username of the host
 	 */
 	public void hostGame(String name) {
-		LobbyView lobbyScene = new LobbyView();
+		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
+		
+		try {									// @Nico was here I'm trying to create a server
+			System.out.println("Server Creation Started");
+			Server hostServer = new Server(PORT); // TODO: hardcoded port
+		} catch (IOException e) { 				// author Nico was here too
+			System.err.println("Server Creation Failed");
+		}	
+		
+		try {
+		    myClient = new Client("localhost", PORT, name, this);
+		    System.out.println("Client started");
+		}catch (Exception e){
+		    System.err.println("Failed to start client");
+		}
+		
 		lobbyScene.addUser(name);
 		// lobbyScene.setStyle();
 	}
