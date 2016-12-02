@@ -12,14 +12,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -27,6 +30,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import model.Board;
 import model.Player;
 import model.Robot;
@@ -72,8 +77,9 @@ public class GameView {
 	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
 	private Button moveButton = new Button("Move");
-	private Button attackButton = new Button ("Attack");
-	
+	private Button attackButton = new Button("Attack");
+	private Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
+
 	/**
 	 * Method for creating the GameView Scene
 	 * 
@@ -93,7 +99,7 @@ public class GameView {
 		// backBtn.setStyle(arg0);
 		tankHealthTable = new TableView<String>();
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
-		
+
 		moveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "MOVE";
@@ -117,8 +123,8 @@ public class GameView {
 				controller.endTurn();
 			}
 		});
-		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveButton, attackButton, inspectBtn,
-				endTurnBtn);
+		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveButton, attackButton,
+				inspectBtn, endTurnBtn);
 		// Center of window
 		VBox centerBox = new VBox(60);
 		// TODO make reflect current turn
@@ -222,7 +228,7 @@ public class GameView {
 								break;
 							case "ATTACK":
 								controller.attackTile(x, y);
-								
+
 								break;
 
 							}
@@ -308,18 +314,18 @@ public class GameView {
 
 	public void updateGame(Board board) {
 
-		if(board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0){
+		if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0) {
 			moveButton.setDisable(true);
-		}else{
+		} else {
 			moveButton.setDisable(false);
 		}
-		
-		if(board.players.get(board.playerTurn).hasShot){
+
+		if (board.players.get(board.playerTurn).hasShot) {
 			attackButton.setDisable(true);
-		}else{
+		} else {
 			attackButton.setDisable(false);
 		}
-		
+
 		currentTankMoveLabel.setText(
 				board.players.get(board.playerTurn).robotList.get(board.currentRobot).getClass().getSimpleName()
 						+ " Move:" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft
@@ -358,139 +364,253 @@ public class GameView {
 								}
 								i++;
 							}
-							try {
-								if (robotOwner.IP.equals(InetAddress.getLocalHost().toString())) {
+							// TODO currently displays robots from the
+							// perspective of the current player, may want to
+							// display from perspective of client's playerW
+							// try {
+							if (robotOwner.teamNumber == board.playerTurn) {
+								// if
+								// (robotOwner.IP.equals(InetAddress.getLocalHost().toString()))
+								// {
 
-									String robotType = r.getClass().getSimpleName();
-									File file;
-									int x = currentXCoor;// + currentYCoor - 4;
-									int y = currentYCoor;
-									switch (robotType) {
-									case "Scout":
-										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Scout.png");
-										Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
-										robotImages[imageCount].setImage(scout);
-										robotImages[imageCount].setScaleX(0.60);
-										robotImages[imageCount].setScaleY(0.60);
-										robotImages[imageCount].setLayoutX(
-												xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-										robotImages[imageCount]
-												.setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-														+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);
-										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+								String robotType = r.getClass().getSimpleName();
+								File file;
+								int x = currentXCoor;// + currentYCoor - 4;
+								int y = currentYCoor;
+								switch (robotType) {
+								case "Scout":
+									robotImages[imageCount] = new ImageView();
+									file = new File("Resources/images/" + i + "Scout.png");
+									Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									robotImages[imageCount].setImage(scout);
+									robotImages[imageCount].setScaleX(0.60);
+									robotImages[imageCount].setScaleY(0.60);
+									robotImages[imageCount].setLayoutX(
+											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
+									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+											+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);									
+									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-											@Override
-											public void handle(MouseEvent t) {
-												Game controller = new Game();
-												switch (onClick) {
-												case "INSPECT":
-													break;
+										@Override
+										public void handle(MouseEvent t) {
+											Game controller = new Game();
+											switch (onClick) {
+											case "INSPECT":
+												break;
 
-												case "MOVE":
-													controller.moveRobot(x, y);
-													break;
-												case "ATTACK":
-													controller.attackTile(x, y);
-													break;
+											case "MOVE":
+												controller.moveRobot(x, y);
+												break;
+											case "ATTACK":
+												controller.attackTile(x, y);
+												break;
 
-												}
 											}
-										});
-										hexBox.getChildren().add(robotImages[imageCount++]);
-										imageCount++;
-										break;
-									case "Sniper":
-										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Sniper.png");
-										Image sniper = new Image(
-												"file:///" + file.getAbsolutePath().replace("\\", "/"));
-										robotImages[imageCount].setImage(sniper);
-										robotImages[imageCount].setScaleX(0.60);
-										robotImages[imageCount].setScaleY(0.60);
-										robotImages[imageCount].setLayoutX(
-												xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-										robotImages[imageCount].setLayoutY(height * currentYCoor
-												+ WIDTH / Math.sqrt(3) / 2 - sniper.getHeight() * 0.20);
-										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+										}
+									});
+									hexBox.getChildren().add(robotImages[imageCount++]);
+									imageCount++;
+									break;
+								case "Sniper":
+									robotImages[imageCount] = new ImageView();
+									file = new File("Resources/images/" + i + "Sniper.png");
+									Image sniper = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									robotImages[imageCount].setImage(sniper);
+									robotImages[imageCount].setScaleX(0.60);
+									robotImages[imageCount].setScaleY(0.60);
+									robotImages[imageCount].setLayoutX(
+											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
+									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+											- sniper.getHeight() * 0.20);
+									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-											@Override
-											public void handle(MouseEvent t) {
-												Game controller = new Game();
-												switch (onClick) {
-												case "INSPECT":
-													break;
+										@Override
+										public void handle(MouseEvent t) {
+											Game controller = new Game();
+											switch (onClick) {
+											case "INSPECT":
+												break;
 
-												case "MOVE":
-													controller.moveRobot(x, y);
-													break;
-												case "ATTACK":
-													controller.attackTile(x, y);
-													break;
+											case "MOVE":
+												controller.moveRobot(x, y);
+												break;
+											case "ATTACK":
+												controller.attackTile(x, y);
+												break;
 
-												}
 											}
-										});
-										hexBox.getChildren().add(robotImages[imageCount++]);
-										imageCount++;
-										break;
-									case "Tank":
-										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Tank.png");
-										Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
-										robotImages[imageCount].setImage(tank);
-										robotImages[imageCount].setScaleX(0.60);
-										robotImages[imageCount].setScaleY(0.60);
-										robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH
-												+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
-										robotImages[imageCount].setLayoutY(height * currentYCoor
-												+ WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);
-										robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+										}
+									});
+									hexBox.getChildren().add(robotImages[imageCount++]);
+									imageCount++;
+									break;
+								case "Tank":
+									robotImages[imageCount] = new ImageView();
+									file = new File("Resources/images/" + i + "Tank.png");
+									Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									robotImages[imageCount].setImage(tank);
+									robotImages[imageCount].setScaleX(0.60);
+									robotImages[imageCount].setScaleY(0.60);
+									robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH
+											+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
+									robotImages[imageCount].setLayoutY(
+											height * currentYCoor + WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);									
+									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-											@Override
-											public void handle(MouseEvent t) {
-												Game controller = new Game();
-												switch (onClick) {
-												case "INSPECT":
-													break;
+										@Override
+										public void handle(MouseEvent t) {
+											Game controller = new Game();
+											switch (onClick) {
+											case "INSPECT":
+												break;
 
-												case "MOVE":
-													controller.moveRobot(x, y);
-													break;
-												case "ATTACK":
-													controller.attackTile(x, y);
-													break;
+											case "MOVE":
+												controller.moveRobot(x, y);
+												break;
+											case "ATTACK":
+												controller.attackTile(x, y);
+												break;
 
-												}
 											}
-										});
-										hexBox.getChildren().add(robotImages[imageCount++]);
-										imageCount++;
-									}
-								} else {
-									robotCount++;
-									if (previousRobot != null && previousRobot.teamNumber != r.teamNumber) {
-										sameOwner = false;
-									}
+										}
+									});
+									hexBox.getChildren().add(robotImages[imageCount++]);
+									imageCount++;
 								}
-							} catch (UnknownHostException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+							} else {
+								robotCount++;
+								if (previousRobot != null && previousRobot.teamNumber != r.teamNumber) {
+									sameOwner = false;
+								} else {
+									previousRobot = r;
+								}
 							}
+							/*
+							 * } catch (UnknownHostException e) { // TODO
+							 * Auto-generated catch block e.printStackTrace(); }
+							 */
 
 						}
 						// TODO draw other number
-					}
-					else
-					{
-						if(hexagonArray[currentYCoor][currentXCoor]!=null)
-						{
-						hexagonArray[currentYCoor][currentXCoor].setFill(Color.DARKGREY);
+						if (robotCount == 1) {
+							String robotType = previousRobot.getClass().getSimpleName();
+							File file;
+							int x = currentXCoor;// + currentYCoor - 4;
+							int y = currentYCoor;
+							switch (robotType) {
+							case "Scout":
+								robotImages[imageCount] = new ImageView();
+								file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Scout.png");
+								Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+								robotImages[imageCount].setImage(scout);
+								break;
+							case "Sniper":
+								robotImages[imageCount] = new ImageView();
+								file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Sniper.png");
+								Image sniper = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+								robotImages[imageCount].setImage(sniper);
+								break;
+							case "Tank":
+								robotImages[imageCount] = new ImageView();
+								file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Tank.png");
+								Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+								robotImages[imageCount].setImage(tank);
+								break;
+							}
+							robotImages[imageCount].setScaleX(0.60);
+							robotImages[imageCount].setScaleY(0.60);
+							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3)
+									+ WIDTH / 2 - robotImages[imageCount].getImage().getWidth());
+							robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+									+ WIDTH / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);							
+							robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+								@Override
+								public void handle(MouseEvent t) {
+									Game controller = new Game();
+									switch (onClick) {
+									case "INSPECT":
+										break;
+
+									case "MOVE":
+										controller.moveRobot(x, y);
+										break;
+									case "ATTACK":
+										controller.attackTile(x, y);
+										break;
+
+									}
+								}
+							});
+							hexBox.getChildren().add(robotImages[imageCount++]);
+							//imageCount++;
+
+						} else if (robotCount > 1) {
+							int x = currentXCoor;// + currentYCoor - 4;
+							int y = currentYCoor;
+							int robotColor = previousRobot.teamNumber;
+							if(!sameOwner)
+							{
+								robotColor = 6;
+							}
+							robotImages[imageCount] = new ImageView();
+							robotImages[imageCount].setScaleX(0.60);
+							robotImages[imageCount].setScaleY(0.60);
+							robotImages[imageCount].setImage(textToImage(""+robotCount, numberColors[robotColor]));
+							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3)
+							+ WIDTH / 2 - robotImages[imageCount].getImage().getWidth());
+					robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+							+ WIDTH / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);
+					robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+						@Override
+						public void handle(MouseEvent t) {
+							Game controller = new Game();
+							switch (onClick) {
+							case "INSPECT":
+								break;
+
+							case "MOVE":
+								controller.moveRobot(x, y);
+								break;
+							case "ATTACK":
+								controller.attackTile(x, y);
+								break;
+
+							}
+						}
+					});
+					hexBox.getChildren().add(robotImages[imageCount++]);
+					//imageCount++;
+
+						}
+					} else {
+						if (hexagonArray[currentYCoor][currentXCoor] != null) {
+							hexagonArray[currentYCoor][currentXCoor].setFill(Color.DARKGREY);
 						}
 					}
 				}
 
 			}
 		}
+	}
+
+	private Image textToImage(String text, Color color) {
+		Label label = new Label(text);
+		label.setFont(new Font(30));
+		label.setMinSize(55, 47);
+		label.setMaxSize(55, 47);
+		label.setPrefSize(55, 47);
+		label.setTextFill(color);
+		label.setWrapText(true);
+		label.setTranslateX(23);
+		Rectangle rect = new Rectangle(55,47);
+		rect.setFill(null);
+		rect.setStroke(color);
+		rect.setStrokeWidth(10);
+		Scene scene = new Scene(new Group(label,rect));
+		WritableImage img = new WritableImage(55, 47);
+		scene.snapshot(img);		
+		return img;
 	}
 }

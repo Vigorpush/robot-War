@@ -119,6 +119,7 @@ public class Game extends Application {
 		}
 		
 		lobbyScene.addUser(name);
+		lobbyScene.addUser("Fake");
 		// lobbyScene.setStyle();
 	}
 
