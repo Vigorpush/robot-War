@@ -173,14 +173,19 @@ public class LobbyView {
 	    return observerList;
 	}
 	
-	public void updateUserLists(ArrayList<String> newObserverList, ArrayList<String> newPlayerList){
-	    this.observerList = newObserverList;
-	    this.observerObsList = (ObservableList<String>) newObserverList;
+	public void updateUserLists(ArrayList<String> newObserverList, ArrayList<String> newPlayerList) {
+    
+	    this.observerObsList.clear();
+	    this.observerObsList.addAll(newObserverList);
+	    for(int i = 0 ; i < this.observerObsList.size() ; i++)
+	    {
+	    System.out.println("Obs List: " + this.observerObsList.get(i));
+	    }
 	    this.observerListView.refresh();
 	    this.observerListView.getSelectionModel().selectFirst();
 	    
-	    this.playerList = newPlayerList;
-	    this.playerObsList = (ObservableList<String>) newPlayerList;
+	    this.playerObsList.clear();
+	    this.playerObsList.addAll(newPlayerList);
 	    this.playerListView.refresh();
 	}
 }

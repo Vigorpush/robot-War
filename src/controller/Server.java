@@ -57,7 +57,14 @@ public class Server {
         			        if(!bullets.isEmpty()){
         			            userList = (LobbyMessage) bullets.take();
         			            for(ConnectionToClient con : connections){
-        			                con.sendUserList = true;
+        			            	System.out.println("ERROR HERE");
+                		            try{
+                		                con.out.writeObject(userList);
+                		                con.out.flush();
+                		            }catch(Exception e3){
+                		            	System.out.println(e3);
+                		                System.out.println("Could not send name from server");
+                		            }
         			            }
         			        }
                         } catch (InterruptedException e) {
@@ -153,8 +160,8 @@ public class Server {
         private ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
         private boolean newConnection = true;   // Lobby: already recieved a string when false recieve pairs
-        private boolean sendUserList = false;
-        int counter = 0;
+        public boolean sendUserList = false;
+
         private Thread sendThread;      // The thread for sending states to the client
         private volatile Thread recieveThread;  // The thread for receiving states from the client
         
@@ -222,7 +229,9 @@ public class Server {
         		}									// end try&catch: connect
         		while(!closed){
         		    while(inLobby){
+        		    	/**
         		        if(sendUserList){
+    			            System.out.println("ERROR EHRE");
         		            try{
         		                out.writeObject(userList);
         		                out.flush();
@@ -231,7 +240,7 @@ public class Server {
         		            	System.out.println(e3);
         		                System.out.println("Could not send name from server");
         		            }
-        		        }
+        		        }*/
         		    } 
         		      // while ingame
 					  // loadShotgun(outgoingState);
@@ -262,7 +271,7 @@ public class Server {
                                     userList.observerList.add(newName); // add the user to the observer list
                                     newConnection = false;              // Done connecting
                                     loadShotgun(userList);
-                                }catch(Exception e){
+                                } catch(Exception e) {
                                     System.out.println("Could not recieve names in server");
                                     closed = true;
                                     disconnect();
@@ -288,18 +297,5 @@ public class Server {
             }
         }
     }   //End class connection to client
-     /**
-     public class LobbyMessage implements Serializable{
-		public ArrayList<String> playerList;
-         public ArrayList<String> observerList;
-         public boolean begin;
-         
-         public LobbyMessage(){
-             this.playerList = new ArrayList<String>();
-             this.observerList = new ArrayList<String>();
-             begin = false;
-         }
-     }
-     */
 }
 

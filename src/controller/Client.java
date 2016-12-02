@@ -56,7 +56,7 @@ public class Client {
         private boolean closed;
         private boolean sending = false;        //Determines wether to send the current state to the server.
         private LobbyMessage userList;
-        
+        int counter = 0;
         private final Thread sendThread;      // The thread for sending states to the client
         private final Thread recieveThread;   // The thread for receiving states from the client
 
@@ -103,13 +103,12 @@ public class Client {
         
         private class RecieveThread extends Thread{
             public void run(){
-                System.out.println("CLient Recieve thread started");
+                System.out.println("Client: Recieve thread started");
                 try{
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
                            // System.out.println("IN LOBBY WAITING FOR GAME START");
                             userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
-                            System.out.println("recieved a new names");
                             if(!userList.begin){       // Check that we did not recieve the begin code
                                 receiveNames(userList);       // Receive the name 
                             }else{
@@ -122,8 +121,7 @@ public class Client {
                         recieveGame();  // Tell the controller that a new state has been received
                     }
                 }catch(Exception e){
-                   System.out.println("Internal error in recieve thread"); 
-                   System.out.println(e);
+                   System.out.println("Client: Internal error in recieve thread"); 
                 }
             }
         }
@@ -135,7 +133,9 @@ public class Client {
         public void receiveNames(LobbyMessage msg){
             // TODO: call controller recieve names
             // game.updateLobbyNames(name);
+            System.out.println("recieved a new names1");
         	game.connectUser(msg.observerList, msg.playerList);
+            System.out.println("recieved a new names2");
         }
         
         /**
@@ -156,8 +156,7 @@ public class Client {
                 out.writeObject(begin);
                 out.flush();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            	System.out.println("Client: hostBeginGame not working");
             }
             
         }
@@ -189,20 +188,8 @@ public class Client {
         		in.close();
         		out.close();
         	} catch (IOException e) {
+            	System.out.println("Client: not disconneting properly");
         	}
         }
     }
-    /**
-    public class LobbyMessage implements Serializable{
-		public ArrayList<String> playerList;
-        public ArrayList<String> observerList;
-        public boolean begin;
-        
-        public LobbyMessage(){
-            this.playerList = new ArrayList<String>();
-            this.observerList = new ArrayList<String>();
-            begin = false;
-        }
-    }
-    */
 }
