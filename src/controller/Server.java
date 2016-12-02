@@ -3,24 +3,25 @@ package controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import model.Board;
+import model.LobbyMessage;
 
 public class Server {
      // TODO: check if in lobby
     // TODO: create sendName function sends new name to all clients
     // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, 
     // TODO: create begin game function, sets in lobby false, sends begincode to all clients, called when recieve name recieves begincode
-  
+
     /**
      * List of client connections.
      */
     private List<ConnectionToClient> connections;
-   
     
     /**
      * A Queue of objects to be sent
@@ -33,7 +34,6 @@ public class Server {
     private LobbyMessage userList;
     
     private Board gameState;
- 
     private ServerSocket serverSocket;  // Socket that listens for connections
     private Thread serverThread;    	// Thread to accept connections
     private volatile boolean shutdown;  // Determines whether the server is running
@@ -64,7 +64,10 @@ public class Server {
                             e.printStackTrace();
                         }
         			}
+        			/*
+        			// while inGame
         			while(!shutdown) {
+        				System.out.println("IF I AM CALLLED FUCK");
         				if(!bullets.isEmpty()) {
         					try {
         						gameState = (Board) bullets.take();
@@ -80,7 +83,7 @@ public class Server {
         						e.printStackTrace();
         					}
         				}
-        			}
+        			} */
         		}
         	}
         };
@@ -151,7 +154,7 @@ public class Server {
         private boolean closed;
         private boolean newConnection = true;   // Lobby: already recieved a string when false recieve pairs
         private boolean sendUserList = false;
-        
+        int counter = 0;
         private Thread sendThread;      // The thread for sending states to the client
         private volatile Thread recieveThread;  // The thread for receiving states from the client
         
@@ -218,7 +221,6 @@ public class Server {
         			return;
         		}									// end try&catch: connect
         		while(!closed){
-        			
         		    while(inLobby){
         		        if(sendUserList){
         		            try{
@@ -226,17 +228,20 @@ public class Server {
         		                out.flush();
         		                sendUserList = false;
         		            }catch(Exception e3){
+        		            	System.out.println(e3);
         		                System.out.println("Could not send name from server");
         		            }
         		        }
+        		    } 
+        		      // while ingame
+					  // loadShotgun(outgoingState);
+        		    try {
+        		    	Board sendState = outgoingState;
+        		    	out.writeObject(sendState);
+        		    	out.flush();
+        		    } catch (Exception e2) {
+        		    	System.out.println("Could not send board state from server");
         		    }
-					   loadShotgun(outgoingState);
-						/**
-					     * OLD
-						Board sendState = outgoingState;	// sends board state
-				        out.writeObject(sendState);
-				        out.flush();
-				        */
 				}
         	}	// end Run
         }	// end Send
@@ -283,9 +288,9 @@ public class Server {
             }
         }
     }   //End class connection to client
-     
-     private class LobbyMessage{
-         public ArrayList<String> playerList;
+     /**
+     public class LobbyMessage implements Serializable{
+		public ArrayList<String> playerList;
          public ArrayList<String> observerList;
          public boolean begin;
          
@@ -295,5 +300,6 @@ public class Server {
              begin = false;
          }
      }
+     */
 }
 

@@ -3,11 +3,13 @@ package controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Board;
+import model.LobbyMessage;
 /**
  * The client used to connect to the server in the robot game
  * @author kts135 - Kyle Seidenthal
@@ -84,7 +86,6 @@ public class Client {
         
         private class SendThread extends Thread{
             public void run(){
-                
                 System.out.println("Client send thread started");
                 try{
                     while(!closed && !inLobby){ // While the server is still open and we are not in the lobby....
@@ -102,7 +103,7 @@ public class Client {
         
         private class RecieveThread extends Thread{
             public void run(){
-                System.out.println("Recieve thread started");
+                System.out.println("CLient Recieve thread started");
                 try{
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
@@ -191,9 +192,9 @@ public class Client {
         	}
         }
     }
-    
-    private class LobbyMessage{
-        public ArrayList<String> playerList;
+    /**
+    public class LobbyMessage implements Serializable{
+		public ArrayList<String> playerList;
         public ArrayList<String> observerList;
         public boolean begin;
         
@@ -203,4 +204,5 @@ public class Client {
             begin = false;
         }
     }
+    */
 }
