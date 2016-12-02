@@ -40,10 +40,11 @@ public abstract class Robot {
 		range = 0;
 		movementLeft = 0;
 	}
+	//TODO adding more variables from json file
 	//this function will update stats into json file
 	public void updatetoJson() {
 		GsonWriter jsonWriter = new GsonWriter();
-		jsonWriter.GsonWriteGameResult(this.jsonPath, matchesWon, lose, match, deathCount, killCount);
+//		/jsonWriter.GsonWriteGameResult(this.jsonPath, matchesWon, lose, match, deathCount, killCount);
 	}
 	//to be checked on and implemented outright
 	//String[] interpreter(String[] s){
