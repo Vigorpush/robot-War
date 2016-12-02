@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
 
 import controller.Game;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -159,7 +160,7 @@ public class LobbyView {
 		{
 			observerObsList.add(name);
 			observerListView.refresh();
-			observerListView.getSelectionModel().selectFirst();
+			observerListView.getSelectionModel().selectFirst();  // HEY NIKLAAS THERES AN ERROR WITH THIS FOR SOME RESON
 			result = true;
 		}
 		return result;
@@ -174,18 +175,26 @@ public class LobbyView {
 	}
 	
 	public void updateUserLists(ArrayList<String> newObserverList, ArrayList<String> newPlayerList) {
-    
-	    this.observerObsList.clear();
-	    this.observerObsList.addAll(newObserverList);
-	    for(int i = 0 ; i < this.observerObsList.size() ; i++)
-	    {
-	    System.out.println("Obs List: " + this.observerObsList.get(i));
-	    }
-	    this.observerListView.refresh();
-	    this.observerListView.getSelectionModel().selectFirst();
 	    
-	    this.playerObsList.clear();
-	    this.playerObsList.addAll(newPlayerList);
-	    this.playerListView.refresh();
+	    System.out.println("GOT TO VIEW");
+	    
+	    Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	            observerObsList.clear();
+	            observerObsList.addAll(newObserverList);
+	            for(int i = 0 ; i < observerObsList.size() ; i++)
+	            {
+	            System.out.println("Obs List: " + observerObsList.get(i));
+	            }
+	            observerListView.refresh();
+	            observerListView.getSelectionModel().selectFirst();
+	            
+	            playerObsList.clear();
+	            playerObsList.addAll(newPlayerList);
+	            playerListView.refresh();
+	        }
+	    });
+	    
 	}
 }

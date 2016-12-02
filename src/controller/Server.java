@@ -57,7 +57,7 @@ public class Server {
         			        if(!bullets.isEmpty()){
         			            userList = (LobbyMessage) bullets.take();
         			            for(ConnectionToClient con : connections){
-        			            	System.out.println("ERROR HERE");
+        			            	//System.out.println("ERROR HERE");
                 		            try{
                 		                con.out.writeObject(userList);
                 		                con.out.flush();
