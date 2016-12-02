@@ -114,11 +114,18 @@ public class Client {
                            // System.out.println("IN LOBBY WAITING FOR GAME START");
                             userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
                             System.out.println("CLIENT RECIEVED: " + userList.observerList.toString());
-                            if(!userList.begin){       // Check that we did not recieve the begin code
-                                receiveNames(userList);       // Receive the name 
+                            
+                            // Check that the connection was not rejected
+                            if(userList.reject){
+                                game.connectionRejected();
+                                disconnect();
                             }else{
-                                inLobby = false;            // It is time to begin the game, so leave the lobby
-                                beginGame();                
+                                if(!userList.begin){       // Check that we did not recieve the begin code
+                                    receiveNames(userList);       // Receive the name 
+                                }else{
+                                    inLobby = false;            // It is time to begin the game, so leave the lobby
+                                    beginGame();                
+                                }
                             }
                         }
                         // now we are in the game, so we will constantly read the newest game state.

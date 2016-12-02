@@ -282,4 +282,9 @@ public class Game extends Application {
 		}
 
 	}
+	
+	public void connectionRejected(){
+	    // Pop up a dialogue box that says we were rejected and return to the start view.
+	    System.out.println("Connection rejected: user name has already been used");
+	}
 }

@@ -53,6 +53,7 @@ public class Server {
         
         Thread shotgunThread = new Thread(){
         	public void run() {
+        	    ConnectionToClient rejectedUser = null;
         		while(true) {
         			while(inLobby){
         			    try {
@@ -61,14 +62,26 @@ public class Server {
         			            
         			            for(ConnectionToClient con : connections){
         			            	System.out.println("SERVER IS SENDING: " + userList.observerList.toString() + " TO CLIENT: " + con.clientID);
+        			            	// Send the reject message if the client has been rejected
+        			            	if(userList.rejectID == con.clientID){
+        			            	    userList.reject = true;
+        			            	}else{
+        			            	    userList.reject = false;
+        			            	}
                 		            try{
                 		                con.out.writeObject(userList);
                 		                con.out.flush();
                 		                con.out.reset();
+                		                if(userList.reject == true){
+                		                    rejectedUser = con;
+                		                }
                 		            }catch(Exception e3){
                 		            	System.out.println(e3);
                 		                System.out.println("Could not send name from server");
                 		            }
+        			            }
+        			            if(rejectedUser != null){
+        			                serverDisconnectUser(rejectedUser);
         			            }
         			        }
                         } catch (InterruptedException e) {
@@ -132,7 +145,7 @@ public class Server {
     
     public void serverDisconnectUser(ConnectionToClient user){
         connections.remove(user);
-        
+        user.closed = true;
     }
     
     public void shutdownServer() {
@@ -274,9 +287,10 @@ public class Server {
                                     System.out.println("Server recieved name: " + newName);
                                     // Check for duplicates, refuse connection if there is one
                                     if(userList.observerList.contains(newName) || userList.playerList.contains(newName)){
-                                        throw new Exception("Duplicate player");  
+                                        userList.rejectID = clientID;
+                                    }else{
+                                        userList.observerList.add(newName); // add the user to the observer list
                                     }
-                                    userList.observerList.add(newName); // add the user to the observer list
                                     newConnection = false;              // Done connecting
                                     loadShotgun(userList);
                                 } catch(Exception e) {
