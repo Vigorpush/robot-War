@@ -80,8 +80,12 @@ public class Client {
             // Starting the Threads
             sendThread = new SendThread();
             recieveThread = new RecieveThread();
+            sendThread.setDaemon(true);
             sendThread.start();
+            
+            recieveThread.setDaemon(true);
             recieveThread.start();
+            
         }
         
         private class SendThread extends Thread{

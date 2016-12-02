@@ -46,7 +46,9 @@ public class Server {
         gameState = new Board(5); // TODO:
         serverSocket = new ServerSocket(port); 
         serverThread = new ServerThread();
+        serverThread.setDaemon(true);
         serverThread.start();
+        
         bullets = new LinkedBlockingQueue<Object>();
         
         Thread shotgunThread = new Thread(){
@@ -172,7 +174,9 @@ public class Server {
             this.incomingState = gameState;
             this.outgoingState = gameState;
             sendThread = new SendThread();
+            sendThread.setDaemon(true);
             sendThread.start();
+            
         }
         
         // ConnectionToClient Methods
@@ -218,7 +222,9 @@ public class Server {
                     out.flush();
                     acceptConnection(ConnectionToClient.this);	// Adds this.CTC to server.CTC List
                     recieveThread = new RecieveThread();
+                    recieveThread.setDaemon(true);
                     recieveThread.start();
+                    
                     
         		} catch(Exception e) {				// catch: connect
         			try{							// try: close connect
