@@ -11,11 +11,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;;
 
-public class robotParser {
+public class GsonReader {
 
 	GameResult gr;
 
-	public robotParser() {
+	public GsonReader() {
 
 	}
 
@@ -111,7 +111,7 @@ public class robotParser {
 	public static void main(String[] args) {
 
 		Gson g = new Gson();
-		robotParser rp = new robotParser();
+		GsonReader rp = new GsonReader();
 		rp.JsonReader("src/json/Centralizer.jsn");
 		System.out.println(g.toJson(rp.getcode("src/json/Centralizer.jsn")));
 		
