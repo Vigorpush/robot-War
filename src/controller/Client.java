@@ -109,6 +109,7 @@ public class Client {
                         while(inLobby){ // While we are in the lobby...
                            // System.out.println("IN LOBBY WAITING FOR GAME START");
                             userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
+                            System.out.println("CLIENT RECIEVED: " + userList.observerList.toString());
                             if(!userList.begin){       // Check that we did not recieve the begin code
                                 receiveNames(userList);       // Receive the name 
                             }else{

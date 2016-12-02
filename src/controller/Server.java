@@ -56,11 +56,13 @@ public class Server {
         			    try {
         			        if(!bullets.isEmpty()){
         			            userList = (LobbyMessage) bullets.take();
+        			            
         			            for(ConnectionToClient con : connections){
-        			            	//System.out.println("ERROR HERE");
+        			            	System.out.println("SERVER IS SENDING: " + userList.observerList.toString() + " TO CLIENT: " + con.clientID);
                 		            try{
                 		                con.out.writeObject(userList);
                 		                con.out.flush();
+                		                con.out.reset();
                 		            }catch(Exception e3){
                 		            	System.out.println(e3);
                 		                System.out.println("Could not send name from server");
