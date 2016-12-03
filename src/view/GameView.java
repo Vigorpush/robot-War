@@ -80,7 +80,7 @@ public class GameView {
 	private BorderPane hexBox;
 	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
-	
+	private TableView table_view;
 	
     public static final String Column1MapKey = "Scout";
     public static final String Column2MapKey = "Sniper";
@@ -117,7 +117,7 @@ public class GameView {
         secondDataColumn.setMinWidth(100);
         thirdDataColumn.setCellValueFactory(new MapValueFactory(Column3MapKey));
         thirdDataColumn.setMinWidth(100);
-        TableView table_view = new TableView<>(generateDataInMap());
+        table_view = new TableView<>(generateDataInMap());
  
         table_view.setEditable(false);
         table_view.getSelectionModel().setCellSelectionEnabled(true);
@@ -365,27 +365,27 @@ public class GameView {
 	//TODO listening HP for all robot
 	 @SuppressWarnings("rawtypes")
 		private ObservableList<Map> generateDataInMap() {
-	        int max = 10;
 	        ObservableList<Map> allData = FXCollections.observableArrayList();
-	        for (int i = 1; i < max; i++) {
+	        Game controller = new Game();
+	        int[] healths = controller.getRobotHealths();
 	            Map<String, String> dataRow = new HashMap<>();
 	 
-	            String value1 = "A" + i;
-	            String value2 = "B" + i;
-	            String value3 = "C" + i;
+	            String value1 = "" + healths[0];
+	            String value2 = "" + healths[1];
+	            String value3 = "" + healths[2];
 	 
 	            dataRow.put(Column1MapKey, value1);
 	            dataRow.put(Column2MapKey, value2);
 	            dataRow.put(Column3MapKey, value3);
 	            allData.add(dataRow);
-	        }
+	        
 	        return allData;
 	    }
 	
 	
 	
 	public void updateGame(Board board) {
-
+		table_view = new TableView<>(generateDataInMap());
 		currentTankMoveLabel.setText(
 				board.players.get(board.playerTurn).robotList.get(board.currentRobot).getClass().getSimpleName()
 						+ " Move:" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft

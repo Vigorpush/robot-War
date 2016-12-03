@@ -173,7 +173,11 @@ public class Game extends Application {
 
 	// Needs a way to determine which player is being displayed.
 	public int[] getRobotHealths() {
-		int[] healths = { 1, 2, 3 };
+		int[] healths = new int[gameBoard.players.get(gameBoard.playerTurn).robotList.size()];
+		for(int i = 0; i < healths.length; i++)
+		{
+			healths[i] = gameBoard.players.get(gameBoard.playerTurn).robotList.get(i).health;
+		}
 		return healths;
 	}
 
