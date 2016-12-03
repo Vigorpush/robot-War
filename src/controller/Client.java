@@ -143,11 +143,7 @@ public class Client {
          * @param name -> The new name to add to the lobby screen
          */
         public void receiveNames(LobbyMessage msg){
-            // TODO: call controller recieve names
-            // game.updateLobbyNames(name);
-            System.out.println("recieved a new names1");
         	game.connectUser(msg.observerList, msg.playerList);
-            System.out.println("recieved a new names2");
         }
         
         /**
