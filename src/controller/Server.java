@@ -78,6 +78,11 @@ public class Server {
                 		                // Set the rejected user so we can disconnect them
                 		                if(userList.reject == true){
                 		                    rejectedUser = con;
+                		                } 
+                		                
+                		                if(userList.begin){
+                		                    System.out.println("SERVER SENT BEGIN GAME!");
+                		                    inLobby = false;
                 		                }
                 		                
                 		            }catch(Exception e3){
@@ -89,6 +94,8 @@ public class Server {
         			            if(rejectedUser != null){
         			                serverDisconnectUser(rejectedUser);
         			            }
+        			            
+        			           
         			        }
         			        
                         } catch (InterruptedException e) {

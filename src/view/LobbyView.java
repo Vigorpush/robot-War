@@ -81,15 +81,11 @@ public class LobbyView {
 		beginBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
-				try {
-					if(!controller.beginGame(computerCount.getValue(), playerList, observerList))
-					{
-						//TODO popup error if incorrect number of players
-					}
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				if(!controller.signalGameStart(computerCount.getValue(), playerList, observerList))
+                {
+                	//TODO popup error if incorrect number of players
+                }
+                System.out.println("PUSHED BEGIN BUTTON");
 						
 			}
 		});

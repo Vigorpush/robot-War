@@ -65,6 +65,7 @@ public class StartView {
 		testGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
+				controller.isHost = true;
 				ArrayList<String> playerList = new ArrayList<String>();
 				playerList.add("Player1");
 				playerList.add("Player2");

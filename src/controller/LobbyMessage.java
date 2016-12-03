@@ -9,6 +9,7 @@ public class LobbyMessage implements Serializable{
     public boolean begin;
     public int rejectID;
     public boolean reject;
+    public int computerPlayers;
     
     public LobbyMessage(){
         this.playerList = new ArrayList<String>();
@@ -16,5 +17,6 @@ public class LobbyMessage implements Serializable{
         this.begin = false;
         this.rejectID = -1;
         this.reject = false;
+        this.computerPlayers = 0;
     }
 }

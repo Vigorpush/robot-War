@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +124,8 @@ public class Client {
                                     receiveNames(userList);       // Receive the name 
                                 }else{
                                     inLobby = false;            // It is time to begin the game, so leave the lobby
-                                    beginGame();                
+                                    beginGame(userList);   
+                                    System.out.println("CLIENT RECIEVED BEGIN GAME");
                                 }
                             }
                         }
@@ -133,6 +135,7 @@ public class Client {
                     }
                 }catch(Exception e){
                    System.out.println("Client: Internal error in recieve thread"); 
+                   // TODO: notify and send back to start
                 }
             }
         }
@@ -148,9 +151,14 @@ public class Client {
         /**
          * Tells the controller to begin the game
          */
-        public void beginGame(){
-            // TODO: call controller beginGame
-            // game.beginGame();
+        public void beginGame(LobbyMessage msg){
+            try {
+                System.out.println("CAlling BEGIN GAME IN CLIENT");
+                game.beginGame(msg.computerPlayers, msg.playerList, msg.observerList);
+            } catch (UnknownHostException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         
         /**
@@ -162,6 +170,7 @@ public class Client {
                 begin.begin = true;
                 out.writeObject(begin);
                 out.flush();
+                System.out.println("HOST SENT BEGINGAME TO SERVER");
             } catch (IOException e) {
             	System.out.println("Client: hostBeginGame not working");
             }

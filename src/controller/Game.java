@@ -34,6 +34,7 @@ public class Game extends Application {
 	public static int sideLength;
 	public static Client myClient;
 	public static LobbyView lobbyScene;
+	public static boolean isHost;
 	
 	public static void main(String[] args) {
 
@@ -57,6 +58,7 @@ public class Game extends Application {
 	}
 //TODO store static variable about who you are 
 	public boolean joinGame(String name, String address) {
+	    this.isHost = false;
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if (name.length() != 0) {
@@ -81,6 +83,7 @@ public class Game extends Application {
 	
 	public void hostGame(String name) {
 		// TODO Auto-generated method stub
+	    this.isHost = true;
 		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
 		
@@ -99,6 +102,7 @@ public class Game extends Application {
 		}
 		
 		lobbyScene.addUser(name);
+		
 		// lobbyScene.setStyle();
 	}
 
@@ -106,10 +110,28 @@ public class Game extends Application {
 		gameStage.close();
 		System.exit(0);
 	}
-
+	
+	public boolean signalGameStart(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList){
+	    int playerCount = computerCount + playerList.size();
+	    
+	    if(playerCount == 2 || playerCount == 3 || playerCount == 6){   
+	        if(this.isHost){
+	            System.out.println("HOST HAS STARTED GAME.  TELLING CLIENTS");
+	            this.myClient.getConnection().hostBeginGame();
+	            return true;
+	        }else{
+	            return false;
+	        }
+	    }else{
+	        return false;
+	    }
+	}
 	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList)
 			throws UnknownHostException {
 		// TODO Auto-generated method stub
+	    System.out.println("IS HOST is  " + isHost);
+	    
+	    
 		boolean result = false;
 		sideLength = 5;
 		if (playerList.size() + computerCount == 6) {
