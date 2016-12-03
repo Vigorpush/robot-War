@@ -60,8 +60,8 @@ public class GsonReader {
 			gr.setLived(s.getAsJsonObject().get("lived").getAsInt());
 			gr.setExecutions(s.getAsJsonObject().get("executions").getAsInt());
 			gr.setLosses(s.getAsJsonObject().get("losses").getAsInt());
-			gr.setWin(s.getAsJsonObject().get("wins").getAsInt());
-			gr.setMatch(s.getAsJsonObject().get("matches").getAsInt());
+			gr.setWins(s.getAsJsonObject().get("wins").getAsInt());
+			gr.setMatches(s.getAsJsonObject().get("matches").getAsInt());
 			Iterator<JsonElement> it = s.getAsJsonObject().get("code").getAsJsonArray().iterator();
 			gr.setCode(s.getAsJsonObject().get("code").getAsJsonArray());
 			while (it.hasNext()) {
