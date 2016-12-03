@@ -84,7 +84,7 @@ public class GameView {
 	private BorderPane hexBox;
 	private Polyline[][] hexagonArray;
 	private String onClick = "INSPECT";
-	private TableView table_view;
+	TableViewController tc = new TableViewController();
 	
     public static final String Column1MapKey = "Scout";
     public static final String Column2MapKey = "Sniper";
@@ -127,36 +127,13 @@ public class GameView {
         secondDataColumn.setMinWidth(100);
         thirdDataColumn.setCellValueFactory(new MapValueFactory(Column3MapKey));
         thirdDataColumn.setMinWidth(100);
-        table_view = new TableView<>(generateDataInMap());
- 
-        table_view.setEditable(false);
-        table_view.getSelectionModel().setCellSelectionEnabled(true);
-        table_view.getColumns().setAll(firstDataColumn, secondDataColumn,thirdDataColumn);
-        Callback<TableColumn<Map, String>, TableCell<Map, String>>
-            cellFactoryForMap = new Callback<TableColumn<Map, String>,
-                TableCell<Map, String>>() {
-                    @Override
-                    public TableCell call(TableColumn p) {
-                        return new TextFieldTableCell(new StringConverter() {
-                            @Override
-                            public String toString(Object t) {
-                                return t.toString();
-                            }
-                            @Override
-                            public Object fromString(String string) {
-                                return string;
-                            }                                    
-                        });
-                    }
-        };
-        firstDataColumn.setCellFactory(cellFactoryForMap);
-        secondDataColumn.setCellFactory(cellFactoryForMap);
+       
  
         final VBox vbox = new VBox();
  
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table_view);
+        vbox.getChildren().addAll(label, tc.robotHealthTable);
         
         //end of adding staff
 		currentTankMoveLabel = new Label("Scouts Move: 3/3");
@@ -407,6 +384,7 @@ public class GameView {
 	
 	
 		public void updateGame(Board board) {
+			tc.refreshTable();
 			currentTurnLabel.setText(board.players.get(board.playerTurn).name + "'s turn");
 			currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
 			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0) {
