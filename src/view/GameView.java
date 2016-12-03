@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -78,6 +79,7 @@ public class GameView {
 	private String onClick = "INSPECT";
 	private Button moveButton = new Button("Move");
 	private Button attackButton = new Button("Attack");
+	private Button inspectButton = new Button("Inspect");
 	private Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
 
 	/**
@@ -92,7 +94,7 @@ public class GameView {
 			sideLength = 7;
 		}
 		hexagonArray = new Polyline[sideLength * 2 - 1][sideLength * 2 - 1];
-		HBox lobbyScreen = new HBox(255);// 355
+		HBox lobbyScreen = new HBox(10);// 355
 		// Left side of window
 		VBox leftBox = new VBox(30);
 		Button backBtn = new Button("Back");
@@ -103,17 +105,25 @@ public class GameView {
 		moveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "MOVE";
+				moveButton.getStyleClass().add("clicked_button");
+				attackButton.getStyleClass().remove("clicked_button");
+				inspectButton.getStyleClass().remove("clicked_button");
 			}
 		});
 		attackButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "ATTACK";
+				attackButton.getStyleClass().add("clicked_button");
+				moveButton.getStyleClass().remove("clicked_button");
+				inspectButton.getStyleClass().remove("clicked_button");
 			}
 		});
-		Button inspectBtn = new Button("Inspect");
-		inspectBtn.setOnAction(new EventHandler<ActionEvent>() {
+		inspectButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				onClick = "INSPECT";
+				inspectButton.getStyleClass().add("clicked_button");
+				attackButton.getStyleClass().remove("clicked_button");
+				moveButton.getStyleClass().remove("clicked_button");
 			}
 		});
 		Button endTurnBtn = new Button("End Turn");
@@ -124,16 +134,21 @@ public class GameView {
 			}
 		});
 		leftBox.getChildren().addAll(backBtn, tankHealthTable, currentTankMoveLabel, moveButton, attackButton,
-				inspectBtn, endTurnBtn);
+				inspectButton, endTurnBtn);
+		leftBox.setPadding(new Insets(0, 30, 0, 30));
+		leftBox.setAlignment(Pos.TOP_LEFT);
 		// Center of window
 		VBox centerBox = new VBox(60);
 		// TODO make reflect current turn
 		currentTurnLabel = new Label(playerList.get(0) + " turn");
+		currentTurnLabel.setAlignment(Pos.CENTER);
+		currentTurnLabel.setFont(new Font(22));
 		centerBox.getChildren().addAll(currentTurnLabel, generateBoard());
-		centerBox.setMinWidth(WIDTH * (sideLength * 2 - 1) * 0.75);
+		centerBox.setMinWidth(WIDTH * (sideLength * 2 - 1)+OFFSET*2);
+		centerBox.setAlignment(Pos.TOP_CENTER);
 		// Right side of window
 		VBox rightBox = new VBox(30);
-		rightBox.setPadding(new Insets(0, 90, 0, 140));
+		rightBox.setPadding(new Insets(0, 30, 0, 30));
 		Label playerListLabel = new Label("Players");
 		playerListView = new ListView<String>();
 		playerList = new ArrayList<String>();
@@ -144,16 +159,16 @@ public class GameView {
 		observerList = new ArrayList<String>();
 		observerObsList = FXCollections.observableArrayList(observerList);
 		observerListView.setItems(observerObsList);
-
+		rightBox.setAlignment(Pos.TOP_RIGHT);
 		// TODO quit button for observers
 		Button forfeit = new Button("Forfeit");
 		rightBox.getChildren().addAll(playerListLabel, playerListView, observerListLabel, observerListView, forfeit);
 		lobbyScreen.getChildren().addAll(leftBox, centerBox, rightBox);
 		// Sets margin to give the board room to be seen
-		VBox.setMargin(centerBox, new Insets(5, 5, 5, 5));
+		//VBox.setMargin(centerBox, new Insets(5, 5, 5, 5));
 		lobbyScreen.setAlignment(Pos.CENTER);
 		gameScene = new Scene(lobbyScreen);
-
+		
 		File file = new File("Resources/css/GameView.css");
 		gameScene.getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
 
@@ -165,7 +180,7 @@ public class GameView {
 		currentTurnLabel.getStyleClass().add("centred_label");
 		moveButton.getStyleClass().add("button");
 		attackButton.getStyleClass().add("button");
-		inspectBtn.getStyleClass().add("button");
+		inspectButton.getStyleClass().add("button");
 		endTurnBtn.getStyleClass().add("button");
 		forfeit.getStyleClass().add("cancelbutton");
 		return gameScene;
@@ -313,7 +328,8 @@ public class GameView {
 	}
 
 	public void updateGame(Board board) {
-
+		currentTurnLabel.setText(board.players.get(board.playerTurn).name + "'s turn");
+		currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
 		if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0) {
 			moveButton.setDisable(true);
 		} else {
