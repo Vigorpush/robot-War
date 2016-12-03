@@ -169,6 +169,12 @@ public class Server {
     public void serverDisconnectUser(ConnectionToClient user){
         connections.remove(user);
         user.closed = true;
+        if(userList.playerList.contains(user.name)){
+            userList.playerList.remove(user.name);
+        }else if(userList.observerList.contains(user.name)){
+            userList.observerList.remove(user.name);
+        }
+        loadShotgun(userList);
     }
     
     /**
@@ -208,7 +214,8 @@ public class Server {
         private boolean closed;         // Is the connection still open?
         private boolean newConnection = true;   // Lobby: already recieved a string when false recieve pairs
         public boolean sendUserList = false;
-
+        public String name;
+        
         private Thread sendThread;      // The thread for sending states to the client
         private volatile Thread recieveThread;  // The thread for receiving states from the client
         
@@ -330,6 +337,7 @@ public class Server {
                                         userList.rejectID = clientID;
                                     }else{
                                         userList.observerList.add(newName); // add the user to the observer list
+                                        name = newName;
                                     }
                                     newConnection = false;              // Done connecting
                                     loadShotgun(userList);              // Add the message to the server message queue
@@ -353,7 +361,8 @@ public class Server {
                     }
                 }catch(Exception e){
                     if(!closed){
-                        System.out.println("An unexpected error has occured");
+                        System.out.println("Connection to client " + clientID + " has closed");
+                        disconnect();
                     }
                 }
             }
