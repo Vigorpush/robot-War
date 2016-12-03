@@ -33,6 +33,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import model.Board;
 import model.Player;
 import model.Robot;
@@ -67,7 +68,7 @@ public class GameView {
 	private Label currentTurnLabel;
 	// Currently determines distances between center of each hexagon
 	// TODO WIDTH and HEIGHT variables to control size of hexagons
-	private static final double WIDTH = 100;// 51.96
+	private double width = 100;// 51.96
 	private static final double OFFSET = 15;
 	// The number of heaxagons per side of the grid
 	private int sideLength = 5;
@@ -88,11 +89,13 @@ public class GameView {
 	 * @return the gameScene
 	 */
 	public Scene init(ArrayList<String> playerList, ArrayList<String> observerList) {
+		
 		int playerCount = playerList.size();
 		// Sets side length to 7 if there are six players
 		if (playerCount == 6) {
 			sideLength = 7;
 		}
+		width = (Screen.getPrimary().getVisualBounds().getHeight()/(sideLength*2-1))*0.9;
 		hexagonArray = new Polyline[sideLength * 2 - 1][sideLength * 2 - 1];
 		HBox lobbyScreen = new HBox(10);// 355
 		// Left side of window
@@ -144,7 +147,7 @@ public class GameView {
 		currentTurnLabel.setAlignment(Pos.CENTER);
 		currentTurnLabel.setFont(new Font(22));
 		centerBox.getChildren().addAll(currentTurnLabel, generateBoard());
-		centerBox.setMinWidth(WIDTH * (sideLength * 2 - 1)+OFFSET*2);
+		centerBox.setMinWidth(width * (sideLength * 2 - 1)+OFFSET*2);
 		centerBox.setAlignment(Pos.TOP_CENTER);
 		// Right side of window
 		VBox rightBox = new VBox(30);
@@ -195,32 +198,32 @@ public class GameView {
 		// TODO Auto-generated method stub
 		hexBox = new BorderPane();
 		// The distance between the tops of two adjacent rows
-		double height = WIDTH / Math.sqrt(3)
-				+ Math.sqrt((Math.pow(WIDTH / Math.sqrt(3), 2)) - Math.pow((WIDTH / 2), 2));// 45
+		double height = width / Math.sqrt(3)
+				+ Math.sqrt((Math.pow(width / Math.sqrt(3), 2)) - Math.pow((width / 2), 2));// 45
 		// The current distance between the first tile of a row and the far left
 		// of the board
-		double xOffset = sideLength * WIDTH / 2 + OFFSET;
+		double xOffset = sideLength * width / 2 + OFFSET;
 		// loop for each row of the board
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {
 			// If in the upper half, including the middle
 			if (currentYCoor < sideLength) {
 				// Reduce the offset by half the width of a hexagon
-				xOffset = xOffset - WIDTH / 2;
+				xOffset = xOffset - width / 2;
 				// loop for each hexagon in the row
 				for (int currentXCoor = 0; currentXCoor < currentYCoor + sideLength; currentXCoor++) {
 					// Draw the hexagon based on its points
-					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3),
-							height * currentYCoor, xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) + WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) + WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2 + WIDTH / Math.sqrt(3),
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3),
-							height * currentYCoor + WIDTH / Math.sqrt(3) * 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2 + WIDTH / Math.sqrt(3),
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3), +height * currentYCoor + 0.0);
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * width + width / Math.sqrt(3),
+							height * currentYCoor, xOffset + currentXCoor * width + width / Math.sqrt(3) + width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3) + width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2 + width / Math.sqrt(3),
+							xOffset + currentXCoor * width + width / Math.sqrt(3),
+							height * currentYCoor + width / Math.sqrt(3) * 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2 + width / Math.sqrt(3),
+							xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3), +height * currentYCoor + 0.0);
 					// Variables to store the location of the current hexagon
 					int x = currentXCoor;
 					int y = currentYCoor;
@@ -255,23 +258,23 @@ public class GameView {
 
 			} else {
 				// Increase the offset by half the width of a hexagon
-				xOffset = xOffset + WIDTH / 2;
+				xOffset = xOffset + width / 2;
 				// loop for each hexagon in the row
 				for (int currentXCoor = 0; currentXCoor < (sideLength * 2 - 1) - currentYCoor - 1
 						+ sideLength; currentXCoor++) {
 					// Draw the hexagon based on its points
-					Polyline hexagon = new Polyline(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3),
-							height * currentYCoor, xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) + WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) + WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2 + WIDTH / Math.sqrt(3),
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3),
-							height * currentYCoor + WIDTH / Math.sqrt(3) * 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2 + WIDTH / Math.sqrt(3),
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2,
-							height * currentYCoor + WIDTH / Math.sqrt(3) / 2,
-							xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3), +height * currentYCoor + 0.0);
+					Polyline hexagon = new Polyline(xOffset + currentXCoor * width + width / Math.sqrt(3),
+							height * currentYCoor, xOffset + currentXCoor * width + width / Math.sqrt(3) + width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3) + width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2 + width / Math.sqrt(3),
+							xOffset + currentXCoor * width + width / Math.sqrt(3),
+							height * currentYCoor + width / Math.sqrt(3) * 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2 + width / Math.sqrt(3),
+							xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2,
+							height * currentYCoor + width / Math.sqrt(3) / 2,
+							xOffset + currentXCoor * width + width / Math.sqrt(3), +height * currentYCoor + 0.0);
 					// Variables to store the location of the current hexagon
 					int x = currentXCoor + currentYCoor - 4;
 					int y = currentYCoor;
@@ -354,15 +357,15 @@ public class GameView {
 		}
 		boolean[][] fogOfWar = board.players.get(board.playerTurn).fogOfWar;
 		int imageCount = 0;
-		double height = WIDTH / Math.sqrt(3)
-				+ Math.sqrt((Math.pow(WIDTH / Math.sqrt(3), 2)) - Math.pow((WIDTH / 2), 2));
+		double height = width / Math.sqrt(3)
+				+ Math.sqrt((Math.pow(width / Math.sqrt(3), 2)) - Math.pow((width / 2), 2));
 		// The current distance between the first tile of a row and the far left
 		// of the board
-		double xOffset = sideLength * WIDTH / 2 + OFFSET;
+		double xOffset = sideLength * width / 2 + OFFSET;
 		// loop for each row of the board
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {
 			// Reduce the offset by half the width of a hexagon
-			xOffset = xOffset - WIDTH / 2;
+			xOffset = xOffset - width / 2;
 			// loop for each hexagon in the row
 			for (int currentXCoor = 0; currentXCoor < sideLength * 2 - 1; currentXCoor++) {
 				int robotCount = 0;
@@ -402,9 +405,9 @@ public class GameView {
 									robotImages[imageCount].setScaleX(0.60);
 									robotImages[imageCount].setScaleY(0.60);
 									robotImages[imageCount].setLayoutX(
-											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-											+ WIDTH / Math.sqrt(3) - scout.getHeight() * 0.80);									
+											xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2);
+									robotImages[imageCount].setLayoutY(height * currentYCoor + width / Math.sqrt(3) / 2
+											+ width / Math.sqrt(3) - scout.getHeight() * 0.80);									
 									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 										@Override
@@ -435,8 +438,8 @@ public class GameView {
 									robotImages[imageCount].setScaleX(0.60);
 									robotImages[imageCount].setScaleY(0.60);
 									robotImages[imageCount].setLayoutX(
-											xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3) - WIDTH / 2);
-									robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
+											xOffset + currentXCoor * width + width / Math.sqrt(3) - width / 2);
+									robotImages[imageCount].setLayoutY(height * currentYCoor + width / Math.sqrt(3) / 2
 											- sniper.getHeight() * 0.20);
 									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -467,10 +470,10 @@ public class GameView {
 									robotImages[imageCount].setImage(tank);
 									robotImages[imageCount].setScaleX(0.60);
 									robotImages[imageCount].setScaleY(0.60);
-									robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH
-											+ WIDTH / Math.sqrt(3) + WIDTH / 2 - tank.getWidth());
+									robotImages[imageCount].setLayoutX(xOffset + currentXCoor * width
+											+ width / Math.sqrt(3) + width / 2 - tank.getWidth());
 									robotImages[imageCount].setLayoutY(
-											height * currentYCoor + WIDTH / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);									
+											height * currentYCoor + width / Math.sqrt(3) / 2 - tank.getHeight() * 0.20);									
 									robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 										@Override
@@ -535,10 +538,10 @@ public class GameView {
 							}
 							robotImages[imageCount].setScaleX(0.60);
 							robotImages[imageCount].setScaleY(0.60);
-							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3)
-									+ WIDTH / 2 - robotImages[imageCount].getImage().getWidth());
-							robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-									+ WIDTH / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);							
+							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * width + width / Math.sqrt(3)
+									+ width / 2 - robotImages[imageCount].getImage().getWidth());
+							robotImages[imageCount].setLayoutY(height * currentYCoor + width / Math.sqrt(3) / 2
+									+ width / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);							
 							robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 								@Override
@@ -573,10 +576,10 @@ public class GameView {
 							robotImages[imageCount].setScaleX(0.60);
 							robotImages[imageCount].setScaleY(0.60);
 							robotImages[imageCount].setImage(textToImage(""+robotCount, numberColors[robotColor]));
-							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * WIDTH + WIDTH / Math.sqrt(3)
-							+ WIDTH / 2 - robotImages[imageCount].getImage().getWidth());
-					robotImages[imageCount].setLayoutY(height * currentYCoor + WIDTH / Math.sqrt(3) / 2
-							+ WIDTH / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);
+							robotImages[imageCount].setLayoutX(xOffset + currentXCoor * width + width / Math.sqrt(3)
+							+ width / 2 - robotImages[imageCount].getImage().getWidth());
+					robotImages[imageCount].setLayoutY(height * currentYCoor + width / Math.sqrt(3) / 2
+							+ width / Math.sqrt(3) - robotImages[imageCount].getImage().getHeight() * 0.80);
 					robotImages[imageCount].setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 						@Override
