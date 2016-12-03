@@ -45,3 +45,12 @@
     -fx-text-fill: white;
     -fx-font-size: 12px;
 }
+
+.clicked_button
+{
+	        -fx-background-color: 
+        #00FFFF,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#42FFFF, #26FFFF),
+        linear-gradient(#395cab, #223768);
+}

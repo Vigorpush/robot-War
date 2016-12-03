@@ -135,15 +135,15 @@ public class LobbyView {
 	private void switchUser() {
 		if(observerListView.getSelectionModel().getSelectedItem() != null)
 		{
-			playerList.add(observerListView.getSelectionModel().getSelectedItem());
-			observerList.remove(observerListView.getSelectionModel().getSelectedItem());
+			playerObsList.add(observerListView.getSelectionModel().getSelectedItem());
+			observerObsList.remove(observerListView.getSelectionModel().getSelectedItem());
 			observerListView.refresh();
 			playerListView.refresh();
 		}
 		else if(playerListView.getSelectionModel().getSelectedItem() != null)
 		{
-			observerList.add(playerListView.getSelectionModel().getSelectedItem());
-			playerList.remove(playerListView.getSelectionModel().getSelectedItem());
+			observerObsList.add(playerListView.getSelectionModel().getSelectedItem());
+			playerObsList.remove(playerListView.getSelectionModel().getSelectedItem());
 			observerListView.refresh();
 			playerListView.refresh();
 		}

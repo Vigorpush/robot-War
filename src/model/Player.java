@@ -9,7 +9,7 @@ public class Player extends User {
 
 	public List<Robot> robotList;
 	public boolean hasShot;
-	public int teamNumber;	
+	public int teamNumber;
 
 	public Player(String name, String IP, int teamNumber) {
 		super(name, IP);
@@ -23,33 +23,44 @@ public class Player extends User {
 		destination.addRobot(robotToMove);
 	}
 
+	// TODO Scout FOW top left
 	public void setFogOfWar(int sideLength) {
 		fogOfWar = new boolean[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (Robot r : robotList) {
 			if (r.health > 0) {
-				
+				int offsetRight = 0;
+				int offsetLeft = 0;
 				int lowerXBound = r.location.xPosition - r.range;
+				int overflow = 0;
 				if (lowerXBound < 0) {
+					overflow = lowerXBound;
 					lowerXBound = 0;
 				}
 				int lowerYBound = r.location.yPosition - r.range;
 				if (lowerYBound < 0) {
+					offsetRight = Math.abs(lowerYBound);
 					lowerYBound = 0;
 				}
-				int offsetRight = 0;
-				int offsetLeft = 0;
-				for (int currentYCoor = lowerYBound; currentYCoor <= r.location.yPosition+r.range && currentYCoor < sideLength * 2 - 1; currentYCoor++) {
+
+				for (int currentYCoor = lowerYBound; currentYCoor <= r.location.yPosition + r.range
+						&& currentYCoor < sideLength * 2 - 1; currentYCoor++) {
 					if (currentYCoor < r.location.yPosition) {
-						for (int currentXCoor = lowerXBound; currentXCoor <= r.location.xPosition +offsetRight && currentXCoor < sideLength*2-1; currentXCoor++) {
+						for (int currentXCoor = lowerXBound; currentXCoor <= r.location.xPosition + offsetRight
+								&& currentXCoor < sideLength * 2 - 1; currentXCoor++) {
 							fogOfWar[currentXCoor][currentYCoor] = true;
 						}
 						offsetRight++;
 					} else {
 
-						for (int currentXCoor = lowerXBound+offsetLeft; currentXCoor <= r.location.xPosition +offsetRight && currentXCoor < (sideLength * 2 - 1); currentXCoor++) {
+						for (int currentXCoor = lowerXBound + offsetLeft; currentXCoor <= r.location.xPosition
+								+ offsetRight && currentXCoor < (sideLength * 2 - 1); currentXCoor++) {
 							fogOfWar[currentXCoor][currentYCoor] = true;
 						}
-						offsetLeft++;
+						if (overflow != 0) {
+							overflow++;
+						} else {
+							offsetLeft++;
+						}
 					}
 				}
 			}

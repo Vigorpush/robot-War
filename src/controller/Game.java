@@ -11,6 +11,7 @@ import java.util.ListIterator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Board;
+import model.Observer;
 import model.Player;
 import model.Robot;
 import model.Scout;
@@ -19,6 +20,7 @@ import model.Tank;
 import model.Tile;
 import view.GameView;
 import view.LobbyView;
+import view.PostGameView;
 import view.StartView;
 
 @SuppressWarnings("unused")
@@ -285,6 +287,70 @@ public class Game extends Application {
 			
 		}
 
+	}
+		/**
+	 * Method that checks if a player has lost, and creates an observer for them if they have.
+	 * @param index The team number of the losing player
+	 * @return If they lost
+	 */
+	public boolean playerLose(int index)
+	{
+		boolean result = true;
+		for(Robot r : gameBoard.players.get(index).robotList)
+		{
+			if(r.health != 0)
+			{
+				result = false;
+			}
+		}
+		
+		if(result)
+		{
+			Observer newObserver = new Observer(gameBoard.players.get(index).name, gameBoard.players.get(index).IP);
+			gameOver();
+		}
+		return result;
+	}
+	
+	/**
+	 * Method that destroys all a player's robots and calls playerLose to turn them into an observer
+	 */
+	public void forfeit()
+	{
+		//TODO Get controlling player
+		for(Robot r : gameBoard.players.get(gameBoard.playerTurn).robotList)
+		{
+			r.health = 0;
+		}
+		playerLose(gameBoard.playerTurn);
+	}
+	
+	/**
+	 * Method that checks if more than one player has living robots, and if not, ends the game
+	 */
+	public void gameOver()
+	{
+		boolean result = true;
+		Robot livingRobot = null;
+		for(Player p : gameBoard.players)
+		{
+			for(Robot r : p.robotList)
+			{
+				if(r.health>0 && livingRobot == null)
+				{
+					livingRobot = null;
+				}
+				else if(r.health >0 && livingRobot.teamNumber != r.teamNumber)
+				{
+					result = false;
+				}
+			}
+		}
+		if(result)
+		{
+			PostGameView postGameScene = new PostGameView();
+			gameStage.setScene(postGameScene.init());
+		}
 	}
 	
 	public void connectionRejected(){
