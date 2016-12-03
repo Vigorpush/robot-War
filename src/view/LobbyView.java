@@ -147,6 +147,11 @@ public class LobbyView {
 			observerListView.refresh();
 			playerListView.refresh();
 		}
+		
+		Game controller = new Game();
+		playerList.addAll(playerObsList);
+		observerList.addAll(observerObsList);
+		controller.updateUsers(playerList, observerList);
 	}
 	
 	/**Method called by the controller to add a new User to the lobby as an observer if someone with that name does not already exist

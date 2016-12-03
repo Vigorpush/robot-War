@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Board;
-import model.LobbyMessage;
 /**
  * The client used to connect to the server in the robot game
  * @author kts135 - Kyle Seidenthal
@@ -199,5 +198,20 @@ public class Client {
             	System.out.println("Client: not disconneting properly");
         	}
         }
+    }
+
+    public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
+        LobbyMessage update = new LobbyMessage();
+        update.playerList = playerList;
+        update.observerList = observerList;
+        System.out.println(playerList.toString());
+        System.out.println(observerList.toString());
+        try {
+            this.connection.out.writeObject(update);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 }

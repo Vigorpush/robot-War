@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import model.Board;
-import model.LobbyMessage;
 
 public class Server {
      // TODO: check if in lobby

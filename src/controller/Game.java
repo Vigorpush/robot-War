@@ -357,4 +357,9 @@ public class Game extends Application {
 	    // Pop up a dialogue box that says we were rejected and return to the start view.
 	    System.out.println("Connection rejected: user name has already been used");
 	}
+
+    public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
+        Game.myClient.updateUsers(playerList, observerList);
+        
+    }
 }
