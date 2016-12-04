@@ -210,7 +210,38 @@ public class Game extends Application {
 			result = true;
 			gameScene = new GameView();
 			// TODO Add computers to player list;
-			gameStage.setScene(gameScene.init(playerList, observerList, playerName));
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					gameStage.setScene(gameScene.init(playerList, observerList, playerName));
+				}
+			});
+			// Set starting position for six players
+
+			gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(0));
+			gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(1));
+			gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(2));
+			gameBoard.players.get(0).setFogOfWar(sideLength);
+			gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(0));
+			gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(1));
+			gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(2));
+			gameBoard.players.get(1).setFogOfWar(sideLength);
+			gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(2).robotList.get(0));
+			gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(2).robotList.get(1));
+			gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(2).robotList.get(2));
+			gameBoard.players.get(2).setFogOfWar(sideLength);
+			gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(3).robotList.get(0));
+			gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(3).robotList.get(1));
+			gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(3).robotList.get(2));
+			gameBoard.players.get(3).setFogOfWar(sideLength);
+			gameBoard.gameBoard[4][8].addRobot(gameBoard.players.get(4).robotList.get(0));
+			gameBoard.gameBoard[4][8].addRobot(gameBoard.players.get(4).robotList.get(1));
+			gameBoard.gameBoard[4][8].addRobot(gameBoard.players.get(4).robotList.get(2));
+			gameBoard.players.get(4).setFogOfWar(sideLength);
+			gameBoard.gameBoard[0][0].addRobot(gameBoard.players.get(5).robotList.get(0));
+			gameBoard.gameBoard[0][0].addRobot(gameBoard.players.get(5).robotList.get(1));
+			gameBoard.gameBoard[0][0].addRobot(gameBoard.players.get(5).robotList.get(2));
+			gameBoard.players.get(5).setFogOfWar(sideLength);
 
 		}
 		return result;
@@ -269,17 +300,13 @@ public class Game extends Application {
 					for (Robot r : gameBoard.defeatedRobots) {
 						boolean found = false;
 						int i = 0;
-						while(!found)
-						{
-							if(gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id)
-							{
+						while (!found) {
+							if (gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id) {
 								found = true;
-							}
-							else
-							{
+							} else {
 								i++;
 							}
-						}				
+						}
 						gameBoard.players.get(r.teamNumber).robotList.remove(i);
 						gameBoard.players.get(r.teamNumber).robotList.add(r);
 					}
@@ -304,9 +331,10 @@ public class Game extends Application {
 	public void attackTile(int x, int y) {
 		// TODO Get player
 		// int result = 0;
-		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName) && !gameBoard.players.get(gameBoard.playerTurn).hasShot) {
+		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)
+				&& !gameBoard.players.get(gameBoard.playerTurn).hasShot) {
 			gameBoard.players.get(gameBoard.playerTurn).hasShot = true;
-			
+
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile target = gameBoard.gameBoard[x][y];
 			boolean possible = gameBoard.attackPossible(attackingRobot, target);
@@ -334,17 +362,13 @@ public class Game extends Application {
 										&& r.teamNumber > gameBoard.playerTurn)) {
 							boolean found = false;
 							int i = 0;
-							while(!found)
-							{
-								if(gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id)
-								{
+							while (!found) {
+								if (gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id) {
 									found = true;
-								}
-								else
-								{
+								} else {
 									i++;
 								}
-							}				
+							}
 							gameBoard.players.get(r.teamNumber).robotList.remove(i);
 							gameBoard.players.get(r.teamNumber).robotList.add(r);
 						} else {
