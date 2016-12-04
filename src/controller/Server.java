@@ -44,7 +44,9 @@ public class Server {
      *  	bullets		- A Queue that is used by the shotgun thread
      *  
      * Threads:
-     * 		serverThread -
+     * 		serverThread  - Is the main thread that keeps the game alive and it accepts incoming client connections. When a client is accepted
+     * 					 	
+     *  when this thread is killed
      * 
      * 		shotgunThread - In Lobby: The shotgun thread checks if bullets has anything in it then takes what's on top of the Queue 
      * 								  then sends it to all connected clients. If the player is disconneted the msg will not be sent.
@@ -136,7 +138,7 @@ public class Server {
         			        }
         			        
                         } catch (InterruptedException e) {
-                        	System.out.println("Shotgun Thread: Internal Unknown Error");
+                        	System.out.println("Shotgun Thread: Internal Unknown Error while inLobby");
                             e.printStackTrace();
                         }
         			}
@@ -145,17 +147,18 @@ public class Server {
         				if(!bullets.isEmpty()) {
         					try {
         						gameState = (Board) bullets.take();
-        						System.out.println("SERVER RECIEVED NEW GAME STATE");
         						for(ConnectionToClient con : connections){
         							try {
         								con.out.writeObject(gameState);
         								con.out.flush();
         								con.out.reset();
         							} catch (IOException e) {
+        								System.out.println("Shotgun Thread: Internal Unknown Error while inLobby");
 										e.printStackTrace();
 									}
     			            	}
         					} catch (InterruptedException e) {
+        						System.out.println("Shotgun Thread: Internal Unknown Error while inLobby");
         						e.printStackTrace();
         					}
         				}
@@ -173,7 +176,7 @@ public class Server {
     private class ServerThread extends Thread{
         public void run(){
         	 System.out.println("Server Thread Started");
-            try{
+            try {
                 while(!shutdown){
                     Socket connection = serverSocket.accept();	// accept the new connection
                     System.out.println("Server Thread: Client Connected");
@@ -183,7 +186,7 @@ public class Server {
                     }
                     new ConnectionToClient(gameState, connection);
                 }
-            }catch(Exception e){
+            } catch(Exception e) {
                 System.out.println("Server Thread Error: Client is dead");
             }
         }
@@ -406,7 +409,6 @@ public class Server {
                                         userList = (LobbyMessage) msg;
                                         System.out.println("SERVER GOT AN UPDATED LIST OF USERS");
                                         loadShotgun(userList);                      // Load the queue with the new users
-                                        System.out.println("LOADED SHOTGUN WITH NEW LIST");
                                     }else if (msg instanceof Board){
                                         System.out.println("GOT TO GAME PART");
                                         try{
