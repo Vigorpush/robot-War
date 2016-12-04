@@ -199,7 +199,7 @@ public class Game extends Application {
 				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(0));
 				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(1));
 				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(2));
-				gameBoard.players.get(1).setFogOfWar(sideLength);
+				gameBoard.players.get(2).setFogOfWar(sideLength);
 			}
 
 			gameBoard.playerTurn = 0;
@@ -304,8 +304,9 @@ public class Game extends Application {
 	public void attackTile(int x, int y) {
 		// TODO Get player
 		// int result = 0;
-		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)) {
-
+		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName) && !gameBoard.players.get(gameBoard.playerTurn).hasShot) {
+			gameBoard.players.get(gameBoard.playerTurn).hasShot = true;
+			
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile target = gameBoard.gameBoard[x][y];
 			boolean possible = gameBoard.attackPossible(attackingRobot, target);
