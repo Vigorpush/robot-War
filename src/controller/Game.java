@@ -218,7 +218,7 @@ public class Game extends Application {
 	public int moveRobot(int x, int y) {
 		// TODO Get player
 		int result = 0;
-		if (gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health > 0) {
+		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)) {
 
 			Robot robotToMove = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile destination = gameBoard.gameBoard[x][y];
@@ -271,7 +271,7 @@ public class Game extends Application {
 	public void attackTile(int x, int y) {
 		// TODO Get player
 		// int result = 0;
-		if (gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health > 0) {
+		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)) {
 
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile target = gameBoard.gameBoard[x][y];
