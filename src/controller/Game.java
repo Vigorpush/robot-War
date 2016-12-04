@@ -214,11 +214,13 @@ public class Game extends Application {
 		while (!found) {
 			if (gameBoard.players.get(playerIndex).name.equals(playerName)) {
 				found = true;
+			} else {
+				playerIndex++;
 			}
 		}
-		int[] healths = new int[gameBoard.players.get(playerIndex).robotList.size()];
+		int[] healths = new int[gameBoard.players.get(gameBoard.playerTurn).robotList.size()];
 		for (int i = 0; i < healths.length; i++) {
-			healths[i] = gameBoard.players.get(playerIndex).robotList.get(i).health;
+			healths[i] = gameBoard.players.get(gameBoard.playerTurn).robotList.get(i).health;
 		}
 		return healths;
 	}
@@ -417,6 +419,7 @@ public class Game extends Application {
 	}
 
 	public void inspectTile(int x, int y) {
+
 		boolean found = false;
 		int playerIndex = 0;
 		while (!found) {
