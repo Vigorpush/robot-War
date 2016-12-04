@@ -37,16 +37,28 @@ public class Client {
         this.game = game;
     }
     
+    /**
+     * Returns the connection to the server for this client
+     * @return
+     */
     public ConnectionToServer getConnection() {
         return connection;
     }
 
+    /**
+     * Set the connection to server
+     * @param connection
+     */
     public void setConnection(ConnectionToServer connection) {
         this.connection = connection;
     }
 
     private ConnectionToServer connection;  // The clients connection to the server
     
+    /**
+     * This class represents this clients connection to the server and is used to communicate
+     * with the server for the game.
+     */
     public class ConnectionToServer{
         private Board outgoingState;    // The state of the game being sent to this client
         private Board incomingState;    // The state of the game being sent to us from the client
@@ -88,6 +100,9 @@ public class Client {
             
         }
         
+        /**
+         * A thread to send messages to the server
+         */
         private class SendThread extends Thread{
             public void run(){
                 System.out.println("Client send thread started");
@@ -99,10 +114,6 @@ public class Client {
                                 out.flush();
                                 out.reset();
                                 sending = false;
-                                System.out.println("CLIENT SENT GAME STATE");
-                                for(int i = 0; i < outgoingState.players.size(); i ++){
-                                    System.out.println(outgoingState.players.get(i));
-                                }
                             }
                       }
                     }
@@ -112,16 +123,16 @@ public class Client {
             }
         }
         
+        /**
+         * A thread to recieve messages from the server
+         */
         private class RecieveThread extends Thread{
             public void run(){
                 System.out.println("Client: Recieve thread started");
                 try{
                     while(!closed){
                         while(inLobby){ // While we are in the lobby...
-                           // System.out.println("IN LOBBY WAITING FOR GAME START");
                             userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
-                            System.out.println("CLIENT RECIEVED: " + userList.observerList.toString() + userList.playerList.toString());
-                            System.out.println("Begin GAME was recieved as: " + userList.begin);
                             // Check that the connection was not rejected
                             if(userList.reject){
                                 game.connectionRejected();
@@ -131,8 +142,7 @@ public class Client {
                                     receiveNames(userList);       // Receive the name 
                                 }else{
                                     inLobby = false;            // It is time to begin the game, so leave the lobby
-                                    beginGame(userList);   
-                                    System.out.println("CLIENT RECIEVED BEGIN GAME");
+                                    beginGame(userList);  
                                 }
                             }
                         }
@@ -188,10 +198,7 @@ public class Client {
          * Tell the controller that a new game state has been recieved
          */
         public void recieveGameState(){
-           
-            System.out.println("CLIENT REVEIBE GAME STATE CALLED");
             game.recieveGameState(incomingState);
-            System.out.println("CLIENT RECIEVE GAME STATE FINISHED");
         }
         
         /**
@@ -199,22 +206,15 @@ public class Client {
          * @param gameState -> The updated game state
          */
         public void sendGameState(Board gameState){
-            System.out.println("CLIENT SEND GAME STATE CALLED");
             sending = true;
             outgoingState = gameState;
             try {
                 out.writeObject(outgoingState); 
                 out.flush();
                 out.reset();
-                for(int i = 0; i < outgoingState.players.size(); i ++){
-                    System.out.println(outgoingState.players.get(i).name);
-                }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } // Write out the state.
-           
-            System.out.println("CLIENT SEND GAME STATE RETURNED");
         }
         
         /**
@@ -232,16 +232,19 @@ public class Client {
         }
     }
 
+    /**
+     * Send an updated version of the players to the server.  Called from the controller
+     * 
+     * @param playerList -> The list of players to send to the server
+     * @param observerList -> The list of observers to send to the server
+     */
     public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
         LobbyMessage update = new LobbyMessage();
         update.playerList = playerList;
         update.observerList = observerList;
-        System.out.println(playerList.toString());
-        System.out.println(observerList.toString());
         try {
             this.connection.out.writeObject(update);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
