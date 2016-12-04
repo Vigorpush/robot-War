@@ -1,5 +1,6 @@
 package view;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,7 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import tableRow.RobotHealth;
 
-public class TableViewController {
+public class HealthTableViewController {
 	// Table
 	public TableView<RobotHealth> robotHealthTable = new TableView<RobotHealth>();
 
@@ -30,7 +31,7 @@ public class TableViewController {
 	 * 
 	 * Constructor for the robotHealthTableViewController class.
 	 */
-	public TableViewController() {
+	public HealthTableViewController() {
 		// When the activity log is instantiated, then pull all the information
 		// from the database.
 		retrieveRobotHealthData();

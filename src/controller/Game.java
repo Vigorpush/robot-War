@@ -59,8 +59,8 @@ public class Game extends Application {
 	}
 //TODO store static variable about who you are 
 	public boolean joinGame(String name, String address) {
-		this.playerName = playerName;
-	    this.isHost = false;
+		Game.playerName = name;
+	    Game.isHost = false;
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if (name.length() != 0) {
@@ -84,9 +84,9 @@ public class Game extends Application {
 	}
 	
 	public void hostGame(String name) {
-		this.playerName = playerName;
+		Game.playerName = name;
 		// TODO Auto-generated method stub
-	    this.isHost = true;
+	    Game.isHost = true;
 		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
 		
@@ -118,9 +118,9 @@ public class Game extends Application {
 	    int playerCount = computerCount + playerList.size();
 	    
 	    if(playerCount == 2 || playerCount == 3 || playerCount == 6){   
-	        if(this.isHost){
+	        if(Game.isHost){
 	            System.out.println("HOST HAS STARTED GAME.  TELLING CLIENTS");
-	            this.myClient.getConnection().hostBeginGame();
+	            Game.myClient.getConnection().hostBeginGame();
 	            return true;
 	        }else{
 	            return false;
@@ -230,7 +230,7 @@ public class Game extends Application {
 			}
 		}
 
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 
 	}
@@ -264,7 +264,7 @@ public class Game extends Application {
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
 		
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 
 	public void attackTile(int x, int y) {
@@ -319,7 +319,7 @@ public class Game extends Application {
 			}
 			
 		}
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 
 	}
 		/**
@@ -343,7 +343,7 @@ public class Game extends Application {
 			Observer newObserver = new Observer(gameBoard.players.get(index).name, gameBoard.players.get(index).IP);
 			gameOver();
 		}
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 	}
 	
@@ -358,7 +358,7 @@ public class Game extends Application {
 			r.health = 0;
 		}
 		playerLose(gameBoard.playerTurn);
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 	
 	/**
@@ -387,7 +387,7 @@ public class Game extends Application {
 			PostGameView postGameScene = new PostGameView();
 			gameStage.setScene(postGameScene.init());
 		}
-		this.myClient.getConnection().sendGameState(gameBoard);
+		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 	
 	public void connectionRejected(){

@@ -56,36 +56,36 @@ import model.Robot;
 @SuppressWarnings("unused")
 public class GameView {
 	private static final String title = "Robot Wars";
-	private Scene gameScene;
+	private static Scene gameScene;
 	// Stores the list of players for easy access and modification
-	private ArrayList<String> playerList;
+	private static ArrayList<String> playerList;
 	// Store the playerList in a format readable by the ListView
-	private ObservableList<String> playerObsList;
+	private static ObservableList<String> playerObsList;
 	// Displays the playerList
-	private ListView<String> playerListView;
+	private static ListView<String> playerListView;
 	// Stores the list of observers for easy access and modification
-	private ArrayList<String> observerList;
+	private static ArrayList<String> observerList;
 	// Store the observerList in a format readable by the ListView
-	private ObservableList<String> observerObsList;
+	private static ObservableList<String> observerObsList;
 	// Displays the observerList
-	private ListView<String> observerListView;
+	private static ListView<String> observerListView;
 	// Table that displays the current health of all the players robots
 	private TableView<String> tankHealthTable;
-	private Label currentTankMoveLabel;
-	private Label currentTurnLabel;
+	private static Label currentTankMoveLabel;
+	private static Label currentTurnLabel;
 	// Currently determines distances between center of each hexagon
 	// TODO WIDTH and HEIGHT variables to control size of hexagons
-	private double width = 100;// 51.96
+	private static double width = 100;// 51.96
 	private static final double OFFSET = 15;
 	// The number of heaxagons per side of the grid
-	private int sideLength = 5;
+	private static int sideLength = 5;
 
-	private ImageView[] robotImages = new ImageView[18];
+	private static ImageView[] robotImages = new ImageView[18];
 
-	private BorderPane hexBox;
-	private Polyline[][] hexagonArray;
-	private String onClick = "INSPECT";
-	TableViewController tc = new TableViewController();
+	private static BorderPane hexBox;
+	private static Polyline[][] hexagonArray;
+	private static String onClick = "INSPECT";
+	private static TableViewController tc = new TableViewController();
 	
     public static final String Column1MapKey = "Scout";
     public static final String Column2MapKey = "Sniper";
@@ -94,7 +94,7 @@ public class GameView {
     private Button moveButton = new Button("Move");
 	private Button attackButton = new Button("Attack");
 	private Button inspectButton = new Button("Inspect");
-	private Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
+	private static final Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
 
 	/**
 	 * Method for creating the GameView Scene
@@ -103,7 +103,7 @@ public class GameView {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Scene init(ArrayList<String> playerList, ArrayList<String> observerList, String playerName) {
-		this.playerName = playerName;
+		GameView.playerName = playerName;
 		int playerCount = playerList.size();
 		// Sets side length to 7 if there are six players
 		if (playerCount == 6) {
@@ -324,6 +324,7 @@ public class GameView {
 							Game controller = new Game();
 							switch (onClick) {
 							case "INSPECT":
+								//controller.inspectTile(x,y);
 								break;
 
 							case "MOVE":
@@ -391,29 +392,43 @@ public class GameView {
 			tc.refreshTable();
 			currentTurnLabel.setText(board.players.get(board.playerTurn).name + "'s turn");
 			currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
-			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0) {
+			boolean found = false;
+			int playerIndex = 0;
+			while(!found)
+			{
+				if(board.players.get(playerIndex).name.equals(playerName))
+				{
+					found = true;
+				}
+				else
+				{
+					playerIndex++;
+				}
+			}
+			
+			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0 || board.playerTurn == playerIndex) {
 				moveButton.setDisable(true);
 			} else {
 				moveButton.setDisable(false);
 			}
 
-			if (board.players.get(board.playerTurn).hasShot) {
+			if (board.players.get(board.playerTurn).hasShot || board.playerTurn == playerIndex) {
 				attackButton.setDisable(true);
 			} else {
 				attackButton.setDisable(false);
 			}
 
 			currentTankMoveLabel.setText(
-					board.players.get(board.playerTurn).robotList.get(board.currentRobot).getClass().getSimpleName()
-							+ " Move:" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft
-							+ "/" + board.players.get(board.playerTurn).robotList.get(board.currentRobot).movement);
+					board.players.get(playerIndex).robotList.get(board.currentRobot).getClass().getSimpleName()
+							+ " Move:" + board.players.get(playerIndex).robotList.get(board.currentRobot).movementLeft
+							+ "/" + board.players.get(playerIndex).robotList.get(board.currentRobot).movement);
 			// Remove all existing robot images from the board
 			for (int i = 0; i < robotImages.length; i++) {
 				if (robotImages[i] != null) {
 					hexBox.getChildren().remove(robotImages[i]);
 				}
 			}
-			boolean[][] fogOfWar = board.players.get(board.playerTurn).fogOfWar;
+			boolean[][] fogOfWar = board.players.get(playerIndex).fogOfWar;
 			int imageCount = 0;
 			double height = width / Math.sqrt(3)
 					+ Math.sqrt((Math.pow(width / Math.sqrt(3), 2)) - Math.pow((width / 2), 2));

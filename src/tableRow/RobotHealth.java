@@ -15,13 +15,13 @@ import javafx.beans.property.StringProperty;
  * @version 1.0
  *
  */
-public class robotHealth
+public class RobotHealth
 {
     private StringProperty robot1Health;
     private StringProperty robot2Health;
     private StringProperty robot3Health;
 
-    public robotHealth(String robot1, String robot2, String robot3)
+    public RobotHealth(String robot1, String robot2, String robot3)
     {
         this.robot1Health = new SimpleStringProperty(robot1);
         this.robot2Health = new SimpleStringProperty(robot2);
@@ -34,7 +34,7 @@ public class robotHealth
      * 
      * @return
      */
-    public StringProperty getAllergicTo()
+    public StringProperty getRobot1Health()
     {
         return robot1Health;
     }
@@ -45,7 +45,7 @@ public class robotHealth
      * 
      * @return
      */
-    public StringProperty getAllergyType()
+    public StringProperty getRobot2Health()
     {
         return robot2Health;
     }
@@ -56,7 +56,7 @@ public class robotHealth
      * 
      * @return
      */
-    public StringProperty getDescription()
+    public StringProperty getRobot3Health()
     {
         return robot3Health;
     }
