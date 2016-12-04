@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import controller.Game;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableList;
@@ -384,6 +385,9 @@ public class GameView {
 	
 	
 		public void updateGame(Board board) {
+			  Platform.runLater(new Runnable() {
+			        @Override
+			        public void run() {
 			tc.refreshTable();
 			currentTurnLabel.setText(board.players.get(board.playerTurn).name + "'s turn");
 			currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
@@ -665,7 +669,7 @@ public class GameView {
 					}
 
 				}
-			}
+			}}});
 		}
 
 		private Image textToImage(String text, Color color) {

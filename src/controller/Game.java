@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.ListIterator;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.Board;
 import model.Observer;
@@ -165,7 +166,11 @@ public class Game extends Application {
 			result = true;
 			gameScene = new GameView();
 			// TODO Add computers to player list;
+			  Platform.runLater(new Runnable() {
+			        @Override
+			        public void run() {
 			gameStage.setScene(gameScene.init(playerList, observerList));
+			        }});
 			// Set starting position for two players
 			if (playerCount == 2) {
 				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(0));

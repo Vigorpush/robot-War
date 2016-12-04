@@ -145,6 +145,8 @@ public class LobbyView {
 		}
 		
 		Game controller = new Game();
+		playerList.clear();
+		observerList.clear();
 		playerList.addAll(playerObsList);
 		observerList.addAll(observerObsList);
 		controller.updateUsers(playerList, observerList);
@@ -184,15 +186,31 @@ public class LobbyView {
 	        public void run() {
 	            observerObsList.clear();
 	            observerObsList.addAll(newObserverList);
+	            observerList.clear();
+	            observerList.addAll(newObserverList);
 	            for(int i = 0 ; i < observerObsList.size() ; i++)
 	            {
-	            System.out.println("Obs List: " + observerObsList.get(i));
+	            System.out.println("Obs List: " + observerObsList.get(i));	            
+	            }
+	            for(int i = 0; i< observerList.size(); i++)
+	            {
+	            	System.out.println("Obs: "+ observerList.get(i));
 	            }
 	            observerListView.refresh();
 	            observerListView.getSelectionModel().selectFirst();
 	            
 	            playerObsList.clear();
 	            playerObsList.addAll(newPlayerList);
+	            playerList.clear();
+	            playerList.addAll(newPlayerList);
+	            for(int i = 0 ; i < playerObsList.size() ; i++)
+	            {
+	            System.out.println("Player List: " + playerObsList.get(i));	            
+	            }
+	            for(int i = 0; i< playerList.size(); i++)
+	            {
+	            	System.out.println("Player: "+ playerList.get(i));
+	            }
 	            playerListView.refresh();
 	        }
 	    });
