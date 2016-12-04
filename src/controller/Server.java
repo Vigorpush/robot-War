@@ -37,7 +37,7 @@ public class Server {
     private Thread serverThread;    	// Thread to accept connections
     private volatile boolean shutdown;  // Determines whether the server is running
     private int clientNumber = 0;		// Client Counter
-    private boolean inLobby = true;
+    private static boolean inLobby = true;
     
     public Server(int port) throws IOException{
         userList = new LobbyMessage();
@@ -83,6 +83,7 @@ public class Server {
                 		                if(userList.begin){
                 		                    System.out.println("SERVER SENT BEGIN GAME!");
                 		                    inLobby = false;
+                		                    System.out.println(inLobby);
                 		                }
                 		                
                 		            }catch(Exception e3){
@@ -160,6 +161,7 @@ public class Server {
      */
     public void serverRecieveBoard (Object incomingState) {
     	this.gameState = (Board) incomingState;
+    	loadShotgun(incomingState);
     }
     
     /**
@@ -336,10 +338,12 @@ public class Server {
         private class RecieveThread extends Thread{
             public void run(){
                 try{
+                    System.out.println("START OF RECIEVE IN SEREVER");
                     // TODO:  HEY NICO THERE IS AN ERROR SOMEWHERE IN HERE THAT IS PREVENTING IT FROM GETTING TO THE GAME PART
                     while(!closed){
-                        System.out.println("SERVER IN LOBBY: " + inLobby + "CLOSED: " + closed);
+                        System.out.println("SERVER IN LOBBY: " + inLobby + " CLOSED: " + closed);
                         while(inLobby){
+                            System.out.println("SERVER IN LOBBY");
                             if(newConnection){
                                 try{
                                     String newName = (String)in.readObject();   //Receive new username
@@ -359,12 +363,29 @@ public class Server {
                                     disconnect();
                                 }
                             }else{
-                                    userList = (LobbyMessage)in.readObject();   // Waiting for an updated list of users
-                                    loadShotgun(userList);                      // Load the queue with the new users
+                                    System.out.println("HERHEHEHEHEHEHEHEH");
+                                    Object msg = in.readObject();
+                                    if(msg instanceof LobbyMessage){
+                                        //userList = (LobbyMessage)in.readObject();   // Waiting for an updated list of users
+                                        userList = (LobbyMessage) msg;
+                                        System.out.println("SERVER GOT AN UPDATED LIST OF USERS");
+                                        loadShotgun(userList);                      // Load the queue with the new users
+                                        System.out.println("LOADED SHOTGUN WITH NEW LIST");
+                                    }else if (msg instanceof Board){
+                                        System.out.println("GOT TO GAME PART");
+                                        try{
+                                            incomingState = (Board)in.readObject();
+                                            serverRecieveBoard(incomingState);
+                                        }catch(Exception e){ 
+                                            System.out.println("Could not recieve new board state in server");
+                                        }
+                                    }else{
+                                        throw new Exception("Error recieveing in server");
+                                    }
                             }
                         }
                         // TODO:  THIS IS THE GAME PART.... THIS NEVER GETS CALLED
-                        System.out.println("Got here in server");
+                        System.out.println("GOT TO GAME PART");
                         try{
                             incomingState = (Board)in.readObject();
                             serverRecieveBoard(incomingState);
@@ -373,6 +394,7 @@ public class Server {
                         }
                     }
                 }catch(Exception e){
+                    System.out.println(e);
                     if(!closed){
                         System.out.println("Connection to client " + clientID + " has closed");
                         disconnect();
