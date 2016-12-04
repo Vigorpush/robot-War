@@ -56,7 +56,7 @@ import model.Robot;
 @SuppressWarnings("unused")
 public class GameView {
 	private static final String title = "Robot Wars";
-	private static Scene gameScene;
+	private Scene gameScene;
 	// Stores the list of players for easy access and modification
 	private static ArrayList<String> playerList;
 	// Store the playerList in a format readable by the ListView
@@ -91,10 +91,10 @@ public class GameView {
     public static final String Column2MapKey = "Sniper";
     public static final String Column3MapKey = "Tank";
 	public static String playerName;
-    private Button moveButton = new Button("Move");
-	private Button attackButton = new Button("Attack");
-	private Button inspectButton = new Button("Inspect");
-	private Button endTurnButton = new Button("End Turn");
+    private static Button moveButton = new Button("Move");
+	private static Button attackButton = new Button("Attack");
+	private static Button inspectButton = new Button("Inspect");
+	private static Button endTurnButton = new Button("End Turn");
 	private static final Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
 
 	/**
@@ -387,10 +387,11 @@ public class GameView {
 	
 	
 	
-		public void updateGame(Board board) {
+		public void updateGame(Board board) {		
 			  Platform.runLater(new Runnable() {
 			        @Override
 			        public void run() {
+
 			tc.refreshTable();
 			currentTurnLabel.setText(board.players.get(board.playerTurn).name + "'s turn");
 			currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
@@ -421,8 +422,9 @@ public class GameView {
 			}
 			
 			if (board.playerTurn != playerIndex) {
+				
 				endTurnButton.setDisable(true);
-			} else {
+			} else {				
 				endTurnButton.setDisable(false);
 			}
 			

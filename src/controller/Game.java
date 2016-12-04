@@ -208,9 +208,17 @@ public class Game extends Application {
 
 	// Needs a way to determine which player is being displayed.
 	public int[] getRobotHealths() {
-		int[] healths = new int[gameBoard.players.get(gameBoard.playerTurn).robotList.size()];
+
+		boolean found = false;
+		int playerIndex = 0;
+		while (!found) {
+			if (gameBoard.players.get(playerIndex).name.equals(playerName)) {
+				found = true;
+			}
+		}
+		int[] healths = new int[gameBoard.players.get(playerIndex).robotList.size()];
 		for (int i = 0; i < healths.length; i++) {
-			healths[i] = gameBoard.players.get(gameBoard.playerTurn).robotList.get(i).health;
+			healths[i] = gameBoard.players.get(playerIndex).robotList.get(i).health;
 		}
 		return healths;
 	}
@@ -409,8 +417,24 @@ public class Game extends Application {
 	}
 
 	public void inspectTile(int x, int y) {
-		InspectView popup = new InspectView();
-		popup.init(gameStage, x, y);
+		boolean found = false;
+		int playerIndex = 0;
+		while (!found) {
+			if (gameBoard.players.get(playerIndex).name.equals(playerName)) {
+				found = true;
+				if (gameBoard.players.get(playerIndex).fogOfWar[x][y]) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							InspectView popup = new InspectView();
+							popup.init(gameStage, x, y);
+						}
+					});
+				}
+			} else {
+				playerIndex++;
+			}
+		}
 
 	}
 }
