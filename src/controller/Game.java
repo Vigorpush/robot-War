@@ -188,7 +188,18 @@ public class Game extends Application {
 				gameBoard.gameBoard[8][4].addRobot(gameBoard.players.get(1).robotList.get(2));
 				gameBoard.players.get(1).setFogOfWar(sideLength);
 			} else {
-				// TODO playercount == 3
+				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(0));
+				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(1));
+				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(2));
+				gameBoard.players.get(0).setFogOfWar(sideLength);
+				gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(1).robotList.get(0));
+				gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(1).robotList.get(1));
+				gameBoard.gameBoard[8][8].addRobot(gameBoard.players.get(1).robotList.get(2));
+				gameBoard.players.get(1).setFogOfWar(sideLength);
+				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(0));
+				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(1));
+				gameBoard.gameBoard[4][0].addRobot(gameBoard.players.get(2).robotList.get(2));
+				gameBoard.players.get(1).setFogOfWar(sideLength);
 			}
 
 			gameBoard.playerTurn = 0;
