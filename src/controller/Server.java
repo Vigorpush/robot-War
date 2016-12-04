@@ -60,43 +60,65 @@ public class Server {
         			    try {
         			        // Get the next new message to send if the queue is not empty
         			        if(!bullets.isEmpty()){
-        			            userList = (LobbyMessage) bullets.take();
-        			            // Send the message to all clients
-        			            for(ConnectionToClient con : connections){
-        			            	System.out.println("SERVER IS SENDING: " + userList.observerList.toString() + " TO CLIENT: " + con.clientID);
-        			            	// Send the reject message if the client has been rejected
-        			            	if(userList.rejectID == con.clientID){
-        			            	    userList.reject = true;
-        			            	}else{
-        			            	    userList.reject = false;
-        			            	}
+        			            Object msg = bullets.take();
+        			            if(msg instanceof LobbyMessage){
+        			                //userList = (LobbyMessage) bullets.take();
+        			                userList = (LobbyMessage)msg;
+        			                // Send the message to all clients
+        			                for(ConnectionToClient con : connections){
+        			                    System.out.println("SERVER IS SENDING: " + userList.observerList.toString() + " TO CLIENT: " + con.clientID);
+        			                    // Send the reject message if the client has been rejected
+        			                    if(userList.rejectID == con.clientID){
+        			                        userList.reject = true;
+        			                    }else{
+        			                        userList.reject = false;
+        			                    }
         			            	
-                		            try{
-                		                con.out.writeObject(userList);
-                		                con.out.flush();
-                		                con.out.reset();
-                		                // Set the rejected user so we can disconnect them
-                		                if(userList.reject == true){
+        			                    try{
+        			                        con.out.writeObject(userList);
+        			                        con.out.flush();
+        			                        con.out.reset();
+        			                        // Set the rejected user so we can disconnect them
+        			                        if(userList.reject == true){
                 		                    rejectedUser = con;
-                		                } 
+        			                        } 
                 		                
-                		                if(userList.begin){
-                		                    System.out.println("SERVER SENT BEGIN GAME!");
-                		                    inLobby = false;
-                		                    System.out.println(inLobby);
-                		                }
+        			                        if(userList.begin){
+        			                            System.out.println("SERVER SENT BEGIN GAME!");
+        			                            inLobby = false;
+        			                            System.out.println(inLobby);
+        			                        }
                 		                
-                		            }catch(Exception e3){
-                		            	System.out.println(e3);
-                		                System.out.println("Could not send names from server");
-                		            }
-        			            }
-        			            // Disconnect the rejected user
-        			            if(rejectedUser != null){
-        			                serverDisconnectUser(rejectedUser);
-        			            }
+        			                    }catch(Exception e3){
+        			                        System.out.println(e3);
+        			                        System.out.println("Could not send names from server");
+        			                    }
+        			                }
+        			               
+        			                // Disconnect the rejected user
+        			                if(rejectedUser != null){
+        			                    serverDisconnectUser(rejectedUser);
+        			                }
         			            
         			           
+        			            }else if(msg instanceof Board){
+        			                try {
+                                        gameState = (Board) msg;
+                                        System.out.println("SERVER RECIEVED NEW GAME STATE");
+                                        for(ConnectionToClient con : connections){
+                                            try {
+                                                con.out.writeObject(gameState);
+                                                con.out.flush();
+                                                con.out.reset();
+                                                System.out.println("SERVER SENT NEW GAME STATE");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+        			            }
         			        }
         			        
                         } catch (InterruptedException e) {
@@ -162,6 +184,7 @@ public class Server {
     public void serverRecieveBoard (Object incomingState) {
     	this.gameState = (Board) incomingState;
     	loadShotgun(incomingState);
+    	System.out.println("SERVER RECIEVE BOARD");
     }
     
     /**
@@ -363,7 +386,6 @@ public class Server {
                                     disconnect();
                                 }
                             }else{
-                                    System.out.println("HERHEHEHEHEHEHEHEH");
                                     Object msg = in.readObject();
                                     if(msg instanceof LobbyMessage){
                                         //userList = (LobbyMessage)in.readObject();   // Waiting for an updated list of users

@@ -164,6 +164,7 @@ public class Game extends Application {
 			});
 			i++;
 		}
+		
 		if (playerCount == 2 || playerCount == 3) {
 			result = true;
 			gameScene = new GameView();
