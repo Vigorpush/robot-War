@@ -4,7 +4,10 @@ import java.io.Serializable;
 import json.GsonWriter;
 
 
-
+/**
+ * 
+ *
+ */
 public abstract class Robot implements Serializable{
 
 	public int id;
