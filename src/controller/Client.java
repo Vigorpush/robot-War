@@ -66,7 +66,7 @@ public class Client {
         private final ObjectInputStream in;   // The input stream for communications with the client
         private final ObjectOutputStream out; // The output stream for communications with the client;
         private boolean closed;
-        private boolean sending = false;        //Determines wether to send the current state to the server.
+        private boolean sending = false;        //Determines whether to send the current state to the server.
         private LobbyMessage userList;
         int counter = 0;
         private final Thread sendThread;      // The thread for sending states to the client
@@ -124,7 +124,7 @@ public class Client {
         }
         
         /**
-         * A thread to recieve messages from the server
+         * A thread to recieved messages from the server
          */
         private class RecieveThread extends Thread{
             public void run(){
@@ -153,7 +153,6 @@ public class Client {
                 }catch(Exception e){
                    System.out.println("Client: Internal error in recieve thread"); 
                    System.out.println(e);
-                   // TODO: notify and send back to start
                 }
             }
         }
@@ -173,7 +172,7 @@ public class Client {
             try {
                 game.beginGame(msg.computerPlayers, msg.playerList, msg.observerList);
             } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
+                System.out.println("beginGame(): function problems");
                 e.printStackTrace();
             }
         }
@@ -189,7 +188,7 @@ public class Client {
                 out.flush();
                 out.reset();
             } catch (IOException e) {
-            	System.out.println("Client: hostBeginGame not working");
+            	System.out.println("Client: hostBeginGame() not working");
             }
             
         }
@@ -213,6 +212,7 @@ public class Client {
                 out.flush();
                 out.reset();
             } catch (IOException e) {
+            	System.out.println("Client: sendGameState() failed");
                 e.printStackTrace();
             } // Write out the state.
         }
