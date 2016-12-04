@@ -85,7 +85,7 @@ public class GameView {
 	private static BorderPane hexBox;
 	private static Polyline[][] hexagonArray;
 	private static String onClick = "INSPECT";
-	private static TableViewController tc = new TableViewController();
+	private static HealthTableViewController tc = new HealthTableViewController();
 	
     public static final String Column1MapKey = "Scout";
     public static final String Column2MapKey = "Sniper";
@@ -94,6 +94,7 @@ public class GameView {
     private Button moveButton = new Button("Move");
 	private Button attackButton = new Button("Attack");
 	private Button inspectButton = new Button("Inspect");
+	private Button endTurnButton = new Button("End Turn");
 	private static final Color[] numberColors = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE, Color.ORANGE, Color.BLACK};
 
 	/**
@@ -163,15 +164,15 @@ public class GameView {
 				moveButton.getStyleClass().remove("clicked_button");
 			}
 		});
-		Button endTurnBtn = new Button("End Turn");
-		endTurnBtn.setOnAction(new EventHandler<ActionEvent>() {
+		
+		endTurnButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
 				controller.endTurn();
 			}
 		});
 		leftBox.getChildren().addAll(backBtn, vbox, currentTankMoveLabel, moveButton, attackButton,
-				inspectButton, endTurnBtn);
+				inspectButton, endTurnButton);
 		leftBox.setPadding(new Insets(0, 30, 0, 30));
 		leftBox.setAlignment(Pos.TOP_LEFT);
 		// Center of window
@@ -218,7 +219,7 @@ public class GameView {
 		moveButton.getStyleClass().add("button");
 		attackButton.getStyleClass().add("button");
 		inspectButton.getStyleClass().add("button");
-		endTurnBtn.getStyleClass().add("button");
+		endTurnButton.getStyleClass().add("button");
 		forfeit.getStyleClass().add("cancelbutton");
 		return gameScene;
 	}
@@ -273,6 +274,7 @@ public class GameView {
 							Game controller = new Game();
 							switch (onClick) {
 							case "INSPECT":
+								controller.inspectTile(x,y);
 								break;
 
 							case "MOVE":
@@ -324,7 +326,7 @@ public class GameView {
 							Game controller = new Game();
 							switch (onClick) {
 							case "INSPECT":
-								//controller.inspectTile(x,y);
+								controller.inspectTile(x,y);
 								break;
 
 							case "MOVE":
@@ -406,18 +408,24 @@ public class GameView {
 				}
 			}
 			
-			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0 || board.playerTurn == playerIndex) {
+			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0 || board.playerTurn != playerIndex) {
 				moveButton.setDisable(true);
 			} else {
 				moveButton.setDisable(false);
 			}
 
-			if (board.players.get(board.playerTurn).hasShot || board.playerTurn == playerIndex) {
+			if (board.players.get(board.playerTurn).hasShot || board.playerTurn != playerIndex) {
 				attackButton.setDisable(true);
 			} else {
 				attackButton.setDisable(false);
 			}
-
+			
+			if (board.playerTurn != playerIndex) {
+				endTurnButton.setDisable(true);
+			} else {
+				endTurnButton.setDisable(false);
+			}
+			
 			currentTankMoveLabel.setText(
 					board.players.get(playerIndex).robotList.get(board.currentRobot).getClass().getSimpleName()
 							+ " Move:" + board.players.get(playerIndex).robotList.get(board.currentRobot).movementLeft
@@ -460,7 +468,7 @@ public class GameView {
 								// perspective of the current player, may want to
 								// display from perspective of client's playerW
 								// try {
-								if (robotOwner.teamNumber == board.playerTurn) {
+								if (robotOwner.teamNumber == playerIndex) {
 									// if
 									// (robotOwner.IP.equals(InetAddress.getLocalHost().toString()))
 									// {
@@ -488,6 +496,7 @@ public class GameView {
 												Game controller = new Game();
 												switch (onClick) {
 												case "INSPECT":
+													controller.inspectTile(x,y);
 													break;
 
 												case "MOVE":
@@ -521,6 +530,7 @@ public class GameView {
 												Game controller = new Game();
 												switch (onClick) {
 												case "INSPECT":
+													controller.inspectTile(x,y);
 													break;
 
 												case "MOVE":
