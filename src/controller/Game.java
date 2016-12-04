@@ -401,6 +401,11 @@ public class Game extends Application {
     }
     
     public void recieveGameState(Board incomingState){
+        for(int i = 0; i < incomingState.players.size(); i ++){
+            System.out.println("CLIENT RECIEVED STATE : " +  incomingState.players.get(i).name);
+        }
+        System.out.println("PLAYER TURN: " + incomingState.playerTurn);
+        
         GameView newView = new GameView();
         gameBoard = incomingState;
         newView.updateGame(incomingState);

@@ -100,6 +100,9 @@ public class Client {
                                 out.reset();
                                 sending = false;
                                 System.out.println("CLIENT SENT GAME STATE");
+                                for(int i = 0; i < outgoingState.players.size(); i ++){
+                                    System.out.println(outgoingState.players.get(i));
+                                }
                             }
                       }
                     }
@@ -185,6 +188,7 @@ public class Client {
          * Tell the controller that a new game state has been recieved
          */
         public void recieveGameState(){
+           
             System.out.println("CLIENT REVEIBE GAME STATE CALLED");
             game.recieveGameState(incomingState);
             System.out.println("CLIENT RECIEVE GAME STATE FINISHED");
@@ -202,6 +206,9 @@ public class Client {
                 out.writeObject(outgoingState); 
                 out.flush();
                 out.reset();
+                for(int i = 0; i < outgoingState.players.size(); i ++){
+                    System.out.println(outgoingState.players.get(i).name);
+                }
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
