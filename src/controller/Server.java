@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -12,11 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import model.Board;
 
 public class Server {
-     // TODO: check if in lobby
-    // TODO: create sendName function sends new name to all clients
-    // TODO: create recieveName function for lobby, called in recieve thread while lobby = true, 
-    // TODO: create begin game function, sets in lobby false, sends begincode to all clients, called when recieve name recieves begincode
-
+	
     /**
      * List of client connections.
      */
@@ -32,23 +27,43 @@ public class Server {
      */
     private LobbyMessage userList;
     
-    private Board gameState;
+    private Board gameState;			// The Board that gets passed around all over server
     private ServerSocket serverSocket;  // Socket that listens for connections
     private Thread serverThread;    	// Thread to accept connections
     private volatile boolean shutdown;  // Determines whether the server is running
     private int clientNumber = 0;		// Client Counter
-    private static boolean inLobby = true;
+    private static boolean inLobby = true; // Check if the server is in the lobby
     
+    /**
+     * Server Constructor()
+     * The Server thread will create ...
+     *  	userList 	- List of Observer and Players while inside the lobby to be used by the view
+     *  	connections - List of Connection to Clients used by the server thread to contain connected clients
+     *  	gameState	- which is the board that gets passed around 
+     *  	serverSocket- The Server Socket that is used to accept socket connections from clients
+     *  	bullets		- A Queue that is used by the shotgun thread
+     *  
+     * Threads:
+     * 		serverThread -
+     * 
+     * 		shotgunThread - In Lobby: The shotgun thread checks if bullets has anything in it then takes what's on top of the Queue 
+     * 								  then sends it to all connected clients. If the player is disconneted the msg will not be sent.
+     * 								  Finally the shotgun thread checks if the message is the begin message then it starts all connected
+     * 								  player.
+     * 
+     * 					  	In Game: The shotgun thread checks if the messages is a Board 
+     * @param port - port number to be used in creating connections
+     * @throws IOException
+     */
     public Server(int port) throws IOException{
-        userList = new LobbyMessage();
-        connections = new ArrayList<ConnectionToClient>();
-        gameState = new Board(5); // TODO:
-        serverSocket = new ServerSocket(port); 
-        serverThread = new ServerThread();
+        userList = new LobbyMessage();						// 
+        connections = new ArrayList<ConnectionToClient>();	// List of Connection to Clients
+        gameState = new Board(5); 							// The Board that gets passed around all over server
+        serverSocket = new ServerSocket(port); 				// The Server Socket that is used to accept sockets from clients
+        bullets = new LinkedBlockingQueue<Object>();
+        serverThread = new ServerThread();					
         serverThread.setDaemon(true);
         serverThread.start();
-        
-        bullets = new LinkedBlockingQueue<Object>();
         
         // This is the thread that sends messages to all clients
         Thread shotgunThread = new Thread(){
@@ -62,9 +77,7 @@ public class Server {
         			        if(!bullets.isEmpty()){
         			            Object msg = bullets.take();
         			            if(msg instanceof LobbyMessage){
-        			                //userList = (LobbyMessage) bullets.take();
         			                userList = (LobbyMessage)msg;
-        			                // Send the message to all clients
         			                for(ConnectionToClient con : connections){
         			                    System.out.println("SERVER IS SENDING: " + userList.observerList.toString() + " TO CLIENT: " + con.clientID);
         			                    // Send the reject message if the client has been rejected
@@ -84,14 +97,13 @@ public class Server {
         			                        } 
                 		                
         			                        if(userList.begin){
-        			                            System.out.println("SERVER SENT BEGIN GAME!");
         			                            inLobby = false;
         			                            System.out.println(inLobby);
         			                        }
                 		                
         			                    }catch(Exception e3){
         			                        System.out.println(e3);
-        			                        System.out.println("Could not send names from server");
+        			                        System.out.println("Shotgun Thread: Failed to loop through connections for sending the userList");
         			                    }
         			                }
         			               
@@ -99,29 +111,32 @@ public class Server {
         			                if(rejectedUser != null){
         			                    serverDisconnectUser(rejectedUser);
         			                }
-        			            
-        			           
-        			            }else if(msg instanceof Board){
+        			                // Reject Reset
+        			                rejectedUser = null;
+        			                userList.rejectID = -1;
+        			                
+        			            } else if(msg instanceof Board) {
         			                try {
                                         gameState = (Board) msg;
-                                        System.out.println("SERVER RECIEVED NEW GAME STATE");
                                         for(ConnectionToClient con : connections){
                                             try {
                                                 con.out.writeObject(gameState);
                                                 con.out.flush();
                                                 con.out.reset();
-                                                System.out.println("SERVER SENT NEW GAME STATE");
                                             } catch (IOException e) {
+                                            	System.out.println("Shotgun Thread: Game State failed to send through the Out Stream");
                                                 e.printStackTrace();
                                             }
                                         }
                                     } catch (Exception e) {
+                                    	System.out.println("Shotgun Thread: Failed to loop through connections for sending the board");
                                         e.printStackTrace();
                                     }
         			            }
         			        }
         			        
                         } catch (InterruptedException e) {
+                        	System.out.println("Shotgun Thread: Internal Unknown Error");
                             e.printStackTrace();
                         }
         			}
@@ -136,7 +151,6 @@ public class Server {
         								con.out.writeObject(gameState);
         								con.out.flush();
         								con.out.reset();
-        								System.out.println("SERVER SENT NEW GAME STATE");
         							} catch (IOException e) {
 										e.printStackTrace();
 									}
