@@ -45,8 +45,8 @@ public class Server {
      *  
      * Threads:
      * 		serverThread  - Is the main thread that keeps the game alive and it accepts incoming client connections. When a client is accepted
-     * 					 	
-     *  when this thread is killed
+     * 					 	A Connection to Client Class is created and its send and recieve thread is started. When this thread is killed the 
+     * 						game crashes.
      * 
      * 		shotgunThread - In Lobby: The shotgun thread checks if bullets has anything in it then takes what's on top of the Queue 
      * 								  then sends it to all connected clients. If the player is disconneted the msg will not be sent.
