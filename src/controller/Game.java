@@ -20,14 +20,15 @@ import model.Sniper;
 import model.Tank;
 import model.Tile;
 import view.GameView;
+import view.InspectView;
 import view.LobbyView;
 import view.PostGameView;
 import view.StartView;
 
 @SuppressWarnings("unused")
 public class Game extends Application {
-    
-    public static final int PORT = 32222;
+
+	public static final int PORT = 32222;
 	public static Stage gameStage;
 	public static Board gameBoard;
 	public static GameView gameScene;
@@ -37,6 +38,7 @@ public class Game extends Application {
 	public static LobbyView lobbyScene;
 	public static boolean isHost;
 	public static String playerName;
+
 	public static void main(String[] args) {
 
 		launch();
@@ -52,60 +54,60 @@ public class Game extends Application {
 
 		File file = new File("Resources/css/StartView.css");
 		gameStage.centerOnScreen();
-		gameStage.getScene().getStylesheets().clear();		
+		gameStage.getScene().getStylesheets().clear();
 		gameStage.getScene().getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
 		gameStage.setTitle("Robot War");
 		gameStage.show();
 	}
-//TODO store static variable about who you are 
+
+	// TODO store static variable about who you are
 	public boolean joinGame(String name, String address) {
 		Game.playerName = name;
-	    Game.isHost = false;
+		Game.isHost = false;
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if (name.length() != 0) {
 			result = true;
 		}
-		
-		try{
-		    myClient = new Client(address, PORT, name, this);
-		    System.out.println("Clinet successfully started");
-		    lobbyScene = new LobbyView();
+
+		try {
+			myClient = new Client(address, PORT, name, this);
+			System.out.println("Clinet successfully started");
+			lobbyScene = new LobbyView();
 			gameStage.setScene(lobbyScene.init());
-		}catch (Exception e){
-		    System.out.println("Starting client failed");
+		} catch (Exception e) {
+			System.out.println("Starting client failed");
 		}
 		return result;
-	}	
-	
-	public void connectUser(ArrayList<String> observerList, ArrayList<String> playerList)
-	{
+	}
+
+	public void connectUser(ArrayList<String> observerList, ArrayList<String> playerList) {
 		lobbyScene.updateUserLists(observerList, playerList);
 	}
-	
+
 	public void hostGame(String name) {
 		Game.playerName = name;
 		// TODO Auto-generated method stub
-	    Game.isHost = true;
+		Game.isHost = true;
 		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
-		
-		try {									// @Nico was here I'm trying to create a server
+
+		try { // @Nico was here I'm trying to create a server
 			System.out.println("Server Creation Started");
 			Server hostServer = new Server(PORT); // TODO: hardcoded port
-		} catch (IOException e) { 				// author Nico was here too
+		} catch (IOException e) { // author Nico was here too
 			System.err.println("Server Creation Failed");
-		}	
-		
-		try {
-		    myClient = new Client("localhost", PORT, name, this);
-		    System.out.println("Client started");
-		}catch (Exception e){
-		    System.err.println("Failed to start client");
 		}
-		
+
+		try {
+			myClient = new Client("localhost", PORT, name, this);
+			System.out.println("Client started");
+		} catch (Exception e) {
+			System.err.println("Failed to start client");
+		}
+
 		lobbyScene.addUser(name);
-		
+
 		// lobbyScene.setStyle();
 	}
 
@@ -113,28 +115,29 @@ public class Game extends Application {
 		gameStage.close();
 		System.exit(0);
 	}
-	
-	public boolean signalGameStart(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList){
-	    int playerCount = computerCount + playerList.size();
-	    
-	    if(playerCount == 2 || playerCount == 3 || playerCount == 6){   
-	        if(Game.isHost){
-	            System.out.println("HOST HAS STARTED GAME.  TELLING CLIENTS");
-	            Game.myClient.getConnection().hostBeginGame();
-	            return true;
-	        }else{
-	            return false;
-	        }
-	    }else{
-	        return false;
-	    }
+
+	public boolean signalGameStart(Integer computerCount, ArrayList<String> playerList,
+			ArrayList<String> observerList) {
+		int playerCount = computerCount + playerList.size();
+
+		if (playerCount == 2 || playerCount == 3 || playerCount == 6) {
+			if (Game.isHost) {
+				System.out.println("HOST HAS STARTED GAME.  TELLING CLIENTS");
+				Game.myClient.getConnection().hostBeginGame();
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
+
 	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList)
 			throws UnknownHostException {
 		// TODO Auto-generated method stub
-	    System.out.println("IS HOST is  " + isHost);
-	    
-	    
+		System.out.println("IS HOST is  " + isHost);
+
 		boolean result = false;
 		sideLength = 5;
 		if (playerList.size() + computerCount == 6) {
@@ -142,7 +145,7 @@ public class Game extends Application {
 		}
 		gameBoard = new Board(sideLength);
 		int playerCount = computerCount + playerList.size();
-		//TODO add computers to playerlist
+		// TODO add computers to playerlist
 		gameBoard.players = new ArrayList<Player>();
 		int i = 0;
 		int j = 0;
@@ -164,16 +167,17 @@ public class Game extends Application {
 			});
 			i++;
 		}
-		
+
 		if (playerCount == 2 || playerCount == 3) {
 			result = true;
 			gameScene = new GameView();
 			// TODO Add computers to player list;
-			  Platform.runLater(new Runnable() {
-			        @Override
-			        public void run() {
-			gameStage.setScene(gameScene.init(playerList, observerList, playerName));
-			        }});
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					gameStage.setScene(gameScene.init(playerList, observerList, playerName));
+				}
+			});
 			// Set starting position for two players
 			if (playerCount == 2) {
 				gameBoard.gameBoard[0][4].addRobot(gameBoard.players.get(0).robotList.get(0));
@@ -198,16 +202,14 @@ public class Game extends Application {
 			// TODO Add computers to player list;
 			gameStage.setScene(gameScene.init(playerList, observerList, playerName));
 
-		}		
+		}
 		return result;
 	}
-
 
 	// Needs a way to determine which player is being displayed.
 	public int[] getRobotHealths() {
 		int[] healths = new int[gameBoard.players.get(gameBoard.playerTurn).robotList.size()];
-		for(int i = 0; i < healths.length; i++)
-		{
+		for (int i = 0; i < healths.length; i++) {
 			healths[i] = gameBoard.players.get(gameBoard.playerTurn).robotList.get(i).health;
 		}
 		return healths;
@@ -244,170 +246,171 @@ public class Game extends Application {
 
 				if (gameBoard.currentRobot == gameBoard.players.get(gameBoard.playerTurn).robotList.size()) {
 					gameBoard.currentRobot = 0;
-					for(Robot r : defeatedRobots)
-					{
+					for (Robot r : defeatedRobots) {
 						gameBoard.players.get(r.teamNumber).robotList.remove(r);
-						gameBoard.players.get(r.teamNumber).robotList.add(r);			
+						gameBoard.players.get(r.teamNumber).robotList.add(r);
 					}
 					defeatedRobots.clear();
 				}
 			}
 		} while (gameBoard.players.get(gameBoard.playerTurn) != null
 				&& gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health < 1);
-		
+
 		gameBoard.players.get(gameBoard.playerTurn).robotList
 				.get(gameBoard.currentRobot).movementLeft = gameBoard.players.get(gameBoard.playerTurn).robotList
 						.get(gameBoard.currentRobot).movement;
-		
+
 		gameBoard.players.get(gameBoard.playerTurn).hasShot = false;
-		//TODO Set fog of war for everyone?
+		// TODO Set fog of war for everyone?
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
-		
+
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 
 	public void attackTile(int x, int y) {
 		// TODO Get player
-		//int result = 0;
+		// int result = 0;
 		if (gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot).health > 0) {
 
 			Robot attackingRobot = gameBoard.players.get(gameBoard.playerTurn).robotList.get(gameBoard.currentRobot);
 			Tile target = gameBoard.gameBoard[x][y];
 			boolean possible = gameBoard.attackPossible(attackingRobot, target);
 			if (possible) {
-				if(attackingRobot.location.equals(target))
-				{
+				if (attackingRobot.location.equals(target)) {
 					attackingRobot.health = 0;
-					attackingRobot.deathCount++;		
-					//TODO Do suicides give kills?
+					attackingRobot.deathCount++;
+					// TODO Do suicides give kills?
 					target.robotList.remove(attackingRobot);
 				}
-				
-				//for(Robot r : gameBoard.gameBoard[x][y].robotList)
-				for(ListIterator<Robot> rIterator = gameBoard.gameBoard[x][y].robotList.listIterator(); rIterator.hasNext();)
-				{
+
+				// for(Robot r : gameBoard.gameBoard[x][y].robotList)
+				for (ListIterator<Robot> rIterator = gameBoard.gameBoard[x][y].robotList.listIterator(); rIterator
+						.hasNext();) {
 					Robot r = rIterator.next();
 					r.health -= attackingRobot.attack;
-					if(r.health <= 0)
-					{
+					if (r.health <= 0) {
 						r.health = 0;
 						r.deathCount++;
 						rIterator.remove();
-						//TODO Green scout died, red sniper killed by green sniper, red tank did not go next
+						// TODO Green scout died, red sniper killed by green
+						// sniper, red tank did not go next
 						if (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot
 								|| (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot
-										&& r.teamNumber > gameBoard.playerTurn))
-						{
+										&& r.teamNumber > gameBoard.playerTurn)) {
 							gameBoard.players.get(r.teamNumber).robotList.remove(r);
 							gameBoard.players.get(r.teamNumber).robotList.add(r);
-						}
-						else
-						{
+						} else {
 							defeatedRobots.add(r);
 						}
-						
-						attackingRobot.killCount++;						
+
+						attackingRobot.killCount++;
 					}
 				}
 				gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 				gameScene.updateGame(gameBoard);
-				if(attackingRobot.health<= 0)
-				{
+				if (attackingRobot.health <= 0) {
 					endTurn();
 				}
 			}
-			
+
 		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 
 	}
-		/**
-	 * Method that checks if a player has lost, and creates an observer for them if they have.
-	 * @param index The team number of the losing player
+
+	/**
+	 * Method that checks if a player has lost, and creates an observer for them
+	 * if they have.
+	 * 
+	 * @param index
+	 *            The team number of the losing player
 	 * @return If they lost
 	 */
-	public boolean playerLose(int index)
-	{
+	public boolean playerLose(int index) {
 		boolean result = true;
-		for(Robot r : gameBoard.players.get(index).robotList)
-		{
-			if(r.health != 0)
-			{
+		for (Robot r : gameBoard.players.get(index).robotList) {
+			if (r.health != 0) {
 				result = false;
 			}
 		}
-		
-		if(result)
-		{
+
+		if (result) {
 			Observer newObserver = new Observer(gameBoard.players.get(index).name, gameBoard.players.get(index).IP);
 			gameOver();
 		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 	}
-	
+
 	/**
-	 * Method that destroys all a player's robots and calls playerLose to turn them into an observer
+	 * Method that destroys all a player's robots and calls playerLose to turn
+	 * them into an observer
 	 */
-	public void forfeit()
-	{
-		//TODO Get controlling player
-		for(Robot r : gameBoard.players.get(gameBoard.playerTurn).robotList)
-		{
+	public void forfeit() {
+		// TODO Get controlling player
+		for (Robot r : gameBoard.players.get(gameBoard.playerTurn).robotList) {
 			r.health = 0;
 		}
 		playerLose(gameBoard.playerTurn);
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
-	
+
 	/**
-	 * Method that checks if more than one player has living robots, and if not, ends the game
+	 * Method that checks if more than one player has living robots, and if not,
+	 * ends the game
 	 */
-	public void gameOver()
-	{
+	public void gameOver() {
 		boolean result = true;
 		Robot livingRobot = null;
-		for(Player p : gameBoard.players)
-		{
-			for(Robot r : p.robotList)
-			{
-				if(r.health>0 && livingRobot == null)
-				{
+		for (Player p : gameBoard.players) {
+			for (Robot r : p.robotList) {
+				if (r.health > 0 && livingRobot == null) {
 					livingRobot = null;
-				}
-				else if(r.health >0 && livingRobot.teamNumber != r.teamNumber)
-				{
+				} else if (r.health > 0 && livingRobot.teamNumber != r.teamNumber) {
 					result = false;
 				}
 			}
 		}
-		if(result)
-		{
+		if (result) {
 			PostGameView postGameScene = new PostGameView();
 			gameStage.setScene(postGameScene.init());
 		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
-	
-	public void connectionRejected(){
-	    // Pop up a dialogue box that says we were rejected and return to the start view.
-	    System.out.println("Connection rejected: user name has already been used");
+
+	public void connectionRejected() {
+		// Pop up a dialogue box that says we were rejected and return to the
+		// start view.
+		System.out.println("Connection rejected: user name has already been used");
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				StartView initialScene = new StartView();
+				gameStage.setScene(initialScene.init());
+			}
+		});
 	}
 
-    public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
-        Game.myClient.updateUsers(playerList, observerList);
-        
-    }
-    
-    public void recieveGameState(Board incomingState){
-        for(int i = 0; i < incomingState.players.size(); i ++){
-            System.out.println("CLIENT RECIEVED STATE : " +  incomingState.players.get(i).name);
-        }
-        System.out.println("PLAYER TURN: " + incomingState.playerTurn);
-        
-        GameView newView = new GameView();
-        gameBoard = incomingState;
-        newView.updateGame(incomingState);
-    }
+	public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
+		Game.myClient.updateUsers(playerList, observerList);
+
+	}
+
+	public void recieveGameState(Board incomingState) {
+		for (int i = 0; i < incomingState.players.size(); i++) {
+			System.out.println("CLIENT RECIEVED STATE : " + incomingState.players.get(i).name);
+		}
+		System.out.println("PLAYER TURN: " + incomingState.playerTurn);
+
+		GameView newView = new GameView();
+		gameBoard = incomingState;
+		newView.updateGame(incomingState);
+	}
+
+	public void inspectTile(int x, int y) {
+		InspectView popup = new InspectView();
+		popup.init(gameStage, x, y);
+
+	}
 }

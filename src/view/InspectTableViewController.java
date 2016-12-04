@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 import model.Robot;
 import tableRow.InspectRow;
 
-public class InpsectTableViewController {
+public class InspectTableViewController {
 	// Table
 	public TableView<InspectRow> inspectTable = new TableView<InspectRow>();
 
@@ -36,13 +36,13 @@ public class InpsectTableViewController {
 	 * 
 	 * Constructor for the robotHealthTableViewController class.
 	 */
-	public InpsectTableViewController(int x, int y) {
+	public InspectTableViewController(int x, int y) {
 		// When the activity log is instantiated, then pull all the information
 		// from the database.
 		retrieveInspectRowData(x,y);
 		this.initialize();
 		//inspectTable.setMaxHeight(53);
-		inspectTable.setMaxWidth(280);
+		inspectTable.setMaxWidth(225);
 		inspectTable.setItems(robotData);
 		inspectTable.setFocusTraversable(false);
 	}
@@ -81,7 +81,7 @@ public class InpsectTableViewController {
         	robotData.add(row);
         	
         }		
-
+        inspectTable.setMinHeight(test.size()*30);
 	}
 
 	/**
