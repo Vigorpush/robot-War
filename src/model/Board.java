@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board implements Serializable {
@@ -10,7 +11,7 @@ public class Board implements Serializable {
 	public List<Player> players;
 	public int playerTurn;
 	public int currentRobot;
-
+	public ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	public Board(int sideLength) {
 		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {

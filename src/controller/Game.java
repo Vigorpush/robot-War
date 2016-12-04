@@ -32,7 +32,6 @@ public class Game extends Application {
 	public static Stage gameStage;
 	public static Board gameBoard;
 	public static GameView gameScene;
-	public static ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
 	public static int sideLength;
 	public static Client myClient;
 	public static LobbyView lobbyScene;
@@ -256,11 +255,24 @@ public class Game extends Application {
 
 				if (gameBoard.currentRobot == gameBoard.players.get(gameBoard.playerTurn).robotList.size()) {
 					gameBoard.currentRobot = 0;
-					for (Robot r : defeatedRobots) {
-						gameBoard.players.get(r.teamNumber).robotList.remove(r);
+					for (Robot r : gameBoard.defeatedRobots) {
+						boolean found = false;
+						int i = 0;
+						while(!found)
+						{
+							if(gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id)
+							{
+								found = true;
+							}
+							else
+							{
+								i++;
+							}
+						}				
+						gameBoard.players.get(r.teamNumber).robotList.remove(i);
 						gameBoard.players.get(r.teamNumber).robotList.add(r);
 					}
-					defeatedRobots.clear();
+					gameBoard.defeatedRobots.clear();
 				}
 			}
 		} while (gameBoard.players.get(gameBoard.playerTurn) != null
@@ -308,10 +320,23 @@ public class Game extends Application {
 						if (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot
 								|| (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot
 										&& r.teamNumber > gameBoard.playerTurn)) {
-							gameBoard.players.get(r.teamNumber).robotList.remove(r);
+							boolean found = false;
+							int i = 0;
+							while(!found)
+							{
+								if(gameBoard.players.get(r.teamNumber).robotList.get(i).id == r.id)
+								{
+									found = true;
+								}
+								else
+								{
+									i++;
+								}
+							}				
+							gameBoard.players.get(r.teamNumber).robotList.remove(i);
 							gameBoard.players.get(r.teamNumber).robotList.add(r);
 						} else {
-							defeatedRobots.add(r);
+							gameBoard.defeatedRobots.add(r);
 						}
 
 						attackingRobot.killCount++;
