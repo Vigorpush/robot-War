@@ -229,6 +229,7 @@ public class Game extends Application {
 			}
 		}
 
+		this.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 
 	}
@@ -261,6 +262,8 @@ public class Game extends Application {
 		//TODO Set fog of war for everyone?
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
+		
+		this.myClient.getConnection().sendGameState(gameBoard);
 	}
 
 	public void attackTile(int x, int y) {
@@ -315,6 +318,7 @@ public class Game extends Application {
 			}
 			
 		}
+		this.myClient.getConnection().sendGameState(gameBoard);
 
 	}
 		/**
@@ -338,6 +342,7 @@ public class Game extends Application {
 			Observer newObserver = new Observer(gameBoard.players.get(index).name, gameBoard.players.get(index).IP);
 			gameOver();
 		}
+		this.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 	}
 	
@@ -352,6 +357,7 @@ public class Game extends Application {
 			r.health = 0;
 		}
 		playerLose(gameBoard.playerTurn);
+		this.myClient.getConnection().sendGameState(gameBoard);
 	}
 	
 	/**
@@ -380,6 +386,7 @@ public class Game extends Application {
 			PostGameView postGameScene = new PostGameView();
 			gameStage.setScene(postGameScene.init());
 		}
+		this.myClient.getConnection().sendGameState(gameBoard);
 	}
 	
 	public void connectionRejected(){
@@ -390,5 +397,11 @@ public class Game extends Application {
     public void updateUsers(ArrayList<String> playerList, ArrayList<String> observerList) {
         Game.myClient.updateUsers(playerList, observerList);
         
+    }
+    
+    public void recieveGameState(Board incomingState){
+        GameView newView = new GameView();
+        gameBoard = incomingState;
+        newView.updateGame(incomingState);
     }
 }

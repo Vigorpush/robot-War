@@ -92,12 +92,16 @@ public class Client {
             public void run(){
                 System.out.println("Client send thread started");
                 try{
-                    while(!closed && !inLobby){ // While the server is still open and we are not in the lobby....
-                        if(sending){    // If it is time to send the state
-                            out.writeObject(outgoingState); // Write out the state.
-                            out.flush();
-                            sending = false;
-                        }
+                    while(true){
+                        while(!closed && !inLobby){ // While the server is still open and we are not in the lobby....
+                            if(sending){    // If it is time to send the state
+                                out.writeObject(outgoingState); // Write out the state.
+                                out.flush();
+                                out.reset();
+                                sending = false;
+                                System.out.println("CLIENT SENT GAME STATE");
+                            }
+                      }
                     }
                 }catch(Exception e){
                     System.out.println("Unexpected internal error in send thread");
@@ -113,8 +117,8 @@ public class Client {
                         while(inLobby){ // While we are in the lobby...
                            // System.out.println("IN LOBBY WAITING FOR GAME START");
                             userList = (LobbyMessage) in.readObject();  // Read in the updated userList sent to us
-                            System.out.println("CLIENT RECIEVED: " + userList.observerList.toString());
-                            
+                            System.out.println("CLIENT RECIEVED: " + userList.observerList.toString() + userList.playerList.toString());
+                            System.out.println("Begin GAME was recieved as: " + userList.begin);
                             // Check that the connection was not rejected
                             if(userList.reject){
                                 game.connectionRejected();
@@ -131,10 +135,11 @@ public class Client {
                         }
                         // now we are in the game, so we will constantly read the newest game state.
                         incomingState = (Board) in.readObject();
-                        recieveGame();  // Tell the controller that a new state has been received
+                        recieveGameState();  // Tell the controller that a new state has been received
                     }
                 }catch(Exception e){
                    System.out.println("Client: Internal error in recieve thread"); 
+                   System.out.println(e);
                    // TODO: notify and send back to start
                 }
             }
@@ -153,7 +158,6 @@ public class Client {
          */
         public void beginGame(LobbyMessage msg){
             try {
-                System.out.println("CAlling BEGIN GAME IN CLIENT");
                 game.beginGame(msg.computerPlayers, msg.playerList, msg.observerList);
             } catch (UnknownHostException e) {
                 // TODO Auto-generated catch block
@@ -170,7 +174,7 @@ public class Client {
                 begin.begin = true;
                 out.writeObject(begin);
                 out.flush();
-                System.out.println("HOST SENT BEGINGAME TO SERVER");
+                out.reset();
             } catch (IOException e) {
             	System.out.println("Client: hostBeginGame not working");
             }
@@ -180,9 +184,10 @@ public class Client {
         /**
          * Tell the controller that a new game state has been recieved
          */
-        public void recieveGame(){
-        	// TODO: call controller beginGame
-            // game.recieveGame(incomingState);
+        public void recieveGameState(){
+            System.out.println("CLIENT REVEIBE GAME STATE CALLED");
+            game.recieveGameState(incomingState);
+            System.out.println("CLIENT RECIEVE GAME STATE FINISHED");
         }
         
         /**
@@ -190,8 +195,19 @@ public class Client {
          * @param gameState -> The updated game state
          */
         public void sendGameState(Board gameState){
+            System.out.println("CLIENT SEND GAME STATE CALLED");
             sending = true;
             outgoingState = gameState;
+            try {
+                out.writeObject(outgoingState); 
+                out.flush();
+                out.reset();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } // Write out the state.
+           
+            System.out.println("CLIENT SEND GAME STATE RETURNED");
         }
         
         /**

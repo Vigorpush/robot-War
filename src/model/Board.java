@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Board {
+public class Board implements Serializable {
 
 	public Tile[][] gameBoard;
 	public List<Observer> observers;

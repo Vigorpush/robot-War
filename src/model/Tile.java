@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tile {
+public class Tile implements Serializable{
 
 	public int xPosition;
 	public int yPosition;

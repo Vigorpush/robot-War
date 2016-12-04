@@ -1,9 +1,11 @@
 package model;
+import java.io.Serializable;
+
 import json.GsonWriter;
 
 
 
-public abstract class Robot {
+public abstract class Robot implements Serializable{
 
 	public int id;
 	public int teamNumber;
