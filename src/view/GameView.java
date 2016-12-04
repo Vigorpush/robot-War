@@ -90,7 +90,7 @@ public class GameView {
     public static final String Column1MapKey = "Scout";
     public static final String Column2MapKey = "Sniper";
     public static final String Column3MapKey = "Tank";
-	
+	public static String playerName;
     private Button moveButton = new Button("Move");
 	private Button attackButton = new Button("Attack");
 	private Button inspectButton = new Button("Inspect");
@@ -102,8 +102,8 @@ public class GameView {
 	 * @return the gameScene
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Scene init(ArrayList<String> playerList, ArrayList<String> observerList) {
-		
+	public Scene init(ArrayList<String> playerList, ArrayList<String> observerList, String playerName) {
+		this.playerName = playerName;
 		int playerCount = playerList.size();
 		// Sets side length to 7 if there are six players
 		if (playerCount == 6) {

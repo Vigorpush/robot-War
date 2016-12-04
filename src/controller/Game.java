@@ -36,7 +36,7 @@ public class Game extends Application {
 	public static Client myClient;
 	public static LobbyView lobbyScene;
 	public static boolean isHost;
-	
+	public static String playerName;
 	public static void main(String[] args) {
 
 		launch();
@@ -59,6 +59,7 @@ public class Game extends Application {
 	}
 //TODO store static variable about who you are 
 	public boolean joinGame(String name, String address) {
+		this.playerName = playerName;
 	    this.isHost = false;
 		// TODO Auto-generated method stub
 		boolean result = false;
@@ -83,6 +84,7 @@ public class Game extends Application {
 	}
 	
 	public void hostGame(String name) {
+		this.playerName = playerName;
 		// TODO Auto-generated method stub
 	    this.isHost = true;
 		lobbyScene = new LobbyView();
@@ -169,7 +171,7 @@ public class Game extends Application {
 			  Platform.runLater(new Runnable() {
 			        @Override
 			        public void run() {
-			gameStage.setScene(gameScene.init(playerList, observerList));
+			gameStage.setScene(gameScene.init(playerList, observerList, playerName));
 			        }});
 			// Set starting position for two players
 			if (playerCount == 2) {
@@ -193,7 +195,7 @@ public class Game extends Application {
 			result = true;
 			gameScene = new GameView();
 			// TODO Add computers to player list;
-			gameStage.setScene(gameScene.init(playerList, observerList));
+			gameStage.setScene(gameScene.init(playerList, observerList, playerName));
 
 		}		
 		return result;
