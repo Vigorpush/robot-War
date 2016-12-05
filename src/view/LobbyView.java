@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -45,7 +46,6 @@ public class LobbyView {
 	//Displays the observerList
 	private ListView<String> observerListView;
 	//Used to keep track of the number of computer players that will be in the game when it starts.
-	private Spinner<Integer> computerCount;
 	/**
 	 * Creates the lobbyScene 
 	 * @return lobbyScene
@@ -61,12 +61,14 @@ public class LobbyView {
 		playerList = new ArrayList<String>();
 		playerObsList = FXCollections.observableArrayList(playerList);		
 		playerListView.setItems(playerObsList );
-		HBox spinnerBox = new HBox(10);
-		Label spinnerLabel = new Label("Computer Players: ");
-		spinnerLabel.setPadding(new Insets(10, 0, 0, 0));
-		computerCount = new Spinner<Integer>(0,6,0,1);
-		spinnerBox.getChildren().addAll(spinnerLabel, computerCount);
-		leftBox.getChildren().addAll(backBtn, playerListLabel, playerListView, spinnerBox);
+		Label ipAddressLabel = new Label();
+		try {
+			ipAddressLabel.setText("Your IP Address: " + InetAddress.getLocalHost().toString());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		leftBox.getChildren().addAll(backBtn, ipAddressLabel, playerListLabel, playerListView);
 		//Center of window
 		VBox centerBox = new VBox(60);
 		Button switchBtn = new Button("Switch");
@@ -76,12 +78,11 @@ public class LobbyView {
 			}
 		});
 		//TODO Currently does nothing, will change if networking is fixed
-		Button kickBtn = new Button("Kick (Does Nothing)");
 		Button beginBtn = new Button("Begin Game");
 		beginBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
-				if(!controller.signalGameStart(computerCount.getValue(), playerList, observerList))
+				if(!controller.signalGameStart(playerList, observerList))
                 {
                 	//TODO popup error if incorrect number of players
                 }
@@ -89,7 +90,7 @@ public class LobbyView {
 						
 			}
 		});
-		centerBox.getChildren().addAll(switchBtn, kickBtn, beginBtn);
+		centerBox.getChildren().addAll(switchBtn, beginBtn);
 		centerBox.setPadding(new Insets(140, 0, 0, 0));
 		//Right side of window
 		VBox rightBox = new VBox(30);
@@ -111,12 +112,10 @@ public class LobbyView {
 		lobbyScreen.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
 		
 		playerListLabel.getStyleClass().add("text_label");
-		spinnerLabel.getStyleClass().add("text_label");
 		observerListLabel.getStyleClass().add("text_label");
 
 		backBtn.getStyleClass().add("cancelbutton");
 		switchBtn.getStyleClass().add("lobybutton");
-		kickBtn.getStyleClass().add("cancelbutton");
 		beginBtn.getStyleClass().add("lobybutton");
 
 		return lobbyScene;

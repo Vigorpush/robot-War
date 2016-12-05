@@ -115,9 +115,9 @@ public class Game extends Application {
 		System.exit(0);
 	}
 
-	public boolean signalGameStart(Integer computerCount, ArrayList<String> playerList,
+	public boolean signalGameStart(ArrayList<String> playerList,
 			ArrayList<String> observerList) {
-		int playerCount = computerCount + playerList.size();
+		int playerCount = playerList.size();
 
 		if (playerCount == 2 || playerCount == 3 || playerCount == 6) {
 			if (Game.isHost) {
@@ -132,18 +132,18 @@ public class Game extends Application {
 		}
 	}
 
-	public boolean beginGame(Integer computerCount, ArrayList<String> playerList, ArrayList<String> observerList)
+	public boolean beginGame(ArrayList<String> playerList, ArrayList<String> observerList)
 			throws UnknownHostException {
 		// TODO Auto-generated method stub
 		System.out.println("IS HOST is  " + isHost);
 
 		boolean result = false;
 		sideLength = 5;
-		if (playerList.size() + computerCount == 6) {
+		if (playerList.size() == 6) {
 			sideLength = 7;
 		}
 		gameBoard = new Board(sideLength);
-		int playerCount = computerCount + playerList.size();
+		int playerCount = playerList.size();
 		// TODO add computers to playerlist
 		gameBoard.players = new ArrayList<Player>();
 		int i = 0;
@@ -325,6 +325,8 @@ public class Game extends Application {
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
 
+		Game.myClient.getConnection().sendGameState(gameBoard);
+		// TODO This is a hack because without it, if you end turn immediately without doing anything on the first turn of the game, the game desysncs
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 

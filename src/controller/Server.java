@@ -327,6 +327,7 @@ public class Server {
                         clientID = clientNumber++;
                     }
                     out.flush();
+                    out.reset();
                     acceptConnection(ConnectionToClient.this);	// Adds this.CTC to server.CTC List
                     recieveThread = new RecieveThread();
                     recieveThread.setDaemon(true);
@@ -365,6 +366,7 @@ public class Server {
         		    	Board sendState = outgoingState;
         		    	out.writeObject(sendState);
         		    	out.flush();
+        		    	out.reset();
         		    } catch (Exception e2) {
         		    	System.out.println("Could not send board state from server");
         		    }

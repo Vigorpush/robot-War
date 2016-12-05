@@ -60,27 +60,9 @@ public class StartView {
 				controller.exitGame();
 						
 			}
-		});
-		Button testGame = new Button("Test Game");
-		testGame.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				Game controller = new Game();
-				controller.isHost = true;
-				ArrayList<String> playerList = new ArrayList<String>();
-				playerList.add("Player1");
-				playerList.add("Player2");
-				ArrayList<String> observerList = new ArrayList<String>();
-				try {
-					controller.beginGame(0, playerList, observerList);
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-						
-			}
-		});
+		});		
 		
-		startScreen.getChildren().addAll(joinGame, hostGame, exitGame, testGame);
+		startScreen.getChildren().addAll(joinGame, hostGame, exitGame);
 		startScreen.setAlignment(Pos.CENTER);
 		startScene = new Scene(startScreen);
 		return startScene;

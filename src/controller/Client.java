@@ -86,7 +86,8 @@ public class Client {
             in = new ObjectInputStream(socket.getInputStream());    // Create an input stream to read from the socket
             userList = new LobbyMessage();
             
-            out.flush();                
+            out.flush();
+            out.reset();
             out.writeObject(userName);       // Send the username to the server to add to the lobby
 
             // Starting the Threads
@@ -170,7 +171,7 @@ public class Client {
          */
         public void beginGame(LobbyMessage msg){
             try {
-                game.beginGame(msg.computerPlayers, msg.playerList, msg.observerList);
+                game.beginGame(msg.playerList, msg.observerList);
             } catch (UnknownHostException e) {
                 System.out.println("beginGame(): function problems");
                 e.printStackTrace();
