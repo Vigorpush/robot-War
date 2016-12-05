@@ -166,7 +166,12 @@ public class Game extends Application {
 			});
 			i++;
 		}
-
+		i = 0;
+		gameBoard.observers = new ArrayList<Observer>();		
+		for (String o : observerList) {
+			gameBoard.observers.add(new Observer(o, InetAddress.getLocalHost().toString()));	
+			gameBoard.observers.get(i).setFogOfWar(sideLength);;
+		}
 		if (playerCount == 2 || playerCount == 3) {
 			result = true;
 			gameScene = new GameView();
@@ -252,18 +257,20 @@ public class Game extends Application {
 
 		boolean found = false;
 		int playerIndex = 0;
-		while (!found) {
+		while (!found && playerIndex < gameBoard.players.size()) {
 			if (gameBoard.players.get(playerIndex).name.equals(playerName)) {
 				found = true;
 			} else {
 				playerIndex++;
 			}
 		}
+		if(playerIndex == gameBoard.players.size())
+		{
+			playerIndex = gameBoard.playerTurn;
+		}
 		int[] healths = new int[gameBoard.players.get(playerIndex).robotList.size()];
 		for (int i = 0; i < healths.length; i++) {
 			Robot r = gameBoard.players.get(playerIndex).robotList.get(i);
-			System.out.println(r.id);
-			System.out.println((r.id)%gameBoard.players.get(playerIndex).robotList.size());
 			healths[(r.id)%gameBoard.players.get(playerIndex).robotList.size()] = r.health;
 		}
 		return healths;

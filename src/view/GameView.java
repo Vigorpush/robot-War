@@ -403,7 +403,7 @@ public class GameView {
 			currentTurnLabel.setTextFill(numberColors[board.playerTurn]);		
 			boolean found = false;
 			int playerIndex = 0;
-			while(!found)
+			while(!found && playerIndex < board.players.size())
 			{
 				if(board.players.get(playerIndex).name.equals(playerName))
 				{
@@ -414,6 +414,7 @@ public class GameView {
 					playerIndex++;
 				}
 			}
+			
 			
 			if (board.players.get(board.playerTurn).robotList.get(board.currentRobot).movementLeft <= 0 || board.playerTurn != playerIndex) {
 				moveButton.setDisable(true);
@@ -432,6 +433,10 @@ public class GameView {
 				endTurnButton.setDisable(true);
 			} else {				
 				endTurnButton.setDisable(false);
+			}
+			if(playerIndex == board.players.size())
+			{
+				playerIndex = board.playerTurn;
 			}
 			
 			currentTankMoveLabel.setText(
