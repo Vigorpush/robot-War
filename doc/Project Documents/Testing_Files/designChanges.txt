@@ -1,0 +1,6 @@
+Changes in Model
+	The major changes to the model section was shuffling some methods and attributes between the User, Player and Robot classes, as well as the introduction of the Board class, which is used to keep track of what Tile is where.
+Changes in View
+	All the changes to the view classes where syntax corrections.
+Changes in Control
+	The Game class has mostly been reworked, it now has methods to handle all the inputs from the view, and manage the turn to turn running of the game itself.

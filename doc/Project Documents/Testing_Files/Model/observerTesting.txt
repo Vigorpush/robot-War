@@ -1,0 +1,12 @@
+Observer
+Object
+Extends: User
+
+leaveGame(): Void
+Exit to main menu
+
+//Testing leaveGame()
+Obserer.leaveGame();
+assert{
+	Game.checkServerStatus() = 0;
+}

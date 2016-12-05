@@ -1,0 +1,221 @@
+Description:
+
+	The game class acts as the controller for our system.  It is responsible for communicating with 
+the model and view to ensure the system runs smoothly.  The game contains functions that are called by 
+the view when a user interacts with it, and functions that are called to communicate with the 
+model to get updates on the game state.  The game class will handle communications with the RobotLibrarian
+and the Server, to get the external info it needs to begin the game.  After a game has started, the game
+class will continually run to move the game forward.
+
+Significance:
+
+	The game class is the point in the system that all commands and data pass through, and thus it
+is crucial to thouroughly test this module.  This class will run the main program, and coordinate all
+game data.  It is important that the game can effectively communicate with both the view and the model
+to ensure all modules recieve the information they need to progress the program.  
+
+Testing Plan:
+
+	We will create a J-unit test module for the controller class that will contain methods for testing
+the functions in the game class as described below.
+
+	
+	gameInit:	The gameInit() function will initialize all players and their robots. This function will be tested by calling it with a number of players
+			and testing to see if the players were propery initialized.  A few different, but non-exhaustive tests will be sufficient.  We will initialize
+			a game with two human players and check to see that we have a list of two players with all of their robots initialized.  Then a game with three
+			AI players will be initialized and checked in the same way.  Finally, a game with 6 players, 3 human and 3 AI will be initialized and checked.
+
+			Pseudocode:
+				create 2 fake human players
+				gameInit()
+				assert(2_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+		
+				create 3 fake AI players
+				gameInit()
+				assert(3_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+
+				create 3 fake human players
+				create 3 fake AI players
+				gameInit()
+				assert(6_players_in_player_list)
+				assert(each_player_has_a_colour)
+				assert(each_player_has_three_robots)
+
+
+	joinGame:	The joinGame function is called by the StartView.  It will specify a host to connect to, and will call the connectToHost() function in the
+			server.  This will be tested by creating a fake host to connect to, and calling the join game with that host.  The parameters will be checked
+			for correctness.
+
+			Pseudocode:
+				create a fake host
+				joinGame(fake_host)
+				server.connectToHost(fake_host)
+				assert(user_is_connected_to_host)
+
+	
+	hostGame:	The hostGame function is called by the StartView.  It will open a host to be connected to by other users.  It will call the openHostConnection
+			function in the server.   This function will be tested by creating a host and testing to see if the connection was properly opened.
+
+			Pseudocode:
+				hostGame()
+				assert(connection_is_open)
+
+
+	exitGame:	The exitGame() function is called by the StartView.  It will terminate the program.  This will not be tested AND THIS FUNCTION SHOULD 
+			PROBABLY BE REMOVED FROM THIS DOCUMENT FOR THIS REASON
+
+	
+	lobbyBack:	The lobbyBack() funtion is called by the LobbyView.  It will take the user back to the StartView and properly disconnect the user from the 
+			host.  If the user who selected the back option is the host of the game, the match is terminated and all players are kicked.  This will be
+			tested by connecting the user to a fake host, and calling the appropriate server functions to terminate the connection.
+
+			Pseudocode:
+				server.connect(fake_host)
+				lobbyBack()
+				assert(user_is_not_connected)
+
+				server.host(me)
+				lobbyBack()
+				assert(match_does_not_exist)
+
+	
+	switch:		The switch() function is called by the LobbyView.  If called by a player, it changes the player to an observer.  If called by an observer, 
+			it changes the observer to a player. This function will be tested by creating a player object and switching them to an observer, then
+			switching the new observer back to a player.
+
+			Pseudocode:
+				create player
+				switch(player)
+				assert(the_user_is_now_an_observer)
+				switch(observer)
+				assert(the_user_is_now_a_player)
+		
+
+
+	kick:		The kick() function is called by the LobbyView.  It is used to kick a player from the game.  When called, the chosen player
+			is disconnected from the host.   To test this we will connect a player to a host, and kick the player.  We will then check to 
+			see if the player is still connected.
+
+			Pseudocode:
+				create host
+				create player
+				connect player to host
+				kick(player)
+				assert(player_is_not_connected_to_host)
+
+
+	
+	beginGame:	The beginGame() function is called by the LobbyView.  When called, it will start the GameView, and enter a gameplay
+			loop.  In this loop, players are given turns to move their robots.  This funtion can be tested by
+			
+			HOW DO WE TEST THIS!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!??!?!?!?!?!?!
+
+
+	tileClicked: 	The tileClicked() funtion is called by the GameView.  When it is called, the tile object located at the coordiantes of the mouse is
+			returned.
+
+			NEEDS TEST CASES
+
+
+	endTurn:	The endTurn() function is called by the GameView.  This signals that a player is finished their turn and the next player should be notified
+			that it is their turn.  This can be tested by initializing a game with two players.  The end turn function is called by one player, and we 
+			will check if the next player is given their turn.
+
+			Pseudocode:
+				create 2 player match
+				endTurn(player1)
+				assert(player2_is_turn)
+
+	checkWinLose:	The checkWinLose() function is called by the GameView.  It will be called at the end of each round, to determine if a team has won.
+			This will be tested by creating a game with two players.  The second player's robots will be destroyed, meaning that the first player
+			wins.  We will check this case.
+
+			Pseudocode:
+				create 2 player match
+				player 2 robots.setHealth(0)
+				checkWinLose()
+				assert(player1_wins)
+
+	getTileInfo:	This function is called by the GameView when the inspect method is called.  The given tile will be passed to the model, and a list 
+			of all robots will be returned.  This will be tested by creating a tile with 3 arbotrary robots on it.  The method will be called on
+			this tile and verified that the correct info is returned.
+
+			Pseudocode:
+				create a tile
+				put 3 robots on it
+				getTileInfo(theTile)
+				assert(tile_info_matches_input)
+
+	moveRobot: 	The move robot function is called by the GameView when the move method is called.  The given robot is moved to the given tile.  Because the
+			tiles are checked for moveability by the tileClcked() function, there should never be a tile that cannot be moved to.  The test for this
+			function will be to put a robot on a tile, and then move them to another tile.  Then the robots current tile will be checked to enusre 
+			it is on the correct tile.
+
+			Pseudocode:
+				create an array of tiles
+				put a robot on a tile
+				moveRobot(a_new_tile)
+				assert(robot_is_on_a_new_tile)
+
+
+	attackTile:	The attack tile function is called by the GameView when the attack method is called.  The given robot attacks the given tile, and all robots
+			on that tile are damaged by the robot's attack points.  To test this, we will create some robots and an array of tiles.  We will place the 
+			robots on some of the tiles.  Then one new robot is created and placed in range of all robots.  Each tile will be attacked, and the robots
+			on the tile will be checled to see if they took the correct damage.  Tiles without any robots will also be attacked, meaning no damage is taken.
+
+			Pseudocode:
+				create an array of tiles
+				place robots on the tiles
+				create a new robot
+				for each tile
+					attackTile(new_robot, tile)
+					assert(robots_on_tile_took_correct_damage)
+				end
+
+	updateRobotPrograms:	The updateRobotPrograms funtion is called at the beginning of a game.  This will call methods in the robot librarian to collect 
+				the necessary robot programs.  This will be tested by calling the funtion to retrieve some robot programs.  We will check that the 
+				correct programs were retrieved.
+
+				Pseudocode:
+					updateRobotPrograms()
+					assert(programs_downloaded)
+
+
+	archiveRobotPrograms:	The archiveRobotPrograms function is called at the end of a game.  This will call methods in the robot librarian to store the
+				necessary robot data.  NOT REALLY SURE IF WE CAN TEST THIS ONE......DON'T REALLY HAVE THE ROBOT LIBRARIAN TO LOOK AT
+
+	processAi:	The processAi function is called on the appropriate robot at the beginning of an AI player's turn.  We will test this by loading a robot 
+			program and processing it.  AGAIN NOT SURE HOW TO TEST.....RNG AND STUFF
+
+	checkServerStatus:	The checkServerStatus function is called at the beginning of each turn.  It will return an error if the connection has been lost.
+				This will be tested by creating a connection, and calling the funtion.  It should return with no error.  We will then drop the
+				connection, and test it again.  This should return an error.
+
+				Pseudocode:
+					create server
+					checkServerStatus()
+					assert(connection_good)
+					disconnect
+					checkServerStatus()
+					assert(error)
+
+
+	sendGameStateToServer:	The sendGameStateToServer function is called at the end of each player's turn.  It will send the current game state to the server to 
+				be distributed to all players.  We will test this by creating a game state and sending it to another game.  If the game state is 
+				recieved successfully, the test is passed.
+
+				Pseudocode:
+					create server
+					create game state
+					sendGameStateToServer()
+					assert(game_state_successfully_recieved)
+
+
+
+
+	
+

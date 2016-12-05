@@ -1,0 +1,90 @@
+Server interface 
+ which has few functions which are connects a server that needs to keep track of the state of a game, and inform each client of it, so they can each update their own displays.
+ and this interface will contain  
+  getname  
+    Prompt for and return the desired screen name
+  Run 
+    this function will connects to the server
+  GetserverAddress  
+    This isfunction which will Prompt for and return the address of the server
+  
+  
+Model Interface
+  which will has function which the model element will using 
+    getname
+    this function will get the string the objects
+   
+AI Interface
+  decision
+    this function will calculate from the "battle field" or combat information in the game
+      and this function 
+      
+ROBOT Interface
+   setname 
+    set the name 
+   setteamname 
+    set the team name
+   setmatch 
+    set the match 
+   setdied 
+    set the died number
+   setlived 
+    set the live
+   sethealth
+    set the health
+   setfirepower
+    set the firepower
+   setkill
+    set kill number or count
+   setmovement
+    set the movement
+   setdistance
+    set the distance
+   setfirstRun  // check condition 
+    check which one is first
+   getname
+    return name 
+   getteamname
+    return team name
+   getmatch
+    return match
+   getdied
+    return died
+   getlived
+    return lived
+   gethealth
+    return health 
+   getfirepower
+    return firepower 
+   getkill
+    return kill
+   getmovement
+    return movement
+   getdistance
+    return the distance
+   getfirstRun  // check condition 
+    return who is the first Run
+    
+    
+Game
+  this is class will mainly initialize the game, and handle the user input
+  which will contain functions such as:
+    
+     init 
+      which will initializes the views
+     RGHexboard 
+      initializes the board when we press start button
+     changeScreen(MouseEvent)
+      change the screen when we press button
+     initview 
+      draw game when we enter the game
+     getview 
+      show minimap
+     inputdetecttor(button) 
+      changing the windows, which we getting hit
+     checkwinlose 
+      checking win or lose, if lose or win it will shows the windows which is 
+      winloss windows view
+     Main(String [] )  
+      launchApplication
+    

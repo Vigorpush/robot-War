@@ -1,0 +1,16 @@
+{ "script" :
+	{ "team"	: "XX"
+	, "class"	: "Scout"
+	, "name"	: "SimpleStatue"
+	, "matches"	: 0
+	, "wins"	: 0
+	, "losses"	: 0
+	, "executions"	: 0
+	, "lived"	: 0
+	, "died"	: 0
+	, "absorbed"	: 0
+	, "killed"	: 0
+	, "moved"	: 0
+	, "code"	: [ ": play ;" ]
+	}
+}

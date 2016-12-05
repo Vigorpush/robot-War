@@ -1,0 +1,3 @@
+The AI Processor contains a copy of an AI File, a legend and a translate function.
+The legend consists of a list of Pairs. Each pair contains a Fourth function from the AI File and a java function that mimics the behavior in the java environment.
+The translate function finds a Pair in the legend that contains a desired java function. It then runs the co-responding action in the AI File, written in Fourth. The result is recorded and matched with another pair, executing the Java action associated with it.

@@ -1,0 +1,59 @@
+Board
+Object
+
+Board()
+Constructor
+Create new array of arrays of Tile objects
+Create new list of Player objects
+
+movePossible(Robot, Tile)
+int
+Given Robot object and Tile object
+if Robot has remaining movement equal to or greater than distance from current Tile to given Tile
+	return difference between remaining movement and distance
+
+attackPossible(Robot, Tile)
+boolean
+given Robot object and Tile object
+if Robot range value is equal to or greater than distance from current Tile to given Tile
+	and Tile contains a Robot
+	return true
+else return false
+
+Testing:
+
+//construct needed objects
+Board() b
+Robot() r1
+Robot() r2
+Tile() t1
+Tile() t2
+
+t1.x = 0
+t1.y = 0
+t1.addRobot(r1)
+t1.addRobot(r2)
+
+t2.x = 1
+t2.y = 0
+
+r1.movement = 1
+r2.movement = 0
+r1.location = t1
+r2.location = t2
+
+//Test movePossible
+//should always happen
+assert{
+	b.movePossible(r1,t2) == 1
+}
+//should always never happen
+assert{
+	!b.movePossible(r2,t2)
+}
+
+//test attackPossible
+assert{
+	b.attackPossible(r1,t1) == true
+	b.attackPossible(r1,t2) == false
+}

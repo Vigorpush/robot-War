@@ -1,0 +1,71 @@
+Tile
+Object
+Tile: Constructor
+
+robotList
+Datatype: List(Robot)
+
+addRobot(Robot): Void
+removeRobot(Robot): Void
+getRobot(Robot): Robot
+getList(): List
+updateRobot(Robot, Robot): Void
+
+//Tile test
+//create new tile
+Tile t = new Tile
+
+//assert tile was created
+assert{
+	t != null
+}
+
+//create robots to add
+//each should be constructed with different names
+Robot r1 = new Robot
+Robot r2 = new Robot
+Robot r3 = new Robot
+r1.name = "one"
+r2.name = "two"
+r3.name = "three"
+
+//test addRobot
+assert{
+t.addRobot(r1)
+t.addRobot(r2)
+t.addRobot(r3)
+}
+
+//test robotList
+List(Robot) l = new List(Robot)
+l.add(r1)
+l.add(r2)
+l.add(r3)
+
+assert{
+t.robotList == l
+}
+
+//test getRobot
+assert{
+t.getRobot(r1) == r1
+}
+
+//test removeRobot
+assert{
+t.removeRobot(r1)
+t.getRobot(r1) == null
+}
+
+//test getList
+assert{
+t.getList() == l
+}
+
+//test updateRobot
+Robot r4 = new Robot
+r4.name = "four"
+t.updateRobot(r3, r4)
+assert{
+t.getRobot(r3) == r4
+}

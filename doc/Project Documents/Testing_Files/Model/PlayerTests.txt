@@ -1,0 +1,101 @@
+﻿Player
+
+
+	The Player class represents a User in the "Robot Arena" game.  It has methods to get or set the Robots it controls and to order those robots to move or attack. It also has methods to end the turn or to forfeit.  Many of the methods are getters and setters, and will be tested by simply using the approprate methods to set values and retrive them, comparing with the value originally entered.  Other methods, such as the attack and move methods, will be tested by creating an artificial board, and determining if the robot may move or attack the targeted space. The End Turn method would be observed in the controller’s tests. The forfeit method will be tested by observing if the board is properly cleared, and if the player became an observer,
+
+
+
+
+moveRobot(Robot, Tile): Boolean
+
+
+Purpose:
+	Tests that the method checks that the Robot can move to the specified location, and then changes the Robot’s location to the correct location
+
+
+Preconditions:
+        The passed in Robot and Tile are not null
+
+
+Postconditions:
+        The Robot is either moved or could not be moved.
+
+
+Error conditions:
+        	The Robot moved to the wrong space
+ 	The Robot moved when it did not have enough movement left
+The Robot did not move when it had enough movement
+
+
+Pseudocode:
+	Store how many moves the robot has left
+Check that it has more than 0 moves left
+Store which tile the robot starts on
+	Confirm that it is possible to move between the starting and ending tile
+If both are true
+Move the robot
+	Confirm that the robot is now on the ending tile
+		Store the x and y values of the new tile
+		Confirm that the tile in the board thinks that the robot is where it should be
+		Confirm that the robot has one less move left
+
+
+attack(Robot, Tile): Boolean
+
+
+Purpose:
+	Tests that the method checks that the Robot can attack the specified location, and then changes the health of all robots at that location
+
+
+Preconditions:
+        The passed in Robot and Tile are not null
+
+
+Postconditions:
+        The Robot has either attacked the specified tile or has not attacked
+
+
+Error conditions:
+        	The Robot attacks the wrong space
+ 	The Player attacked when they could not attack
+The Robot at the target tile took to much damage
+
+
+Pseudocode:	
+	Confirm that the player has not made an attack this turn
+	Confirm that an attack from the robots space to the destination is possible
+	If both are true
+		Store the list of robots on the target tile
+		Execute the attack
+		Compare the stored Robots health with the Robots left on the tile to confirm that the correct damage has been done
+		Confirm that the player has made an attack this turn
+
+
+Forfeit(): void
+
+
+Purpose:
+	Tests that the method removes all the Players Robots from the board and creates an observer with the same name as the player
+
+
+Preconditions:
+	None
+
+
+Postconditions:
+        The Player’s Robots are no longer on the board
+        The Player is now an observer
+
+
+Error conditions:
+        The Robot’s were not removed
+        The Player is not an observer
+
+
+Pseudocode:
+	Store the player’s list of robots
+	Have the player forfeit
+	Confirm that the player’s robot have been removed from the tiles they occupied
+	Confirm that the player is now an observer 
+
+

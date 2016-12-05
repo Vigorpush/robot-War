@@ -1,0 +1,53 @@
+User
+Description:
+    The User class serves as the class for the users of the robot game. There are three fields to the User class which are the name, IP isHost and a fogOfWar. The name and IP are identification tools to recognaize the different users, the isHost boolean determines if to current user has administration rights and the fogOfWar is a 2D Array boolean when given the x and y coordinate on the board we get if the current tile assigned to it is visible to the player. There are two sub classes to user which are Observer and Player. A Player is a user currently in-game and an Observer is a spectator to the game. A Player turns into an observer once he/she forfeits.
+
+User(): Constructor
+Create a String called name which is the first argument in the User Constructor
+Create a String called IP which is the second argument in the User Constructor
+Create boolean called isHost which is FALSE
+Create 9x9 boolean called fogOfWar[9][9] which contains ALL NULL
+
+// User Test
+// Create User 
+	User person = new user("Steven","123")
+
+// Testing if User is created
+	assert { 
+		person != NULL
+	}
+
+// Testing SetName() && GetName()
+		if ( person.GetName != "Steven" && person.IP != "123" ) {
+			print “Setter or Getter of User.Name or User.IP is not Working”
+		}
+
+// Testing SetFogOfWar(x,y) && GetFogOfWar()
+	person.SetFogOfWar(5,5)
+		boolean tester = person.GetFogOfWar[5][5];
+		if ( !tester ) {
+			print “Setter or Getter of User.FogOfWar is not Working”
+		}
+
+// Creating Tile && Robot for testing
+	Tile t = new Tile
+	Robot origRobot = new Robot
+	Robot testRobot = new Robot
+// Test: We’ll place the original Robot inside the tile. We’ll invoke Inspect Tile to get the list of robots and the original is first in the list. Once we grab the robot inside the list we well test if the robot is there and is still the same as the original robot that was placed there in the first place.
+	t.addRobot(origRobot)
+	// User.InspectTile(Tile) -> Tile.GetRobotList() -> 
+	// RobotList.GetFirstNode() -> Node().GetElement = Robot
+
+	testRobot = person.InspectTile(t).getFirstNode().getElement()
+	if ( testRobot != getRobot ) {
+		print “Inspect Tile or Tile Setting is not working”
+	}
+
+
+	
+	
+	
+
+	
+
+InspectTile(Tile): List<Robot>

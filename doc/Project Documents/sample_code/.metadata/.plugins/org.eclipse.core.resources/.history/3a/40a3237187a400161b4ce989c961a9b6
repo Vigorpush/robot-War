@@ -1,0 +1,25 @@
+package testing;
+
+public class sampleObject {
+
+	private int id;
+	private String name;
+	
+	public sampleObject(int id, String name)
+	{
+		this.id = id;
+		this.name = name;
+	}
+	
+	public String greeting()
+	{
+		return "Hello, I am " + this.name;
+	}
+	
+	public int idMod()
+	{
+		int result = 0;
+		result = ((id * 3)+1)/2;
+		return result;
+	}
+}

@@ -1,0 +1,5 @@
+Robot Librarian Processor contains a list of Robots and four functions for modifying them.
+The first is adding a robot to the list. This uses the list class's own adding functions as per choses implementation.
+The remove robot function also uses the list's functions to remove a specific robot from the list permenantly.
+Clearing the list removes all robots from the list in an identical manner.
+The last function allows for the robot list to be returned as a full list to be manipulated by other exterior functions.
