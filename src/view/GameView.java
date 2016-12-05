@@ -200,6 +200,12 @@ public class GameView {
 		rightBox.setAlignment(Pos.TOP_RIGHT);
 		// TODO quit button for observers
 		Button forfeit = new Button("Forfeit");
+		forfeit.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {
+				Game controller = new Game();
+				controller.forfeit();
+			}
+		});
 		rightBox.getChildren().addAll(playerListLabel, playerListView, observerListLabel, observerListView, forfeit);
 		gameScreen.getChildren().addAll(leftBox, centerBox, rightBox);
 		// Sets margin to give the board room to be seen

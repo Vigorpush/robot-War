@@ -12,6 +12,7 @@ public class Board implements Serializable {
 	public int playerTurn;
 	public int currentRobot;
 	public ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
+	public boolean gameover = false; 
 	public Board(int sideLength) {
 		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {

@@ -22,6 +22,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import view.ResourceLoader;
 /**
  * Class that creates the LobbyView GUI and all methods to interact with it.
@@ -64,6 +65,7 @@ public class LobbyView {
 		Label ipAddressLabel = new Label();
 		try {
 			ipAddressLabel.setText("Your IP Address: " + InetAddress.getLocalHost().toString());
+			ipAddressLabel.setTextFill(Color.SILVER);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

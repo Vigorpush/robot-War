@@ -62,7 +62,7 @@ public class HealthTableViewController {
 		// Select all everything
 		Game controller = new Game();
 		int[] healths = controller.getRobotHealths();
-
+		
 		String robot1Health;
 		String robot2Health;
 		String robot3Health;

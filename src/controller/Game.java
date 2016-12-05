@@ -149,10 +149,10 @@ public class Game extends Application {
 		int i = 0;
 		int j = 0;
 		for (String p : playerList) {
-			gameBoard.players.add(new Player(p, InetAddress.getLocalHost().toString(), i));
-			Tank newTank = new Tank(j++, i, null, null);
+			gameBoard.players.add(new Player(p, InetAddress.getLocalHost().toString(), i));			
 			Scout newScout = new Scout(j++, i, null, null);
 			Sniper newSniper = new Sniper(j++, i, null, null);
+			Tank newTank = new Tank(j++, i, null, null);
 			gameBoard.players.get(i).robotList.add(newTank);
 			gameBoard.players.get(i).robotList.add(newScout);
 			gameBoard.players.get(i).robotList.add(newSniper);
@@ -259,9 +259,12 @@ public class Game extends Application {
 				playerIndex++;
 			}
 		}
-		int[] healths = new int[gameBoard.players.get(gameBoard.playerTurn).robotList.size()];
+		int[] healths = new int[gameBoard.players.get(playerIndex).robotList.size()];
 		for (int i = 0; i < healths.length; i++) {
-			healths[i] = gameBoard.players.get(gameBoard.playerTurn).robotList.get(i).health;
+			Robot r = gameBoard.players.get(playerIndex).robotList.get(i);
+			System.out.println(r.id);
+			System.out.println((r.id)%gameBoard.players.get(playerIndex).robotList.size());
+			healths[(r.id)%gameBoard.players.get(playerIndex).robotList.size()] = r.health;
 		}
 		return healths;
 	}
@@ -412,6 +415,23 @@ public class Game extends Application {
 			Observer newObserver = new Observer(gameBoard.players.get(index).name, gameBoard.players.get(index).IP);
 			gameOver();
 		}
+		if(gameBoard.gameover)
+		{
+			if(isHost)
+			{
+				Server test;
+				try {
+					test = new Server(PORT);
+					test.shutdownServer();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			StartView initialScene = new StartView();
+			gameStage.setScene(initialScene.init());
+		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 		return result;
 	}
@@ -446,8 +466,12 @@ public class Game extends Application {
 			}
 		}
 		if (result) {
+			//TODO Use postGameScrene instead of jsut sending back to start game 
+			/*
 			PostGameView postGameScene = new PostGameView();
 			gameStage.setScene(postGameScene.init());
+			*/
+			gameBoard.gameover = true;
 		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
