@@ -40,7 +40,7 @@ public class TileTest {
 	@Test
 	public void testRemoveRobot() {
 		tile1.addRobot(robot2);
-		tile1.removeRobot(0);
+		tile1.removeRobot(robot2);
 		assert(tile1.robotList.isEmpty());
 	}
 

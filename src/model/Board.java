@@ -1,19 +1,20 @@
 package model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polyline;
-
-public class Board {
+public class Board implements Serializable {
 
 	public Tile[][] gameBoard;
-	public List<User> users;
-
+	public List<Observer> observers;
+	public List<Player> players;
+	public int playerTurn;
+	public int currentRobot;
+	public ArrayList<Robot> defeatedRobots = new ArrayList<Robot>();
+	public boolean gameover = false; 
 	public Board(int sideLength) {
-		gameBoard = new Tile[sideLength*2-1][sideLength*2-1];
+		gameBoard = new Tile[sideLength * 2 - 1][sideLength * 2 - 1];
 		for (int currentYCoor = 0; currentYCoor < sideLength * 2 - 1; currentYCoor++) {
 			if (currentYCoor < sideLength) {
 				for (int currentXCoor = 0; currentXCoor < currentYCoor + sideLength; currentXCoor++) {
@@ -26,7 +27,7 @@ public class Board {
 				for (int currentXCoor = 0; currentXCoor < (sideLength * 2 - 1) - currentYCoor - 1
 						+ sideLength; currentXCoor++) {
 
-					int x = currentXCoor + currentYCoor - 4;
+					int x = currentXCoor + currentYCoor - sideLength+1;
 					Tile currentTile = new Tile(x, currentYCoor);
 					gameBoard[x][currentYCoor] = currentTile;
 
@@ -38,32 +39,39 @@ public class Board {
 
 	public int movePossible(Robot robotToMove, Tile destination) {
 		int result = -1;
-		int xDistance = Math.abs(robotToMove.location.xPosition - destination.xPosition);
-		int yDistance = Math.abs(robotToMove.location.yPosition - destination.yPosition);
-		boolean xPossible = ((robotToMove.movement - robotToMove.distanceTraveled) >= xDistance);
-		boolean yPossible = ((robotToMove.movement - robotToMove.distanceTraveled) >= yDistance);
+		int xDistance = robotToMove.location.xPosition - destination.xPosition;
+		int yDistance = robotToMove.location.yPosition - destination.yPosition;
+		boolean xPossible = ((robotToMove.movementLeft) >= Math.abs(xDistance));
+		boolean yPossible = ((robotToMove.movementLeft) >= Math.abs(yDistance));
 		if (xPossible && yPossible) {
-			if (xDistance > yDistance) {
-				result = xDistance;
-			} else {
-				result = yDistance;
+			if (xDistance * yDistance >= 0 ) {
+				xDistance = Math.abs(xDistance);
+				yDistance = Math.abs(yDistance);
+				if (xDistance > yDistance) {
+					result = xDistance;
+				} else {
+					result = yDistance;
+				}
+			}
+			else if(Math.abs(xDistance) + Math.abs(yDistance) < robotToMove.movementLeft)
+			{
+				result = xDistance = Math.abs(xDistance) + Math.abs(yDistance);
 			}
 		}
 		return result;
 	}
-	
-	public boolean attackPossible(Robot attackingRobot, Tile target)
-	{
+
+	public boolean attackPossible(Robot attackingRobot, Tile target) {
 		boolean result = false;
 		int xDistance = Math.abs(attackingRobot.location.xPosition - target.xPosition);
 		int yDistance = Math.abs(attackingRobot.location.yPosition - target.yPosition);
 		boolean xPossible = ((attackingRobot.range) >= xDistance);
 		boolean yPossible = ((attackingRobot.range) >= yDistance);
-		
-		if(xPossible && yPossible){
+
+		if (xPossible && yPossible) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 }
