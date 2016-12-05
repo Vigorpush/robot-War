@@ -247,6 +247,9 @@ public class Game extends Application {
 			gameBoard.gameBoard[0][0].addRobot(gameBoard.players.get(5).robotList.get(1));
 			gameBoard.gameBoard[0][0].addRobot(gameBoard.players.get(5).robotList.get(2));
 			gameBoard.players.get(5).setFogOfWar(sideLength);
+			gameBoard.playerTurn = 0;
+			gameBoard.currentRobot = 0;
+			gameScene.updateGame(gameBoard);
 
 		}
 		return result;
