@@ -26,7 +26,7 @@ public class Board implements Serializable {
 				for (int currentXCoor = 0; currentXCoor < (sideLength * 2 - 1) - currentYCoor - 1
 						+ sideLength; currentXCoor++) {
 
-					int x = currentXCoor + currentYCoor - 4;
+					int x = currentXCoor + currentYCoor - sideLength+1;
 					Tile currentTile = new Tile(x, currentYCoor);
 					gameBoard[x][currentYCoor] = currentTile;
 

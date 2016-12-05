@@ -311,7 +311,7 @@ public class GameView {
 							height * currentYCoor + width / Math.sqrt(3) / 2,
 							xOffset + currentXCoor * width + width / Math.sqrt(3), +height * currentYCoor + 0.0);
 					// Variables to store the location of the current hexagon
-					int x = currentXCoor + currentYCoor - 4;
+					int x = currentXCoor + currentYCoor +1 - sideLength;
 					int y = currentYCoor;
 					// Fill the hexagon so that it can be clicked on
 					hexagon.setFill(Color.WHITE);
