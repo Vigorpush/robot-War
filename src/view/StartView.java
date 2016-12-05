@@ -1,6 +1,8 @@
 package view;
 
 import java.io.File;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import controller.Game;
 import javafx.event.ActionEvent;
@@ -20,10 +22,13 @@ import javafx.stage.Stage;
  * @author Niklaas Zang jiawei
  *
  */
+@SuppressWarnings("unused")
 public class StartView {
 
 	private static final String title = "Robot Wars";
 	private Scene startScene;
+	
+
 	
 
 	/**
@@ -33,26 +38,30 @@ public class StartView {
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
+		joinGame.getStyleClass().add("join_game_button");
+		
 		joinGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				joinGame();
 			}
 		});
 		Button hostGame = new Button("Host Game");
+		hostGame.getStyleClass().add("host_game_button");
 		hostGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				hostGame();
 			}
 		});
 		Button exitGame = new Button("Exit Game");
-		exitGame.setStyle("-fx-background-color:red");
+		exitGame.getStyleClass().add("exit_game_button");
 		exitGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
 				controller.exitGame();
 						
 			}
-		});
+		});		
+		
 		startScreen.getChildren().addAll(joinGame, hostGame, exitGame);
 		startScreen.setAlignment(Pos.CENTER);
 		startScene = new Scene(startScreen);
@@ -96,6 +105,13 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
+		File file = new File("Resources/css/Miniwindow.css");
+		selectGame.getScene().getStylesheets().clear();
+		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		closeBtn.getStyleClass().add("close_button");
+		joinBtn.getStyleClass().add("join_button");
+		nameLabel.getStyleClass().add("text_label");
+		addressLabel.getStyleClass().add("text_label");
 		//Modality prevents the user from clicking on the main Stage while the popup is up
 		selectGame.initModality(Modality.APPLICATION_MODAL);
 		selectGame.show();
@@ -113,12 +129,16 @@ public class StartView {
 		TextField nameTxt = new TextField();
 		nameBox.getChildren().addAll(nameLabel, nameTxt);
 		Button closeBtn = new Button("Close");
+		
+
 		closeBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				selectGame.close();
 			}
 		});
+	
 		Button joinBtn = new Button("Join");
+		
 		joinBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
@@ -131,6 +151,13 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
+		
+		File file = new File("Resources/css/Miniwindow.css");
+		selectGame.getScene().getStylesheets().clear();
+		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		closeBtn.getStyleClass().add("close_button");
+		joinBtn.getStyleClass().add("join_button");
+		nameLabel.getStyleClass().add("text_label");
 		selectGame.initModality(Modality.APPLICATION_MODAL);
 		selectGame.show();
 	}

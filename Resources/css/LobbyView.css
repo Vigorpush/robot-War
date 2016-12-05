@@ -1,0 +1,42 @@
+.root {
+  -fx-background-color: 
+        #000000;
+}
+
+.text_label{
+
+  -fx-text-fill:#f6f5e4;
+}
+
+
+.title_label{
+
+   -fx-font-size: 200pt; 
+}
+
+.lobybutton {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+
+.cancelbutton{
+      -fx-background-color: 
+        #000000,
+        linear-gradient(#53221a, #4e1a23),
+        linear-gradient(#4a1930, #46183b),
+        linear-gradient(#963154, #3e1741);
+      -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}

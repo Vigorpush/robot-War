@@ -19,6 +19,7 @@ public class BoardTest {
 	Tile tile1;
 	Tile tile2;
 	Tile tile3;
+	Tile tile4;
 
 	@Before
 	public void setUp() throws Exception {
@@ -34,6 +35,7 @@ public class BoardTest {
 		tile1 = new Tile(6, 7);
 		tile2 = new Tile(8, 8);
 		tile3 = new Tile(2,2);
+		tile4 = new Tile(6, 2);
 	}
 
 	@Test
@@ -42,6 +44,8 @@ public class BoardTest {
 		assertTrue(testBoard.movePossible(robot2, tile1) == 3);
 		assertTrue(testBoard.movePossible(robot3, tile1) == -1);
 		assertTrue(testBoard.movePossible(robot4, tile1) == -1);
+		assertTrue(testBoard.movePossible(robot1, tile4) == -1);
+		assertTrue(testBoard.movePossible(robot3, tile3) == -1);
 	}
 	
 	@Test
