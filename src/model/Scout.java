@@ -8,6 +8,7 @@ public class Scout extends Robot {
 		attack = 1;
 		movement = 3;
 		range = 2;
+		movementLeft = movement;
 	}
 
 	public static void main(String[] args) {

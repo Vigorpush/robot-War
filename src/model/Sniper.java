@@ -8,6 +8,7 @@ public class Sniper extends Robot {
 		attack = 2;
 		movement = 2;
 		range = 3;
+		movementLeft = movement;
 	}
 
 	public static void main(String[] args) {

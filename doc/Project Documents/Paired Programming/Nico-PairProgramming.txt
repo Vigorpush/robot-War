@@ -1,0 +1,8 @@
+Pair Programming
+Nico Dimaano
+
+Paired with Kyle
+	Me and Kyle were gonna work on the Networking system for our project. Before the session me and Kyle talked about the design of our system and what goes where. First Kyle was the driver and I was the navigator we first typed up the basic structure, functions and variables we wanted in and the two main cases (Client and Server). After a while I was the driver and Kyle was the navigator we came across a problem that functions were not working together and some threads were not in sync and we fixed our design a little bit and worked on it again. We then finished our coding what’s left is debugging and have it work what it was intended to do.
+
+Paired with Vigor
+	Vigor and I decided to fix the view of the game. First we did the basic’s grabbed some pictures for tanks and read and tried to understand the code we will be fixing. Me and Vigor didn’t have a consistent driver or navigator it was more who had an idea and tested while the other person commented on it. We worked around the code of the view in changing the colours making the game look pretty and some selected default functionalities. We then noticed our board is really small so We had to look into changing multiple number in the file to test if it changes the board to look like the size we were going for. We then fixed some padding errors and misplaced numbers.

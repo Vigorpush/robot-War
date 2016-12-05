@@ -1,0 +1,24 @@
+{ "script" :
+	{ "team"	: "XX"
+	, "class"	: "Scout"
+	, "name"	: "SittingDuck"
+	, "matches"	: 0
+	, "wins"	: 0
+	, "losses"	: 0
+	, "executions"	: 0
+	, "lived"	: 0
+	, "died"	: 0
+	, "absorbed"	: 0
+	, "killed"	: 0
+	, "moved"	: 0
+	, "code"	: [ "variable moved ; ( have I moved? ) "
+			  , "moved false !                      "
+			  , ": play moved ? if                  "
+			  , "                 ( do nothing )    "
+			  , "               else                "
+			  , "                   move move move  "
+			  , "                   moved true !    "
+			  , "               then ;              "
+			  ]
+	}
+}

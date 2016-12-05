@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tile {
+public class Tile implements Serializable{
 
 	public int xPosition;
 	public int yPosition;
@@ -22,8 +23,9 @@ public class Tile {
 		robotList.add(newRobot);
 		newRobot.location= this;
 	}
-	public void removeRobot(int index){
-		robotList.remove(index);
+	public void removeRobot(Robot robotToRemove){
+		robotList.remove(robotToRemove);
+		robotToRemove.location = null;
 	}
 	
 	public void updateRobot(Robot newRobot){
@@ -42,7 +44,21 @@ public class Tile {
 		}
 	}
 	
-	public Robot getRobot(int x){
-		return robotList.get(x);
+	public Robot getRobot(int id){
+		boolean done = false;
+		Robot result = null;
+		int i = 0;
+		Iterator<Robot> test = robotList.iterator();
+		while(test.hasNext() && !done){			
+			if(robotList.get(i).id == id){
+				done = true;
+				result = robotList.get(i);
+			}			
+			i++;			
+			test.next();
+
+			
+		}
+		return result;
 	}
 }
