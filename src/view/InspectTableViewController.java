@@ -2,19 +2,14 @@ package view;
 
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.Game;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.paint.Color;
 import model.Robot;
 import tableRow.InspectRow;
 
@@ -28,7 +23,6 @@ public class InspectTableViewController {
 	protected TableColumn<InspectRow, String> healthColumn = new TableColumn<InspectRow, String>(
 			"Health");
 	private String[] numberColors = new String[]{"Red", "Green", "Blue", "Yellow", "Purple", "Orange"};
-	// database helper
 
 	private ObservableList<InspectRow> robotData = FXCollections.observableArrayList();
 
@@ -37,11 +31,8 @@ public class InspectTableViewController {
 	 * Constructor for the robotHealthTableViewController class.
 	 */
 	public InspectTableViewController(int x, int y) {
-		// When the activity log is instantiated, then pull all the information
-		// from the database.
 		retrieveInspectRowData(x,y);
 		this.initialize();
-		//inspectTable.setMaxHeight(53);
 		inspectTable.setMaxWidth(225);
 		inspectTable.setItems(robotData);
 		inspectTable.setFocusTraversable(false);
@@ -49,26 +40,11 @@ public class InspectTableViewController {
 
 	/**
 	 * 
-	 * Purpose: Refresh the table on the GUI
-	 */
-	public void refreshTable() {
-		/*this.robotHealthData.clear();
-		this.inspectTable.getColumns().clear();
-		this.retrieveInspectRowData();
-		this.initialize();
-		*/
-	}
-
-	/**
-	 * 
-	 * Purpose: Query the database for all the participant's allergies
+	 * Purpose: retrieves the information about the robots on a tile
 	 */
 	private void retrieveInspectRowData(int x, int y) {
-
-		// Select all everything
-		Game controller = new Game();
 		
-		List<Robot> test = controller.gameBoard.gameBoard[x][y].robotList;
+		List<Robot> test = Game.gameBoard.gameBoard[x][y].robotList;
 		String color;
         String model;
         String health;

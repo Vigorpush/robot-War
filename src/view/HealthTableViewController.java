@@ -23,7 +23,6 @@ public class HealthTableViewController {
 	protected TableColumn<RobotHealth, String> robot3Column = new TableColumn<RobotHealth, String>(
 			"Tank");
 
-	// database helper
 
 	private ObservableList<RobotHealth> robotHealthData = FXCollections.observableArrayList();
 
@@ -55,11 +54,10 @@ public class HealthTableViewController {
 
 	/**
 	 * 
-	 * Purpose: Query the database for all the participant's allergies
+	 * Purpose: Get the health of all the player's robots
 	 */
 	private void retrieveRobotHealthData() {
 
-		// Select all everything
 		Game controller = new Game();
 		int[] healths = controller.getRobotHealths();
 		
@@ -72,12 +70,8 @@ public class HealthTableViewController {
 			robot2Health = ""+healths[1];
 			robot3Health = ""+healths[2];
 
-			// Remove extra 0's at the end of the timestamp
-			// dosage = dosage.substring(0, dosage.length() - 7);
-
 			RobotHealth healthRow = new RobotHealth(robot2Health, robot1Health, robot3Health);
 
-			// Add the log to the list
 			robotHealthData.add(healthRow);
 
 		

@@ -74,7 +74,7 @@ public class Game extends Application {
 			myClient = new Client(address, PORT, name, this);
 			System.out.println("Clinet successfully started");
 			lobbyScene = new LobbyView();
-			gameStage.setScene(lobbyScene.init());
+			gameStage.setScene(lobbyScene.init(name));
 			gameStage.setMaximized(false);
 			gameStage.setMaximized(true);
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class Game extends Application {
 		// TODO Auto-generated method stub
 		Game.isHost = true;
 		lobbyScene = new LobbyView();
-		gameStage.setScene(lobbyScene.init());
+		gameStage.setScene(lobbyScene.init(name));
 		gameStage.setMaximized(false);
 		gameStage.setMaximized(true);
 

@@ -1,17 +1,13 @@
 package tableRow;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
  * 
- * Purpose: represent an allergy object and also have helper methods to create,
- * delete, and update allergies
+ * Purpose: represents the health of a player's robots
  * 
- * @author Team CIMP
+ * @author Niklaas
  * @version 1.0
  *
  */
@@ -30,7 +26,7 @@ public class RobotHealth
 
     /**
      * 
-     * Purpose: return the name of the persons allergies
+     * Purpose: return the health of the scout
      * 
      * @return
      */
@@ -41,7 +37,7 @@ public class RobotHealth
 
     /**
      * 
-     * Purpose: return the dosage of the medication that the person is taking
+     * Purpose: return the health of the sniper
      * 
      * @return
      */
@@ -52,7 +48,7 @@ public class RobotHealth
 
     /**
      * 
-     * Purpose: return the times that the person is to receive the medication
+     * Purpose: return the health of the tank
      * 
      * @return
      */

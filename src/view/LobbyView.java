@@ -46,12 +46,14 @@ public class LobbyView {
 	private ObservableList<String> observerObsList;
 	//Displays the observerList
 	private ListView<String> observerListView;
-	//Used to keep track of the number of computer players that will be in the game when it starts.
+	
+	private String name;
 	/**
 	 * Creates the lobbyScene 
 	 * @return lobbyScene
 	 */
-	public Scene init() {
+	public Scene init(String name) {
+		this.name = name;
 		HBox lobbyScreen = new HBox(490);
 		VBox conditioner = new VBox();
 		//Left side of the window
@@ -125,22 +127,20 @@ public class LobbyView {
 	
 
 	/**
-	 * Method called by the switchButton, swaps the currently selected observer to become a player and vice versa
-	 * TODO Currently list views do not update when user is switched
-	 * TODO change so that if the user is an observer they become a player and vice versa
+	 * Method called by the switchButton, swaps the user from observer to player and vice versa
 	 */
 	private void switchUser() {
-		if(observerListView.getSelectionModel().getSelectedItem() != null)
+		if(observerList.contains(name))
 		{
-			playerObsList.add(observerListView.getSelectionModel().getSelectedItem());
-			observerObsList.remove(observerListView.getSelectionModel().getSelectedItem());
+			playerObsList.add(name);
+			observerObsList.remove(name);
 			observerListView.refresh();
 			playerListView.refresh();
 		}
-		else if(playerListView.getSelectionModel().getSelectedItem() != null)
+		else 
 		{
-			observerObsList.add(playerListView.getSelectionModel().getSelectedItem());
-			playerObsList.remove(playerListView.getSelectionModel().getSelectedItem());
+			observerObsList.add(name);
+			playerObsList.remove(name);
 			observerListView.refresh();
 			playerListView.refresh();
 		}

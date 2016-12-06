@@ -159,7 +159,8 @@ public class Client {
         }
         
         /**
-         * Tell the controller that a new username has been recieved to add to the lobby 
+         * Tell the controller that a new username has been recieved to add to the lobby
+         *     	//TODO When host clicks switch while a player, they remain in the player list after message is sent 
          * @param name -> The new name to add to the lobby screen
          */
         public void receiveNames(LobbyMessage msg){
