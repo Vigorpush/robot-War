@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -51,10 +52,10 @@ public class Game extends Application {
 		gameStage.setScene(initialScene.init());
 		gameStage.setMaximized(true);
 
-		File file = new File("Resources/css/StartView.css");
+		String css = this.getClass().getResource("/css/StartView.css").toExternalForm();
 		gameStage.centerOnScreen();
 		gameStage.getScene().getStylesheets().clear();
-		gameStage.getScene().getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
+		gameStage.getScene().getStylesheets().add(css);
 		gameStage.setTitle("Robot War");
 		gameStage.show();
 	}
@@ -74,6 +75,8 @@ public class Game extends Application {
 			System.out.println("Clinet successfully started");
 			lobbyScene = new LobbyView();
 			gameStage.setScene(lobbyScene.init());
+			gameStage.setMaximized(false);
+			gameStage.setMaximized(true);
 		} catch (Exception e) {
 			System.out.println("Starting client failed");
 		}
@@ -90,6 +93,8 @@ public class Game extends Application {
 		Game.isHost = true;
 		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init());
+		gameStage.setMaximized(false);
+		gameStage.setMaximized(true);
 
 		try { // @Nico was here I'm trying to create a server
 			System.out.println("Server Creation Started");
@@ -180,6 +185,8 @@ public class Game extends Application {
 				@Override
 				public void run() {
 					gameStage.setScene(gameScene.init(playerList, observerList, playerName));
+					gameStage.setMaximized(false);
+					gameStage.setMaximized(true);
 				}
 			});
 			// Set starting position for two players
@@ -219,6 +226,8 @@ public class Game extends Application {
 				@Override
 				public void run() {
 					gameStage.setScene(gameScene.init(playerList, observerList, playerName));
+					gameStage.setMaximized(false);
+					gameStage.setMaximized(true);
 				}
 			});
 			// Set starting position for six players
@@ -441,6 +450,8 @@ public class Game extends Application {
 			}
 			StartView initialScene = new StartView();
 			gameStage.setScene(initialScene.init());
+			gameStage.setMaximized(false);
+			gameStage.setMaximized(true);
 		}
 		Game.myClient.getConnection().sendGameState(gameBoard);
 		return result;
@@ -495,6 +506,8 @@ public class Game extends Application {
 			public void run() {
 				StartView initialScene = new StartView();
 				gameStage.setScene(initialScene.init());
+				gameStage.setMaximized(false);
+				gameStage.setMaximized(true);
 			}
 		});
 	}

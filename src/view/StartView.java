@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -12,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -19,6 +22,7 @@ import javafx.stage.Stage;
 
 /**
  * Class that creates the initial GUI that the user will see.
+ * 
  * @author Niklaas Zang jiawei
  *
  */
@@ -27,19 +31,17 @@ public class StartView {
 
 	private static final String title = "Robot Wars";
 	private Scene startScene;
-	
-
-	
 
 	/**
 	 * Method for creating the StartView Scene
+	 * 
 	 * @return the startScene
 	 */
 	public Scene init() {
 		VBox startScreen = new VBox(40);
 		Button joinGame = new Button("Join Game");
 		joinGame.getStyleClass().add("join_game_button");
-		
+
 		joinGame.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				joinGame();
@@ -58,18 +60,19 @@ public class StartView {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
 				controller.exitGame();
-						
+
 			}
-		});		
-		
+		});
+
 		startScreen.getChildren().addAll(joinGame, hostGame, exitGame);
 		startScreen.setAlignment(Pos.CENTER);
 		startScene = new Scene(startScreen);
 		return startScene;
 	}
-	
+
 	/**
-	 * joinGame creates a popup window that asks for a username and an IP Address and passes them onto the controller
+	 * joinGame creates a popup window that asks for a username and an IP
+	 * Address and passes them onto the controller
 	 */
 	private void joinGame() {
 		Stage selectGame = new Stage();
@@ -93,7 +96,7 @@ public class StartView {
 		joinBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
-				//If the controller approves, the popup closes.
+				// If the controller approves, the popup closes.
 				if (controller.joinGame(nameTxt.getText(), addressTxt.getText())) {
 					selectGame.close();
 				}
@@ -105,20 +108,23 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
-		File file = new File("Resources/css/Miniwindow.css");
+
+		String css = this.getClass().getResource("/css/Miniwindow.css").toExternalForm();
 		selectGame.getScene().getStylesheets().clear();
-		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		selectGame.getScene().getStylesheets().add(css);
 		closeBtn.getStyleClass().add("close_button");
 		joinBtn.getStyleClass().add("join_button");
 		nameLabel.getStyleClass().add("text_label");
 		addressLabel.getStyleClass().add("text_label");
-		//Modality prevents the user from clicking on the main Stage while the popup is up
+		// Modality prevents the user from clicking on the main Stage while the
+		// popup is up
 		selectGame.initModality(Modality.APPLICATION_MODAL);
 		selectGame.show();
 	}
 
 	/**
-	 * hostGame creates a popup window that asks for a username, and passes it onto the controller
+	 * hostGame creates a popup window that asks for a username, and passes it
+	 * onto the controller
 	 */
 	private void hostGame() {
 		Stage selectGame = new Stage();
@@ -129,16 +135,15 @@ public class StartView {
 		TextField nameTxt = new TextField();
 		nameBox.getChildren().addAll(nameLabel, nameTxt);
 		Button closeBtn = new Button("Close");
-		
 
 		closeBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				selectGame.close();
 			}
 		});
-	
+
 		Button joinBtn = new Button("Join");
-		
+
 		joinBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				Game controller = new Game();
@@ -151,10 +156,10 @@ public class StartView {
 		selectBox.setAlignment(Pos.CENTER);
 		Scene selectScene = new Scene(selectBox);
 		selectGame.setScene(selectScene);
-		
-		File file = new File("Resources/css/Miniwindow.css");
+
+		String css = this.getClass().getResource("/css/StartView.css").toExternalForm();
 		selectGame.getScene().getStylesheets().clear();
-		selectGame.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		selectGame.getScene().getStylesheets().add(css);
 		closeBtn.getStyleClass().add("close_button");
 		joinBtn.getStyleClass().add("join_button");
 		nameLabel.getStyleClass().add("text_label");

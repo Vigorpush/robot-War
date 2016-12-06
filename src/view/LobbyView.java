@@ -110,8 +110,8 @@ public class LobbyView {
 		conditioner.getChildren().addAll(lobbyScreen);
 		lobbyScene = new Scene(conditioner);
 		
-		File file = new File("Resources/css/LobbyView.css");
-		lobbyScreen.getScene().getStylesheets().add("file:///"+file.getAbsolutePath().replace("\\", "/"));
+		String css = this.getClass().getResource("/css/LobbyView.css").toExternalForm();
+		lobbyScreen.getScene().getStylesheets().add(css);
 		
 		playerListLabel.getStyleClass().add("text_label");
 		observerListLabel.getStyleClass().add("text_label");

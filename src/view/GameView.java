@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -213,8 +214,8 @@ public class GameView {
 		gameScreen.setAlignment(Pos.CENTER);
 		gameScene = new Scene(gameScreen);
 		
-		File file = new File("Resources/css/GameView.css");
-		gameScene.getStylesheets().add("file:///" + file.getAbsolutePath().replace("\\", "/"));
+		String css = this.getClass().getResource("/css/GameView.css").toExternalForm();
+		gameScene.getStylesheets().add(css);
 
 		currentTurnLabel.getStyleClass().add("text_label");
 		currentTankMoveLabel.getStyleClass().add("text_label");
@@ -487,14 +488,16 @@ public class GameView {
 									// {
 
 									String robotType = r.getClass().getSimpleName();
-									File file;
+									String imagePath; 
+									URL test;
 									int x = currentXCoor;// + currentYCoor - 4;
 									int y = currentYCoor;
 									switch (robotType) {
 									case "Scout":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Scout.png");
-										Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+										System.out.println(i);	
+										imagePath = "/images/" + i+"Scout.png";										
+										Image scout = new Image(imagePath);
 										robotImages[imageCount].setImage(scout);
 										robotImages[imageCount].setScaleX(0.60);
 										robotImages[imageCount].setScaleY(0.60);
@@ -527,8 +530,8 @@ public class GameView {
 										break;
 									case "Sniper":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Sniper.png");
-										Image sniper = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+										imagePath = "/images/" + i+"Sniper.png";
+										Image sniper = new Image(imagePath);
 										robotImages[imageCount].setImage(sniper);
 										robotImages[imageCount].setScaleX(0.60);
 										robotImages[imageCount].setScaleY(0.60);
@@ -561,8 +564,8 @@ public class GameView {
 										break;
 									case "Tank":
 										robotImages[imageCount] = new ImageView();
-										file = new File("Resources/images/" + i + "Tank.png");
-										Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+										imagePath = "/images/" + i+"Tank.png";
+										Image tank = new Image(imagePath);
 										robotImages[imageCount].setImage(tank);
 										robotImages[imageCount].setScaleX(0.60);
 										robotImages[imageCount].setScaleY(0.60);
@@ -609,26 +612,26 @@ public class GameView {
 							// TODO draw other number
 							if (robotCount == 1) {
 								String robotType = previousRobot.getClass().getSimpleName();
-								File file;
+								String imagePath;
 								int x = currentXCoor;// + currentYCoor - 4;
 								int y = currentYCoor;
 								switch (robotType) {
 								case "Scout":
 									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Scout.png");
-									Image scout = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									imagePath = "/images/" + (previousRobot.teamNumber + 1) + "Scout.png";									
+									Image scout = new Image(imagePath);
 									robotImages[imageCount].setImage(scout);
 									break;
 								case "Sniper":
 									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Sniper.png");
-									Image sniper = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									imagePath = "/images/" + (previousRobot.teamNumber + 1) + "Sniper.png";
+									Image sniper = new Image(imagePath);
 									robotImages[imageCount].setImage(sniper);
 									break;
 								case "Tank":
 									robotImages[imageCount] = new ImageView();
-									file = new File("Resources/images/" + (previousRobot.teamNumber + 1) + "Tank.png");
-									Image tank = new Image("file:///" + file.getAbsolutePath().replace("\\", "/"));
+									imagePath = "/images/" + (previousRobot.teamNumber + 1) + "Tank.png";
+									Image tank = new Image(imagePath);
 									robotImages[imageCount].setImage(tank);
 									break;
 								}
