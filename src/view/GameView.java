@@ -50,8 +50,7 @@ import model.Robot;
 
 /**
  * Class that creates the GUI for the actual game and all book keeping needed
- * for that class TODO Make list populate TODO update as game changes TODO
- * Populate table TODO display different things for different users
+ * for that class
  * 
  * @author Niklaas
  *
@@ -77,7 +76,6 @@ public class GameView {
 	private static Label currentTankMoveLabel;
 	private static Label currentTurnLabel;
 	// Currently determines distances between center of each hexagon
-	// TODO WIDTH and HEIGHT variables to control size of hexagons
 	private static double width = 100;// 51.96
 	private static final double OFFSET = 15;
 	// The number of heaxagons per side of the grid
@@ -188,7 +186,6 @@ public class GameView {
 		leftBox.setAlignment(Pos.TOP_LEFT);
 		// Center of window
 		VBox centerBox = new VBox(60);
-		// TODO make reflect current turn
 		currentTurnLabel = new Label(playerList.get(0) + " turn");
 		currentTurnLabel.setAlignment(Pos.CENTER);
 		currentTurnLabel.setFont(new Font(22));
@@ -247,7 +244,6 @@ public class GameView {
 	 * @return the BorderPane containing the board
 	 */
 	private BorderPane generateBoard() {
-		// TODO Auto-generated method stub
 		hexBox = new BorderPane();
 		// The distance between the tops of two adjacent rows
 		double height = width / Math.sqrt(3)
@@ -367,41 +363,7 @@ public class GameView {
 		return hexBox;
 	}
 
-	/**
-	 * Method to create the table that show the HP of the user's robots TODO
-	 * Make display the table
-	 * 
-	 * @return the populated table
-	 */
-	private TableView<String> createRobotTable() {
-		TableColumn<Integer, String> scoutColumn = new TableColumn<Integer, String>("Scout");
-		TableColumn<Integer, String> sniperColumn = new TableColumn<Integer, String>("Sniper");
-		TableColumn<Integer, String> tankColumn = new TableColumn<Integer, String>("Tank");
-		Game controller = new Game();
-		int[] robotHealths = controller.getRobotHealths();
 
-		return tankHealthTable;
-	}
-
-	// TODO listening HP for all robot
-	@SuppressWarnings("rawtypes")
-	private ObservableList<Map> generateDataInMap() {
-		ObservableList<Map> allData = FXCollections.observableArrayList();
-		Game controller = new Game();
-		int[] healths = controller.getRobotHealths();
-		Map<String, String> dataRow = new HashMap<>();
-
-		String value1 = "" + healths[0];
-		String value2 = "" + healths[1];
-		String value3 = "" + healths[2];
-
-		dataRow.put(Column1MapKey, value1);
-		dataRow.put(Column2MapKey, value2);
-		dataRow.put(Column3MapKey, value3);
-		allData.add(dataRow);
-
-		return allData;
-	}
 
 	public void updateGame(Board board) {
 		Platform.runLater(new Runnable() {
@@ -500,22 +462,13 @@ public class GameView {
 										}
 										i++;
 									}
-									// TODO currently displays robots from the
-									// perspective of the current player, may
-									// want to
-									// display from perspective of client's
-									// playerW
-									// try {
 									if (robotOwner.teamNumber == playerIndex) {
-										// if
-										// (robotOwner.IP.equals(InetAddress.getLocalHost().toString()))
-										// {
+
 
 										String robotType = r.getClass().getSimpleName();
 										String imagePath;
 										URL test;
-										int x = currentXCoor;// + currentYCoor -
-																// 4;
+										int x = currentXCoor;
 										int y = currentYCoor;
 										switch (robotType) {
 										case "Scout":
@@ -629,18 +582,12 @@ public class GameView {
 											previousRobot = r;
 										}
 									}
-									/*
-									 * } catch (UnknownHostException e) { //
-									 * TODO Auto-generated catch block
-									 * e.printStackTrace(); }
-									 */
 
 								}
-								// TODO draw other number
 								if (robotCount == 1) {
 									String robotType = previousRobot.getClass().getSimpleName();
 									String imagePath;
-									int x = currentXCoor;// + currentYCoor - 4;
+									int x = currentXCoor;
 									int y = currentYCoor;
 									switch (robotType) {
 									case "Scout":

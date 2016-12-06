@@ -60,11 +60,9 @@ public class Game extends Application {
 		gameStage.show();
 	}
 
-	// TODO store static variable about who you are
 	public boolean joinGame(String name, String address) {
 		Game.playerName = name;
 		Game.isHost = false;
-		// TODO Auto-generated method stub
 		boolean result = false;
 		if (name.length() != 0) {
 			result = true;
@@ -89,7 +87,6 @@ public class Game extends Application {
 
 	public void hostGame(String name) {
 		Game.playerName = name;
-		// TODO Auto-generated method stub
 		Game.isHost = true;
 		lobbyScene = new LobbyView();
 		gameStage.setScene(lobbyScene.init(name));
@@ -139,7 +136,6 @@ public class Game extends Application {
 
 	public boolean beginGame(ArrayList<String> playerList, ArrayList<String> observerList)
 			throws UnknownHostException {
-		// TODO Auto-generated method stub
 		System.out.println("IS HOST is  " + isHost);
 
 		boolean result = false;
@@ -264,7 +260,11 @@ public class Game extends Application {
 		return result;
 	}
 
-	// Needs a way to determine which player is being displayed.
+
+	/**
+	 * Gets the health's of the player's robots
+	 * @return
+	 */
 	public int[] getRobotHealths() {
 
 		boolean found = false;
@@ -289,7 +289,6 @@ public class Game extends Application {
 	}
 
 	public int moveRobot(int x, int y) {
-		// TODO Get player
 		int result = 0;
 		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)) {
 
@@ -343,7 +342,6 @@ public class Game extends Application {
 						.get(gameBoard.currentRobot).movement;
 
 		gameBoard.players.get(gameBoard.playerTurn).hasShot = false;
-		// TODO Set fog of war for everyone?
 		gameBoard.players.get(gameBoard.playerTurn).setFogOfWar(sideLength);
 		gameScene.updateGame(gameBoard);
 
@@ -353,7 +351,6 @@ public class Game extends Application {
 	}
 
 	public void attackTile(int x, int y) {
-		// TODO Get player
 		// int result = 0;
 		if (gameBoard.players.get(gameBoard.playerTurn).name.equals(playerName)
 				&& !gameBoard.players.get(gameBoard.playerTurn).hasShot) {
@@ -366,7 +363,6 @@ public class Game extends Application {
 				if (attackingRobot.location.equals(target)) {
 					attackingRobot.health = 0;
 					attackingRobot.deathCount++;
-					// TODO Do suicides give kills?
 					target.robotList.remove(attackingRobot);
 				}
 
@@ -379,8 +375,6 @@ public class Game extends Application {
 						r.health = 0;
 						r.deathCount++;
 						rIterator.remove();
-						// TODO Green scout died, red sniper killed by green
-						// sniper, red tank did not go next
 						if (gameBoard.players.get(gameBoard.playerTurn).robotList.indexOf(r) > gameBoard.currentRobot
 								|| (gameBoard.players.get(r.teamNumber).robotList.indexOf(r) == gameBoard.currentRobot
 										&& r.teamNumber > gameBoard.playerTurn)) {
@@ -443,7 +437,6 @@ public class Game extends Application {
 					test = new Server(PORT);
 					test.shutdownServer();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -462,11 +455,17 @@ public class Game extends Application {
 	 * them into an observer
 	 */
 	public void forfeit() {
-		// TODO Get controlling player
-		for (Robot r : gameBoard.players.get(gameBoard.playerTurn).robotList) {
+		boolean found = false;
+		int playerIndex = 0;
+		while (!found) {
+			if (gameBoard.players.get(playerIndex).name.equals(playerName)) {
+				found = true;
+			}
+		}
+		for (Robot r : gameBoard.players.get(playerIndex).robotList) {
 			r.health = 0;
 		}
-		playerLose(gameBoard.playerTurn);
+		playerLose(playerIndex);
 		Game.myClient.getConnection().sendGameState(gameBoard);
 	}
 

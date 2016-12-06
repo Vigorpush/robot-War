@@ -69,7 +69,6 @@ public class LobbyView {
 			ipAddressLabel.setText("Your IP Address: " + InetAddress.getLocalHost().toString());
 			ipAddressLabel.setTextFill(Color.SILVER);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		leftBox.getChildren().addAll(backBtn, ipAddressLabel, playerListLabel, playerListView);
@@ -81,7 +80,6 @@ public class LobbyView {
 				switchUser();				
 			}
 		});
-		//TODO Currently does nothing, will change if networking is fixed
 		Button beginBtn = new Button("Begin Game");
 		beginBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
@@ -103,7 +101,6 @@ public class LobbyView {
 		observerList = new ArrayList<String>();
 		observerObsList = FXCollections.observableArrayList(observerList);		
 		observerListView.setItems(observerObsList );
-		//TODO code that makes only one object in observerListView and playerListView selectable
 		rightBox.getChildren().addAll(observerListLabel, observerListView);
 		rightBox.setPadding(new Insets(50, 50, 0, 0));
 		lobbyScreen.getChildren().addAll(leftBox, centerBox, rightBox);
